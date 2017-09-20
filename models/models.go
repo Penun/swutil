@@ -29,21 +29,21 @@ type Skill struct {
     Characteristic string `json:"characteristic"`
 }
 
-type SpecAttribute struct {
-    SpAtt_id int64 `orm:"pk" json:"sp_att_id"`
+type SpeAttribute struct {
+    SpeAtt_id int64 `orm:"pk" json:"spe_att_id"`
     Species *Species `orm:"rel(fk)" json:"species"`
     Description string `json:"description"`
 }
 
 type SpecSkill struct {
     SpecSkill_id int64 `orm:"pk" json:"spec_skill_id"`
-    Species *Species `orm:"rel(fk)" json:"species"`
+    Specialization *Specialization `orm:"rel(fk)" json:"specialization"`
     Skill *Skill `orm:"rel(fk)" json:"skill"`
 }
 
 type SpecTalent struct {
     SpecTalent_id int64 `orm:"pk" json:"spec_talent_id"`
-    Species *Species `orm:"rel(fk)" json:"species"`
+    Specialization *Specialization `orm:"rel(fk)" json:"specialization"`
     Talent *Talent `orm:"rel(fk)" json:"talent"`
     Rank int `json:"rank"`
     Position int `json:position""`
@@ -77,11 +77,11 @@ type Talent struct {
     Talent_id int64 `orm:"pk" json:"talent_id"`
     Name string `json:"name"`
     Type string `json:"type"`
-    Ranked int `json:"ranked"`
+    Ranked bool `json:"ranked"`
     Description string `json:"descirption"`
 }
 
 func init() {
-    orm.RegisterModel(new(Career), new(CareerSkill), new(CareerSpec), new(Skill), new(SpecAttribute),
-        new(SpecSkill), new(SpecTalent), new(Specialization), new(Species), new(Talent))
+    orm.RegisterModel(new(Career), new(CareerSkill), new(CareerSpec), new(Skill), new(SpeAttribute),
+        new(SpeSkill), new(SpeTalent), new(Specialization), new(Species), new(Talent))
 }

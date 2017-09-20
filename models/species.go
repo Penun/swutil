@@ -15,13 +15,13 @@ func GetSpecies() []Species{
     }
 }
 
-func GetSpecAtt(specId int64) []SpecAttribute {
+func GetSpecAtt(specId int64) []SpeAttribute {
     o := orm.NewOrm()
-    var specAtt []SpecAttribute
+    var specAtt []SpeAttribute
     o.QueryTable("spec_attribute").Filter("species_id", specId).All(&specAtt)
     if len(specAtt) > 0 {
         return specAtt
     } else {
-        return []SpecAttribute{}
+        return []SpeAttribute{}
     }
 }

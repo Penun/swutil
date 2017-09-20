@@ -26,7 +26,7 @@ type AttributeResp struct {
 	Success bool `json:"success"`
 	Error string `json:"error"`
 	Index int `json:"index"`
-	Result []models.SpecAttribute `json:"result"`
+	Result []models.SpeAttribute `json:"result"`
 }
 
 func (this *SpeciesController) Get() {
