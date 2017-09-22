@@ -411,6 +411,14 @@ input:focus, textarea:focus {
 	outline-color: #c0eaf1;
 }
 
+a {
+	color: #a4dde5;
+}
+
+a:visited {
+	color: #a4dde5;
+}
+
 input[type=radio]{
 	visibility: hidden;
 }
