@@ -29,6 +29,18 @@ type AttributeResp struct {
 	Result []models.SpeAttribute `json:"result"`
 }
 
+type InsSpeReq struct {
+	Species models.Species `json:"species"`
+	Attributes []models.SpeAttribute `json:"attributes"`
+}
+
+type InsSpeResp struct{
+	Success bool `json:"success"`
+	Error string `json:"error"`
+	Species models.Species `json:"species"`
+	Attributes []models.SpeAttribute `json:"attributes"`
+}
+
 func (this *SpeciesController) Get() {
     resp := GetResponse{Success: false, Error: ""}
 	var t_spec []models.Species
@@ -56,6 +68,30 @@ func (this *SpeciesController) Attributes() {
 		} else {
 			resp.Error = "Failed to find."
 		}
+	} else {
+		fmt.Println(err)
+		resp.Error = "Failed Parse."
+	}
+	this.Data["json"] = resp
+	this.ServeJSON()
+}
+
+
+func (this *SpeciesController) Add() {
+	var insReq InsSpeReq
+	err := json.Unmarshal(this.Ctx.Input.RequestBody, &insReq)
+	resp := InsSpeResp{Success: false, Error: ""}
+	if err == nil {
+		sp_id := models.AddSpecies(insReq.Species)
+		insReq.Species.Species_id = sp_id
+		resp.Species = insReq.Species
+		for i := 0; i < len(insReq.Attributes); i++ {
+			t_att := models.SpeAttribute{Species: &insReq.Species, Description: insReq.Attributes[i].Description}
+			att_id := models.AddSpeAttribute(t_att)
+			insReq.Attributes[i].SpeAtt_id = att_id
+		}
+		resp.Attributes = insReq.Attributes
+		resp.Success = true
 	} else {
 		fmt.Println(err)
 		resp.Error = "Failed Parse."

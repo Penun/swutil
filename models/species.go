@@ -25,3 +25,23 @@ func GetSpecAtt(specId int64) []SpeAttribute {
         return []SpeAttribute{}
     }
 }
+
+func AddSpecies(sp Species) int64 {
+	o := orm.NewOrm()
+	id, err := o.Insert(&sp)
+	if err == nil {
+		return id
+	} else {
+		return 0
+	}
+}
+
+func AddSpeAttribute(speAtt SpeAttribute) int64 {
+    o := orm.NewOrm()
+	id, err := o.Insert(&speAtt)
+	if err == nil {
+		return id
+	} else {
+		return 0
+	}
+}

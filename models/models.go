@@ -83,5 +83,5 @@ type Talent struct {
 
 func init() {
     orm.RegisterModel(new(Career), new(CareerSkill), new(CareerSpec), new(Skill), new(SpeAttribute),
-        new(SpeSkill), new(SpeTalent), new(Specialization), new(Species), new(Talent))
+        new(SpecSkill), new(SpecTalent), new(Specialization), new(Species), new(Talent))
 }

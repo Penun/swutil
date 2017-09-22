@@ -215,6 +215,10 @@ ul {
 	margin: 0;
 }
 
+ul.topped {
+	margin-top: 1vh;
+}
+
 li {
 	width: 100%;
     position: relative;
@@ -257,8 +261,9 @@ span.skill_span {
 }
 
 p {
-	width: 75%;
-	text-align: center;
+	width: 95%;
+	font-size: 1.1em;
+	margin-right: 0;
 }
 
 p.underline {
@@ -323,10 +328,11 @@ div.check::before {
 }
 
 span.left_label {
-	width: 33%;
+	width: 45%;
 	display: block;
 	float: left;
 	text-align: right;
+	font-size: 1em;
 }
 
 span.right_input {
@@ -387,15 +393,22 @@ option[label]{
 	color: #493E25;
 }
 
-input {
+input, textarea {
 	background: transparent;
-	color: #493E25;
+	color: #a4dde5;
 	border: none;
 	text-align: center;
+	font-size: 1em;
 }
 
-input.charInf {
-	min-width: 200px;
+textarea {
+	resize: vertical;
+	width: 100%;
+	text-align: left;
+}
+
+input:focus, textarea:focus {
+	outline-color: #c0eaf1;
 }
 
 input[type=radio]{
@@ -475,14 +488,35 @@ input[type=radio]:checked ~ label{
 	position: relative;
 }
 
-#loginForm button {
+button {
 	float: right;
-	position: absolute;
-	right: 0;
-	bottom: 0;
-	background-color: #494725;
-	border-color: #000000;
-	color: #AA8939;
+	background-color: rgba(84, 123, 168, 0.35);
+	color: #a4dde5;
+	display: inline-block;
+  	padding: 10px 15px;
+  	font-size: 1em;
+  	cursor: pointer;
+  	text-align: center;
+  	text-decoration: none;
+	border-width: 3px;
+	border-color: #c0eaf1;
+	border-style: double;
+	outline: none;
+  	border-radius: 35px;
+  	box-shadow: 0px 0px 10px 5px #547ba8;
+	margin-top: 5px;
+}
+
+button:hover {
+	background-color: rgba(84, 123, 168, 0.65);
+	box-shadow: 0px 0px 20px 10px #547ba8;
+}
+
+button:active {
+	background-color: rgba(192, 234, 241, 0.5);
+	color: #83d9e6;
+	box-shadow: 0px 0px 25px 15px rgba(192, 234, 241, 0.75);
+	transform: scale(0.9, 0.9);
 }
 
 #loginForm input {
@@ -490,9 +524,7 @@ input[type=radio]:checked ~ label{
 	width: 66%;
 }
 
-#loginForm p {
-	width: 100%;
-}
+#loginForm p { width: 100%; }
 
 .characterBlock {
 	width: 95%;
@@ -507,16 +539,15 @@ input[type=radio]:checked ~ label{
 	float: left;
 }
 
-.threshold {
+.abilities {
 	width: 95%;
-	padding-top: 2vh;
-	font-size: 1.2em;
 }
 
 .specAbil > li {
 	width: 95%;
 	padding-top: 2vh;
 	font-size: 1.2em;
+	word-wrap: break-word;
 }
 
 /*
