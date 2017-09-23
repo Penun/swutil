@@ -6,6 +6,7 @@
 		$scope.curSpec = {};
 		$scope.moldSpecies = {};
 		$scope.moldTalent = {type: "Passive"};
+		$scope.moldSpecal = {career: {career_id: 0}};
 
 		angular.element(document).ready(function(){
 			$http.get("/species").then(function(ret){
@@ -44,6 +45,8 @@
 					species: species,
 					attributes: attributes
 				};
+				sendata.species.name = species.name.trim();
+				sendata.species.ref_page = species.ref_page.trim();
 				$http.post("/species/add", sendata).then(function(ret){
 					if (ret.data.success){
 						ret.data.species.attributes = ret.data.attributes;
@@ -57,6 +60,8 @@
 
 		this.AddTalent = function(){
 			var sendata = {talent: $scope.moldTalent};
+			sendata.talent.name = sendata.talent.name.trim();
+			sendata.talent.description = sendata.talent.description.trim();
 			$http.post("/talents/add", sendata).then(function(ret){
 				if (ret.data.success){
 					if (typeof $scope.talents === 'undefined'){
@@ -79,6 +84,21 @@
 					$http.get("/talents").then(function(ret){
 						if (ret.data.success){
 							$scope.talents = ret.data.talents;
+						}
+					});
+				}
+			} else if (newTab == 3){
+				if (typeof $scope.careers === 'undefined'){
+					$http.get("/careers").then(function(ret){
+						if (ret.data.success){
+							$scope.careers = ret.data.careers;
+						}
+					});
+				}
+				if (typeof $scope.skills === 'undefined'){
+					$http.get("/skills").then(function(ret){
+						if (ret.data.success){
+							$scope.skills = ret.data.skills;
 						}
 					});
 				}

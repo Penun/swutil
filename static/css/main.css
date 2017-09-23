@@ -5,7 +5,6 @@ body {
 	color: #a4dde5;
 	font-family: 'Share Tech Mono', monospace;
 	width: 75vw;
-	/*max-width: 1366px;*/
 	margin: auto;
 	perspective: 1000px;
 	-moz-perspective: 1000px;
@@ -85,7 +84,7 @@ body {
 
 .left_page_col {
 	position: absolute;
-	width: 47%;
+	width: 33%;
 }
 
 .left_page_det {
@@ -110,7 +109,7 @@ body {
 
 .right_page {
 	float: right;
-	width: 50%;
+	width: 66%;
 	overflow: auto;
 	height: 67vh;
 }
@@ -127,8 +126,8 @@ body {
 }
 
 .page {
-	margin-left: 7em;
-	margin-right: 3em;
+	margin-left: 3vw;
+	margin-right: 1vw;
 }
 
 .top_space {
@@ -204,7 +203,7 @@ span.button_text:hover {
 .next_butt {
 	position: absolute;
 	right: 35px;
-	bottom: 20px;
+	top: -2em;
 }
 
 ul {
@@ -375,23 +374,18 @@ div.radIO:hover label{
 	color: #AAA539;
 }
 
-select {
-	background: transparent;
-	color: #493E25;
-	border: none;
-	text-align: center;
-	min-width: 200px;
-	overflow: hidden;
-}
-
 optgroup[label]{
 	font-size: 120%;
-	color: #DB7237;
+	color: #c0eaf1;
 }
 
 option[label]{
-	font-size: 83%;
-	color: #493E25;
+	color: #a4dde5;
+	background-color: rgba(0, 50, 108, .25);
+}
+
+.sing_select option[label]{
+	background-color: #172836;
 }
 
 input, textarea, select {
@@ -402,14 +396,19 @@ input, textarea, select {
 	font-size: 1em;
 }
 
+select {
+	min-width: 250px;
+}
+
 textarea {
 	resize: vertical;
 	width: 100%;
 	text-align: left;
 }
 
-input:focus, textarea:focus {
+input:focus, textarea:focus, select:focus, select:active {
 	outline-color: #c0eaf1;
+	border: none;
 }
 
 a {

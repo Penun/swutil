@@ -1,6 +1,6 @@
 <div ng-show="mCont.ShowTab(1)" class="sixty_he">
     <div class="left_page_col left_page">
-        <div class="fade_in" style="width: 85%">
+        <div class="fade_in" style="width: 95%">
             <h2>Species</h2>
             <div style="overflow: auto; height: 61vh;">
                 <ul>

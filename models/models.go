@@ -5,7 +5,7 @@ import (
 )
 
 type Career struct {
-    Career_id int64 `orm:"pk" jsn:"career_id"`
+    Career_id int64 `orm:"pk" json:"career_id"`
     Name string `json:"name"`
     SkillSlots int `json:"skill_slots"`
 }
@@ -54,7 +54,7 @@ type SpecTalent struct {
 type Specialization struct {
     Spec_id int64 `orm:"pk" json:"spec_id"`
     Name string `json:"name"`
-    SubTitle string `json:"sub_title"`
+    Subtitle string `json:"subtitle"`
     SkillSlots int `json:"skill_slots"`
 }
 
