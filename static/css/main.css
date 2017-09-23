@@ -1,11 +1,11 @@
 body {
 	background-image: url("../img/starscape.png");
 	background-size: 100%;
-	background-repeat: no-repeat;
+	background-repeat: round;
 	color: #a4dde5;
 	font-family: 'Share Tech Mono', monospace;
-	width: 100vw;
-	max-width: 1366px;
+	width: 75vw;
+	/*max-width: 1366px;*/
 	margin: auto;
 	perspective: 1000px;
 	-moz-perspective: 1000px;
@@ -204,7 +204,7 @@ span.button_text:hover {
 .next_butt {
 	position: absolute;
 	right: 35px;
-	bottom: 7px;
+	bottom: 20px;
 }
 
 ul {
@@ -264,6 +264,7 @@ p {
 	width: 95%;
 	font-size: 1.1em;
 	margin-right: 0;
+	height: 4vh;
 }
 
 p.underline {
@@ -393,7 +394,7 @@ option[label]{
 	color: #493E25;
 }
 
-input, textarea {
+input, textarea, select {
 	background: transparent;
 	color: #a4dde5;
 	border: none;

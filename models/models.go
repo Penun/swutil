@@ -71,6 +71,7 @@ type Species struct {
     StrainThreshold int `json:"strain_threshold"`
     StartingXp int `json:"starting_xp"`
     RefPage string `json:"ref_page"`
+    ImgName string `json:"img_name"`
 }
 
 type Talent struct {
@@ -78,7 +79,7 @@ type Talent struct {
     Name string `json:"name"`
     Type string `json:"type"`
     Ranked bool `json:"ranked"`
-    Description string `json:"descirption"`
+    Description string `json:"description"`
 }
 
 func init() {

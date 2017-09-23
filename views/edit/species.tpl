@@ -5,8 +5,8 @@
             <div style="overflow: auto; height: 61vh;">
                 <ul>
 				    <li ng-repeat="(ind, spec) in species">
-					    <span ng-click="mCont.RevealSpecies(ind)" class="clickable">
-                            {{"{{spec.name}}"}}
+					    <span class="clickable">
+                            {{"{{spec.name}} - {{spec.ref_page}}"}}
 					    </span>
 				    </li>
 			    </ul>
@@ -15,7 +15,7 @@
     </div>
     <div class="right_page">
         <form id="specAddForm" name="specAddForm" novalidate>
-            <p><label><b>Species Name:</b></label><input type="text" name="specName" ng-model="moldSpecies.name" autofocus required/></p>
+            <p><label><b>Species Name:</b></label><input type="text" name="specName" id="specName" ng-model="moldSpecies.name" autofocus required/></p>
             <p><label><b>Reference Page:</b></label><input type="text" name="ref_page" placeholder="Reference Page" ng-model="moldSpecies.ref_page" required/></p>
             <div class="characterBlock">
                 <span><b>Br</b></span>

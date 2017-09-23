@@ -5,6 +5,7 @@
 		$scope.species = [];
 		$scope.curSpec = {};
 		$scope.moldSpecies = {};
+		$scope.moldTalent = {type: "Passive"};
 
 		angular.element(document).ready(function(){
 			$http.get("/species").then(function(ret){
@@ -31,61 +32,57 @@
 		this.AddSpecies = function(){
 			var cleared = true;
 
-			if (typeof $scope.moldSpecies.name === 'undefined' || $scope.moldSpecies.name == null || $scope.moldSpecies.name == ""){
-				cleared = false;
-			}
-			if (cleared && (typeof $scope.moldSpecies.brawn === 'undefined' || $scope.moldSpecies.brawn == null || $scope.moldSpecies.brawn < 1 || $scope.moldSpecies.brawn > 4)){
-				cleared = false;
-			}
-			if (cleared && (typeof $scope.moldSpecies.agility === 'undefined' || $scope.moldSpecies.agility == null || $scope.moldSpecies.agility < 1 || $scope.moldSpecies.agility > 4)){
-				cleared = false;
-			}
-			if (cleared && (typeof $scope.moldSpecies.intellect === 'undefined' || $scope.moldSpecies.intellect == null || $scope.moldSpecies.intellect < 1 || $scope.moldSpecies.intellect > 4)){
-				cleared = false;
-			}
-			if (cleared && (typeof $scope.moldSpecies.cunning === 'undefined' || $scope.moldSpecies.cunning == null || $scope.moldSpecies.cunning < 1 || $scope.moldSpecies.cunning > 4)){
-				cleared = false;
-			}
-			if (cleared && (typeof $scope.moldSpecies.willpower === 'undefined' || $scope.moldSpecies.willpower == null || $scope.moldSpecies.willpower < 1 || $scope.moldSpecies.willpower > 4)){
-				cleared = false;
-			}
-			if (cleared && (typeof $scope.moldSpecies.presence === 'undefined' || $scope.moldSpecies.presence == null || $scope.moldSpecies.presence < 1 || $scope.moldSpecies.presence > 4)){
-				cleared = false;
-			}
-			if (cleared && (typeof $scope.moldSpecies.wound_threshold === 'undefined' || $scope.moldSpecies.wound_threshold == null || $scope.moldSpecies.wound_threshold > 15 || $scope.moldSpecies.wound_threshold < 6)){
-				cleared = false;
-			}
-			if (cleared && (typeof $scope.moldSpecies.strain_threshold === 'undefined' || $scope.moldSpecies.strain_threshold == null || $scope.moldSpecies.strain_threshold > 15 || $scope.moldSpecies.strain_threshold < 6)){
-				cleared = false;
-			}
-			if (cleared && (typeof $scope.moldSpecies.starting_xp === 'undefined' || $scope.moldSpecies.starting_xp == null || $scope.moldSpecies.starting_xp > 250 || $scope.moldSpecies.starting_xp < 50)){
-				cleared = false;
-			}
-			if (cleared && (typeof $scope.moldSpecies.ref_page === 'undefined' || $scope.moldSpecies.ref_page == null || $scope.moldSpecies.ref_page == "")){
-				cleared = false;
-			}
 			if (cleared && (typeof $scope.moldSpecies.attributes === 'undefined' || $scope.moldSpecies.attributes == null || $scope.moldSpecies.attributes.length < 1)){
 				cleared = false;
 			}
 
 			if (cleared){
 				var attributes = $scope.moldSpecies.attributes;
-				delete $scope.moldSpecies.attributes;
+				var species = $scope.moldSpecies;
+				delete species.attributes;
 				var sendata = {
-					species: $scope.moldSpecies,
+					species: species,
 					attributes: attributes
 				};
 				$http.post("/species/add", sendata).then(function(ret){
 					if (ret.data.success){
 						ret.data.species.attributes = ret.data.attributes;
 						$scope.species.push(ret.data.species);
+						$scope.moldSpecies = {};
+						document.getElementById("specName").focus();
 					}
 				});
 			}
 		};
 
+		this.AddTalent = function(){
+			var sendata = {talent: $scope.moldTalent};
+			$http.post("/talents/add", sendata).then(function(ret){
+				if (ret.data.success){
+					if (typeof $scope.talents === 'undefined'){
+						$scope.talents = [ret.data.talent];
+					}
+					else {
+						$scope.talents.push(ret.data.talent);
+					}
+					$scope.moldTalent = {type: "Passive"};
+					document.getElementById("talName").focus();
+				}
+			});
+		};
+
 		this.LoadTab = function(newTab){
 			this.curTab = newTab;
+
+			if (newTab == 2){
+				if (typeof $scope.talents === 'undefined'){
+					$http.get("/talents").then(function(ret){
+						if (ret.data.success){
+							$scope.talents = ret.data.talents;
+						}
+					});
+				}
+			}
 		};
 
 		this.ShowTab = function(tab_id){
