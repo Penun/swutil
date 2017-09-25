@@ -5,9 +5,11 @@
 	</div>
 	<div class="mainDiv" id="forwardMain" ng-mousemove="mCont.MoveBook($event)" ng-style="{'transform': 'rotateX('+mCont.rotateDeg+'deg)', '-moz-transform': 'rotateX('+mCont.rotateDeg+'deg)', '-webkit-transform': 'rotateX('+mCont.rotateDeg+'deg)'}">
 		<div class="page">
-			<div ng-click="mCont.LoadTab(1)">Species</div>
-			<div ng-click="mCont.LoadTab(2)">Talents</div>
-			<div ng-click="mCont.LoadTab(3)">Specializations</div>
+			<div class="tab_header">
+				<span class="tab" ng-click="mCont.LoadTab(1)">Species</span>
+				<span class="tab" ng-click="mCont.LoadTab(2)">Talents</span>
+				<span class="tab" ng-click="mCont.LoadTab(3)">Specializations</span>
+			</div>
 			{{template "edit/species.tpl"}}
 			{{template "edit/talents.tpl"}}
 			{{template "edit/specializations.tpl"}}

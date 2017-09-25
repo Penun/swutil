@@ -6,7 +6,7 @@
 		$scope.curSpec = {};
 		$scope.moldSpecies = {};
 		$scope.moldTalent = {type: "Passive"};
-		$scope.moldSpecal = {career: {career_id: 0}};
+		$scope.moldSpecial = {talents: [], skill_slots: 2};
 
 		angular.element(document).ready(function(){
 			$http.get("/species").then(function(ret){
@@ -76,16 +76,50 @@
 			});
 		};
 
+		this.AddSpecialization = function(){
+			var special = $scope.moldSpecial;
+			var skills = special.skills;
+			var talents = special.talents;
+			delete special.skills;
+			delete special.talents;
+
+			for (var i = 0; i < talents.length; i++){
+				var t_proc = (i + 1) % 4;
+				switch(t_proc){
+					case 0:
+						talents[i].position = 4;
+						break;
+					default:
+						talents[i].position = t_proc;
+				}
+				talents[i].rank = Math.floor(i / 4) + 1;
+			}
+
+			var sendata = {
+				specialization: special,
+				skills: skills,
+				talents: talents
+			};
+			$http.post("/specializations/add", sendata).then(function(ret){
+				if (ret.data.success){
+					if (typeof $scope.specializations === 'undefined'){
+						$scope.specializations = [ret.data.specialization];
+					}
+					else {
+						$scope.specializations.push(ret.data.specialization);
+					}
+					$scope.moldSpecial = {talents: [], skill_slots: 2};
+					document.getElementById("specName").focus();
+				}
+			});
+		};
+
 		this.LoadTab = function(newTab){
 			this.curTab = newTab;
 
 			if (newTab == 2){
 				if (typeof $scope.talents === 'undefined'){
-					$http.get("/talents").then(function(ret){
-						if (ret.data.success){
-							$scope.talents = ret.data.talents;
-						}
-					});
+					this.FetchTalents();
 				}
 			} else if (newTab == 3){
 				if (typeof $scope.careers === 'undefined'){
@@ -102,11 +136,29 @@
 						}
 					});
 				}
+				if (typeof $scope.talents === 'undefined'){
+					this.FetchTalents();
+				}
+				if (typeof $scope.specializations === 'undefined'){
+					$http.get("/specializations").then(function(ret){
+						if (ret.data.success){
+							$scope.specializations = ret.data.specializations;
+						}
+					});
+				}
 			}
 		};
 
 		this.ShowTab = function(tab_id){
 			return this.curTab === tab_id;
+		};
+
+		this.FetchTalents = function(){
+			$http.get("/talents").then(function(ret){
+				if (ret.data.success){
+					$scope.talents = ret.data.talents;
+				}
+			});
 		};
 
 		this.SortList = function(varList){

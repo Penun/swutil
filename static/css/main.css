@@ -127,7 +127,29 @@ body {
 
 .page {
 	margin-left: 3vw;
-	margin-right: 1vw;
+	margin-right: 3vw;
+}
+
+.tab_header {
+	margin-top: 5vh;
+	position: absolute;
+	z-index: 2;
+	font-size: 1.5em;
+	border-bottom: 2px;
+}
+
+.tab {
+	background-image: url("../img/light_underline.png");
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	background-size: 100%;
+	cursor: pointer;
+	text-align: center;
+}
+
+.tab:hover {
+	background-image: url("../img/light_underline_high.png");
+	color: #293c56;
 }
 
 .top_space {
@@ -135,8 +157,8 @@ body {
 }
 
 .sixty_he{
-	height: 69vh;
-    margin-top: 4vh;
+	height: 66vh;
+    margin-top: 8vh;
     float: left;
     width: 100%;
     position: relative;
@@ -226,7 +248,7 @@ li {
 
 span {
 	width: 100%;
-	display: block;
+	display: inline;
 }
 
 span.top_pad {
@@ -259,11 +281,17 @@ span.skill_span {
 	float: right;
 }
 
+div.talent {
+	width: 23%;
+	text-align: center;
+	display: inline-block;
+}
+
 p {
 	width: 95%;
 	font-size: 1.1em;
 	margin-right: 0;
-	height: 4vh;
+	height: fit-content;
 }
 
 p.underline {
@@ -388,6 +416,10 @@ option[label]{
 	background-color: #172836;
 }
 
+.sing_select {
+	background-color: #172836;
+}
+
 input, textarea, select {
 	background: transparent;
 	color: #a4dde5;
@@ -398,6 +430,12 @@ input, textarea, select {
 
 select {
 	min-width: 250px;
+}
+
+select.talent {
+	min-width: 20%;
+	max-width: 20%;
+	background-color: #172836;
 }
 
 textarea {

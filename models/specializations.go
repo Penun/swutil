@@ -14,3 +14,33 @@ func GetSpecializations() []Specialization{
         return []Specialization{}
     }
 }
+
+func AddSpecialization(spec Specialization) int64 {
+    o := orm.NewOrm()
+	id, err := o.Insert(&spec)
+	if err == nil {
+		return id
+	} else {
+		return 0
+	}
+}
+
+func AddSpecSkill(spSk SpecSkill) int64 {
+    o := orm.NewOrm()
+	id, err := o.Insert(&spSk)
+	if err == nil {
+		return id
+	} else {
+		return 0
+	}
+}
+
+func AddSpecTalent(spTa SpecTalent) int64 {
+    o := orm.NewOrm()
+	id, err := o.Insert(&spTa)
+	if err == nil {
+		return id
+	} else {
+		return 0
+	}
+}

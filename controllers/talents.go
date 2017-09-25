@@ -47,7 +47,7 @@ func (this *TalentsController) Add() {
 	if err == nil {
 		sp_id := models.AddTalent(insReq.Talent)
         if sp_id > 0 {
-	        insReq.Talent.Talent_id = sp_id
+	        insReq.Talent.Id = sp_id
             resp.Talent = insReq.Talent
             resp.Success = true
         } else {

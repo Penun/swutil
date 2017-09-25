@@ -7,7 +7,7 @@ import (
 func GetTalents() []Talent{
     o := orm.NewOrm()
     var talents []Talent
-    o.QueryTable("talent").All(&talents)
+    o.QueryTable("talent").OrderBy("name").All(&talents)
     if len(talents) > 0 {
         return talents
     } else {

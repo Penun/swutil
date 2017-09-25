@@ -16,7 +16,7 @@
     <div class="right_page">
         <form id="talentAddForm" name="talentAddForm" novalidate>
             <p><label><b>Talent Name:</b></label><input type="text" name="talName" id="talName" ng-model="moldTalent.name" required/></p>
-            <p><label><b>Type:</b></label><select name="talType" ng-model="moldTalent.type">
+            <p><label><b>Type:</b></label><select name="talType" ng-model="moldTalent.type" class="sing_select">
                 <option value="Incidental">Incidental</option>
                 <option value="Maneuver">Maneuver</option>
                 <option value="Action">Action</option>

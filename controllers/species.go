@@ -83,12 +83,12 @@ func (this *SpeciesController) Add() {
 	resp := InsSpeResp{Success: false, Error: ""}
 	if err == nil {
 		sp_id := models.AddSpecies(insReq.Species)
-		insReq.Species.Species_id = sp_id
+		insReq.Species.Id = sp_id
 		resp.Species = insReq.Species
 		for i := 0; i < len(insReq.Attributes); i++ {
 			t_att := models.SpeAttribute{Species: &insReq.Species, Description: insReq.Attributes[i].Description}
 			att_id := models.AddSpeAttribute(t_att)
-			insReq.Attributes[i].SpeAtt_id = att_id
+			insReq.Attributes[i].Id = att_id
 		}
 		resp.Attributes = insReq.Attributes
 		resp.Success = true

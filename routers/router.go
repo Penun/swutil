@@ -15,6 +15,7 @@ func init() {
 	beego.Router("/careers", &controllers.CareersController{})
 	beego.Router("/skills", &controllers.SkillsController{})
 	beego.Router("/specializations", &controllers.SpecializationsController{})
+	beego.Router("/specializations/add", &controllers.SpecializationsController{}, "post:Add")
 
 	beego.Router("/edit", &controllers.EditController{})
 	beego.Router("/species/add", &controllers.SpeciesController{}, "post:Add")
