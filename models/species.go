@@ -7,7 +7,7 @@ import (
 func GetSpecies() []Species{
     o := orm.NewOrm()
     var species []Species
-    o.QueryTable("species").All(&species)
+    o.QueryTable("species").OrderBy("name").All(&species)
     if len(species) > 0 {
         return species
     } else {

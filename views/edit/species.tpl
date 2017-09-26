@@ -37,7 +37,7 @@
                 <p><span class="left_label"><label><b>Strain Threshold:</b></label></span><input type="number" name="strainThresh" max="15" min="6" placeholder="0" ng-model="moldSpecies.strain_threshold"  required/></p>
                 <p><span class="left_label"><label><b>Starting XP:</b></label></span><input type="number" name="startingXp" max="250" min="50" placeholder="0" step="5" ng-model="moldSpecies.starting_xp"  required/></p>
             <div class="abilities">
-                <label><b>Abilities:</b></label>
+                <label><b>Traits:</b></label>
                 <textarea name="abilAdd" id="abilAdd" rows="5"></textarea>
                 <button type="button" ng-click="mCont.AddAbility()">Add Ability</button>
                 <ul class="specAbil topped">

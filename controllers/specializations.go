@@ -19,6 +19,7 @@ type GetSpecsResp struct {
 
 type InsSpecReq struct {
 	Specialization models.Specialization `json:"specialization"`
+	Careers []int64 `json:"careers"`
 	Skills []int64 `json:"skills"`
 	SpecTalents []models.SpecTalent `json:"talents"`
 }
@@ -51,6 +52,13 @@ func (this *SpecializationsController) Get() {
 		sp_id := models.AddSpecialization(insReq.Specialization)
         if sp_id > 0 {
 			insReq.Specialization.Id = sp_id
+			for i := 0; i < len(insReq.Careers); i++ {
+				caSp := new(models.CareerSpec)
+				caSp.Specialization = &insReq.Specialization
+				caSp.Career = new(models.Career)
+				caSp.Career.Id = insReq.Careers[i]
+				_ = models.AddCareerSpec(*caSp)
+			}
 	        for i := 0; i < len(insReq.Skills); i++ {
 				spSk := new(models.SpecSkill)
 				spSk.Specialization = &insReq.Specialization

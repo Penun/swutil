@@ -44,3 +44,13 @@ func AddSpecTalent(spTa SpecTalent) int64 {
 		return 0
 	}
 }
+
+func AddCareerSpec(caSp CareerSpec) int64 {
+    o := orm.NewOrm()
+	id, err := o.Insert(&caSp)
+	if err == nil {
+		return id
+	} else {
+		return 0
+	}
+}

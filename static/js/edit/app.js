@@ -78,8 +78,10 @@
 
 		this.AddSpecialization = function(){
 			var special = $scope.moldSpecial;
+			var careers = special.careers;
 			var skills = special.skills;
 			var talents = special.talents;
+			delete special.careers;
 			delete special.skills;
 			delete special.talents;
 
@@ -97,6 +99,7 @@
 
 			var sendata = {
 				specialization: special,
+				careers: careers,
 				skills: skills,
 				talents: talents
 			};
@@ -109,7 +112,7 @@
 						$scope.specializations.push(ret.data.specialization);
 					}
 					$scope.moldSpecial = {talents: [], skill_slots: 2};
-					document.getElementById("specName").focus();
+					document.getElementById("specialName").focus();
 				}
 			});
 		};

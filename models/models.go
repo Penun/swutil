@@ -16,6 +16,12 @@ type CareerSkill struct {
     Skill *Skill `orm:"rel(fk)" json:"skill"`
 }
 
+type CareerSpec struct {
+    Id int64 `orm:"pk" json:"id"`
+    Career *Career `orm:"rel(fk)" json:"career"`
+    Specialization *Specialization `orm:"rel(fk)" json:"specialization"`
+}
+
 type Skill struct {
     Id int64 `orm:"pk" json:"id"`
     Name string `json:"name"`
@@ -47,7 +53,6 @@ type SpecTalent struct {
 
 type Specialization struct {
     Id int64 `orm:"pk" json:"id"`
-    Career *Career `orm:"rel(fk)" json:"career"`
     Name string `json:"name"`
     Subtitle string `json:"subtitle"`
     SkillSlots int `json:"skill_slots"`
@@ -78,6 +83,6 @@ type Talent struct {
 }
 
 func init() {
-    orm.RegisterModel(new(Career), new(CareerSkill), new(Skill), new(SpeAttribute), new(SpecSkill),
-        new(SpecTalent), new(Specialization), new(Species), new(Talent))
+    orm.RegisterModel(new(Career), new(CareerSkill), new(CareerSpec), new(Skill), new(SpeAttribute),
+        new(SpecSkill), new(SpecTalent), new(Specialization), new(Species), new(Talent))
 }
