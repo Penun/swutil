@@ -473,6 +473,11 @@ input[type=radio]:checked ~ label{
 	color: #DB7237;
 }
 
+input.found {
+	color: rgba(200, 4, 4, 1);
+	background-color: rgba(133, 4, 4, 0.75);
+}
+
 .clickable {
 	background-image: url("../img/light_underline.png");
 	background-repeat: no-repeat;

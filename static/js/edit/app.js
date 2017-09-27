@@ -117,6 +117,54 @@
 			});
 		};
 
+		this.CheckSpec = function(){
+			if ($scope.moldSpecies.name != ""){
+				var found = false;
+				for (var i = 0; i < $scope.species.length; i++){
+					if ($scope.moldSpecies.name == $scope.species[i].name){
+						found = true;
+						break;
+					}
+				}
+				this.ApplyInClass(found, "#specName");
+			}
+		};
+
+		this.CheckTal = function(){
+			if ($scope.moldTalent.name != ""){
+				var found = false;
+				for (var i = 0; i < $scope.talents.length; i++){
+					if ($scope.moldTalent.name == $scope.talents[i].name){
+						found = true;
+						break;
+					}
+				}
+				this.ApplyInClass(found, "#talName");
+			}
+		};
+
+		this.CheckSpecial = function(){
+			if ($scope.moldSpecial.name != ""){
+				var found = false;
+				for (var i = 0; i < $scope.specializations.length; i++){
+					if ($scope.moldSpecial.name == $scope.specializations[i].name){
+						found = true;
+						break;
+					}
+				}
+				this.ApplyInClass(found, "#specialName");
+			}
+		};
+
+		this.ApplyInClass = function(found, id){
+			var inpNam = angular.element(document.querySelector(id));
+			if (found){
+				inpNam.addClass("found");
+			} else if (inpNam.hasClass("found")) {
+				inpNam.removeClass("found");
+			}
+		};
+
 		this.LoadTab = function(newTab){
 			this.curTab = newTab;
 
