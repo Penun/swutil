@@ -2,7 +2,7 @@
     <div class="left_page_col left_page">
         <div class="fade_in" style="width: 95%">
             <h2>Talents</h2>
-            <div style="overflow: auto; height: 61vh;">
+            <div class="innerList">
                 <ul>
 				    <li ng-repeat="(ind, talent) in talents">
 					    <span class="clickable">

@@ -12,11 +12,14 @@ body {
 }
 
 .mainDiv {
-	background-image: url("../img/sw_back.png");
-	background-size: 100% 100%;
-	background-repeat: no-repeat;
 	height: 80vh;
 	position: relative;
+}
+
+.sw_back {
+	background-image: url("../img/sw_back.png");
+	background-size: 100% 100%;
+	background-repeat: round;
 }
 
 .headDiv {
@@ -126,16 +129,33 @@ body {
 }
 
 .page {
-	margin-left: 3vw;
-	margin-right: 3vw;
+	z-index: 0;
+	height: 80vh;
+	padding-left: 3vw;
+	padding-right: 3vw;
+	margin-top: 4vh;
+}
+
+.page_wrap {
+	height: 80vh;
 }
 
 .tab_header {
-	margin-top: 5vh;
 	position: absolute;
-	z-index: 2;
+	top: -.5em;
+	z-index: -2;
 	font-size: 1.5em;
-	border-bottom: 2px;
+	transition: all 500ms ease;
+	-webkit-transition: all 500ms ease;
+	-moz-transition: all 500ms ease;
+	padding: .5em 2em .5em 2em;
+	margin-left: 3vw;
+}
+
+.tab_header:hover {
+	-ms-transform: translate(0, -1.25em); /* IE 9 */
+    -webkit-transform: translate(0, -1.25em); /* Safari */
+    transform: translate(0, -1.25em);
 }
 
 .tab {
@@ -157,11 +177,15 @@ body {
 }
 
 .sixty_he{
-	height: 66vh;
-    margin-top: 8vh;
+    margin-top: 3vh;
     float: left;
     width: 100%;
     position: relative;
+}
+
+.innerList {
+	overflow: auto;
+	height: 69vh;
 }
 
 h2 {

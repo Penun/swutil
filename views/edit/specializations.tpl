@@ -2,7 +2,7 @@
     <div class="left_page_col left_page">
         <div class="fade_in" style="width: 95%">
             <h2>Specializations</h2>
-            <div style="overflow: auto; height: 61vh;">
+            <div class="innerList">
                 <ul>
 				    <li ng-repeat="(ind, specialization) in specializations">
 					    <span class="clickable">
@@ -18,7 +18,7 @@
             <p><label><b>Specialization Name:</b></label><input type="text" name="specialName" id="specialName" ng-model="moldSpecial.name" ng-change="mCont.CheckSpecial()" required/></p>
             <p><label><b>Subtitle:</b></label><input type="text" name="specSubtitle" ng-model="moldSpecial.subtitle" /></p>
             <p><label><b>Skill Slots:</b></label><input type="number" name="specSkillSlots" ng-model="moldSpecial.skill_slots" max="2" min="2" required/></p>
-            <p><label><b>Career:</b></label><select name="specCareer" ng-model="moldSpecial.careers" ng-options="career.id as career.name for career in careers" data-ng-attr-size="{{"{{careers.length}}"}}" style="max-height: 20vh;" multiple required></select></p>
+            <p><label><b>Career:</b></label><select name="specCareer" ng-model="moldSpecial.careers" ng-options="career.id as career.name for career in careers" data-ng-attr-size="{{"{{careers.length}}"}}" style="max-height: 20vh;" multiple></select></p>
             <br />
             <p><label><b>Skills:</b></label><select name="specSkills" data-ng-attr-size="{{"{{skills.length}}"}}" style="max-height: 20vh;" ng-model="moldSpecial.skills" ng-options="skill.id as skill.name for skill in skills" multiple required></select></p>
             <br />

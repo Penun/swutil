@@ -44,7 +44,7 @@ func (this *SpecializationsController) Get() {
     this.ServeJSON()
 }
 
- func (this *SpecializationsController) Add() {
+func (this *SpecializationsController) Add() {
 	var insReq InsSpecReq
 	err := json.Unmarshal(this.Ctx.Input.RequestBody, &insReq)
 	resp := InsSpecResp{Success: false, Error: ""}
