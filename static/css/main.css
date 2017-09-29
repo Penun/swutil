@@ -114,7 +114,8 @@ body {
 	float: right;
 	width: 66%;
 	overflow: auto;
-	height: 67vh;
+	height: 73vh;
+	position: relative;
 }
 
 .right_page_in {
@@ -185,7 +186,7 @@ body {
 
 .innerList {
 	overflow: auto;
-	height: 69vh;
+	height: 68vh;
 }
 
 h2 {
@@ -249,7 +250,7 @@ span.button_text:hover {
 .next_butt {
 	position: absolute;
 	right: 35px;
-	top: -2em;
+	top: -10px;
 }
 
 ul {
@@ -348,7 +349,10 @@ img.detail_img {
 	width: auto;
 	max-width: 95%;
 	height: auto;
-	max-height: 90%;
+	max-height: 95%;
+	position: absolute;
+	right: 2em;
+	top: 10vh;
 }
 
 div.check{
@@ -606,12 +610,19 @@ button:active {
 	font-size: 1.5em;
 	text-align: center;
 	padding-top: 1vh;
-	height: 27px
+	height: 27px;
+	position: relative;
+	z-index: 100;
 }
 
 .characterBlock > span {
 	width: 16%;
 	float: left;
+}
+
+.threshold {
+	font-size: 1.5em;
+	padding-top: 1em;
 }
 
 .abilities {

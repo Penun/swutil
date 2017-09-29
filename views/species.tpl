@@ -2,7 +2,7 @@
     <div class="left_page_col left_page">
         <div class="fade_in" style="width: 85%">
             <h2>Species</h2>
-            <div style="overflow: auto; height: 61vh;">
+            <div class="innerList">
                 <ul>
 				    <li ng-repeat="(ind, spec) in species">
 					    <span ng-click="mCont.RevealSpecies(ind)" class="clickable">
@@ -14,6 +14,7 @@
         </div>
     </div>
     <div class="right_page">
+            {{str2html rawImg}}
         <h2>{{"{{curSpec.name}}"}}</h2>
         <div class="characterBlock">
             <span><b>Br</b></span>

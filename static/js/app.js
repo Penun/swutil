@@ -4,6 +4,7 @@
 		this.curTab = 1;
 		$scope.species = [];
 		$scope.curSpec = {};
+		$scope.speImg = "";
 
 		angular.element(document).ready(function(){
 			$http.get("/species").then(function(ret){
@@ -16,17 +17,19 @@
 		this.RevealSpecies = function(ind){
 			if ($scope.species[ind].attributes == null){
 				var sendData = {
-					"species_id": $scope.species[ind].species_id,
+					"species_id": $scope.species[ind].id,
 					"index": ind
 				}
 				$http.post("/species/attributes", sendData).then(function(ret){
 					if (ret.data.success){
 						$scope.species[ret.data.index].attributes = ret.data.result;
 						$scope.curSpec = $scope.species[ret.data.index];
+						$scope.speImg = $scope.curSpec.img_name;
 					}
 				});
 			} else {
 				$scope.curSpec = $scope.species[ind];
+				$scope.speImg = $scope.curSpec.img_name;
 			}
 		}
 

@@ -18,7 +18,7 @@ func GetSpecies() []Species{
 func GetSpecAtt(specId int64) []SpeAttribute {
     o := orm.NewOrm()
     var specAtt []SpeAttribute
-    o.QueryTable("spec_attribute").Filter("species_id", specId).All(&specAtt)
+    o.QueryTable("spe_attribute").Filter("species_id", specId).All(&specAtt)
     if len(specAtt) > 0 {
         return specAtt
     } else {
