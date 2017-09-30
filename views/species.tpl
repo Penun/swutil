@@ -15,7 +15,7 @@
     </div>
     <div class="right_page">
             {{str2html rawImg}}
-        <h2>{{"{{curSpec.name}}"}}</h2>
+        <h1>{{"{{curSpec.name}}"}}</h1>
         <div class="characterBlock">
             <span><b>Br</b></span>
             <span><b>Ag</b></span>
@@ -32,13 +32,13 @@
             <span>{{"{{curSpec.willpower}}"}}</span>
             <span>{{"{{curSpec.presence}}"}}</span>
         </div>
-        <div class="threshold">
+        <div class="threshold characterBlock">
             <b>Wound Threshold:</b> {{"{{curSpec.wound_threshold}}"}} + Brawn
         </div>
-        <div class="threshold">
+        <div class="threshold characterBlock">
             <b>Strain Threshold:</b> {{"{{curSpec.strain_threshold}}"}} + Willpower
         </div>
-        <div class="threshold">
+        <div class="threshold characterBlock">
             <b>Starting XP:</b> {{"{{curSpec.starting_xp}}"}}
         </div>
         <div>
