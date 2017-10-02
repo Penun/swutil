@@ -13,7 +13,7 @@
             </div>
         </div>
     </div>
-    <div class="right_page">
+    <div class="right_page right_page_form">
         <form id="talentAddForm" name="talentAddForm" novalidate>
             <p><label><b>Talent Name:</b></label><input type="text" name="talName" id="talName" ng-model="moldTalent.name" ng-change="mCont.CheckTal()" required/></p>
             <p><label><b>Type:</b></label><select name="talType" ng-model="moldTalent.type" class="sing_select">

@@ -13,7 +13,7 @@
             </div>
         </div>
     </div>
-    <div class="right_page">
+    <div class="right_page right_page_form">
         <form id="specAddForm" name="specAddForm" novalidate>
             <p><label><b>Species Name:</b></label><input type="text" name="specName" id="specName" ng-model="moldSpecies.name" ng-change="mCont.CheckSpec()" autofocus required/></p>
             <p><label><b>Reference Page:</b></label><input type="text" name="ref_page" placeholder="Reference Page" ng-model="moldSpecies.ref_page" required/></p>

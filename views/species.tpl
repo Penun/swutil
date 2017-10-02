@@ -1,6 +1,6 @@
-<div ng-show="mCont.ShowTab(1)" class="sixty_he">
+<div ng-show="mCont.ShowTab(1)" class="sixty_he fade_in">
     <div class="left_page_col left_page">
-        <div class="fade_in" style="width: 85%">
+        <div style="width: 85%">
             <h2>Species</h2>
             <div class="innerList">
                 <ul>
@@ -13,8 +13,8 @@
             </div>
         </div>
     </div>
-    <div class="right_page">
-            {{str2html rawImg}}
+    <div class="right_page" ng-show="curSpec != null" id="specRight">
+        {{str2html rawImg}}
         <h1>{{"{{curSpec.name}}"}}</h1>
         <div class="characterBlock">
             <span><b>Br</b></span>

@@ -3,7 +3,6 @@
 	app.controller('mainController', ['$window', '$scope', '$http', function($window, $scope, $http){
 		this.curTab = 1;
 		$scope.species = [];
-		$scope.curSpec = {};
 		$scope.speImg = "";
 
 		angular.element(document).ready(function(){
@@ -25,11 +24,16 @@
 						$scope.species[ret.data.index].attributes = ret.data.result;
 						$scope.curSpec = $scope.species[ret.data.index];
 						$scope.speImg = $scope.curSpec.img_name;
+						var specRight = angular.element(document.querySelector("#specRight"));
+						specRight.addClass("fade_in");
+
 					}
 				});
 			} else {
 				$scope.curSpec = $scope.species[ind];
 				$scope.speImg = $scope.curSpec.img_name;
+				var specRight = angular.element(document.querySelector("#specRight"));
+				specRight.addClass("fade_in");
 			}
 		}
 

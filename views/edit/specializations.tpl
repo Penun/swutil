@@ -13,7 +13,7 @@
             </div>
         </div>
     </div>
-    <div class="right_page">
+    <div class="right_page right_page_form">
         <form id="specialAddForm" name="specialAddForm" novalidate>
             <p><label><b>Specialization Name:</b></label><input type="text" name="specialName" id="specialName" ng-model="moldSpecial.name" ng-change="mCont.CheckSpecial()" required/></p>
             <p><label><b>Subtitle:</b></label><input type="text" name="specSubtitle" ng-model="moldSpecial.subtitle" /></p>
