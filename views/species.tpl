@@ -1,6 +1,6 @@
 <div ng-show="mCont.ShowTab(1)" class="sixty_he fade_in">
     <div class="left_page_col left_page">
-        <div style="width: 85%">
+        <div style="width: 100%">
             <h2>Species</h2>
             <div class="innerList">
                 <ul>
@@ -32,13 +32,13 @@
             <span>{{"{{curSpec.willpower}}"}}</span>
             <span>{{"{{curSpec.presence}}"}}</span>
         </div>
-        <div class="threshold characterBlock">
+        <div class="characterBlock">
             <b>Wound Threshold:</b> {{"{{curSpec.wound_threshold}}"}} + Brawn
         </div>
-        <div class="threshold characterBlock">
+        <div class="characterBlock">
             <b>Strain Threshold:</b> {{"{{curSpec.strain_threshold}}"}} + Willpower
         </div>
-        <div class="threshold characterBlock">
+        <div class="characterBlock">
             <b>Starting XP:</b> {{"{{curSpec.starting_xp}}"}}
         </div>
         <div>

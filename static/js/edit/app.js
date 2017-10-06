@@ -10,7 +10,7 @@
 
 		angular.element(document).ready(function(){
 			$http.get("/species").then(function(ret){
-				if (ret.data.success){
+				if (ret.data.occ.success){
 					$scope.species = ret.data.result;
 				}
 			});
@@ -48,7 +48,7 @@
 				sendata.species.name = species.name.trim();
 				sendata.species.ref_page = species.ref_page.trim();
 				$http.post("/species/add", sendata).then(function(ret){
-					if (ret.data.success){
+					if (ret.data.occ.success){
 						ret.data.species.attributes = ret.data.attributes;
 						$scope.species.push(ret.data.species);
 						$scope.moldSpecies = {};
@@ -63,7 +63,7 @@
 			sendata.talent.name = sendata.talent.name.trim();
 			sendata.talent.description = sendata.talent.description.trim();
 			$http.post("/talents/add", sendata).then(function(ret){
-				if (ret.data.success){
+				if (ret.data.occ.success){
 					if (typeof $scope.talents === 'undefined'){
 						$scope.talents = [ret.data.talent];
 					}
@@ -104,7 +104,7 @@
 				talents: talents
 			};
 			$http.post("/specializations/add", sendata).then(function(ret){
-				if (ret.data.success){
+				if (ret.data.occ.success){
 					if (typeof $scope.specializations === 'undefined'){
 						$scope.specializations = [ret.data.specialization];
 					}
@@ -175,14 +175,14 @@
 			} else if (newTab == 3){
 				if (typeof $scope.careers === 'undefined'){
 					$http.get("/careers").then(function(ret){
-						if (ret.data.success){
+						if (ret.data.occ.success){
 							$scope.careers = ret.data.careers;
 						}
 					});
 				}
 				if (typeof $scope.skills === 'undefined'){
 					$http.get("/skills").then(function(ret){
-						if (ret.data.success){
+						if (ret.data.occ.success){
 							$scope.skills = ret.data.skills;
 						}
 					});
@@ -192,7 +192,7 @@
 				}
 				if (typeof $scope.specializations === 'undefined'){
 					$http.get("/specializations").then(function(ret){
-						if (ret.data.success){
+						if (ret.data.occ.success){
 							$scope.specializations = ret.data.specializations;
 						}
 					});
@@ -206,7 +206,7 @@
 
 		this.FetchTalents = function(){
 			$http.get("/talents").then(function(ret){
-				if (ret.data.success){
+				if (ret.data.occ.success){
 					$scope.talents = ret.data.talents;
 				}
 			});

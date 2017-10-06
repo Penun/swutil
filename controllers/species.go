@@ -12,8 +12,7 @@ type SpeciesController struct {
 }
 
 type GetResponse struct {
-    Success bool `json:"success"`
-    Error string `json:"error"`
+    Occ BaseResp `json:"occ"`
     Result []models.Species `json:"result"`
 }
 
@@ -23,8 +22,7 @@ type AttributeReq struct {
 }
 
 type AttributeResp struct {
-	Success bool `json:"success"`
-	Error string `json:"error"`
+	Occ BaseResp `json:"occ"`
 	Index int `json:"index"`
 	Result []models.SpeAttribute `json:"result"`
 }
@@ -35,21 +33,20 @@ type InsSpeReq struct {
 }
 
 type InsSpeResp struct{
-	Success bool `json:"success"`
-	Error string `json:"error"`
+	Occ BaseResp `json:"occ"`
 	Species models.Species `json:"species"`
 	Attributes []models.SpeAttribute `json:"attributes"`
 }
 
 func (this *SpeciesController) Get() {
-    resp := GetResponse{Success: false, Error: ""}
+    resp := GetResponse{Occ: BaseResp{Success: false, Error: ""}}
 	var t_spec []models.Species
     t_spec = models.GetSpecies()
 	if len(t_spec) > 0{
-		resp.Success = true
+		resp.Occ.Success = true
 		resp.Result = t_spec
 	} else {
-		resp.Error = "None found."
+		resp.Occ.Error = "None found."
 	}
     this.Data["json"] = resp
     this.ServeJSON()
@@ -58,19 +55,19 @@ func (this *SpeciesController) Get() {
 func (this *SpeciesController) Attributes() {
 	var attreq AttributeReq
 	err := json.Unmarshal(this.Ctx.Input.RequestBody, &attreq)
-	resp := AttributeResp{Success: false, Error: ""}
+	resp := AttributeResp{Occ: BaseResp{Success: false, Error: ""}}
 	if err == nil {
 		resp.Index = attreq.Index
 		t_spAtt := models.GetSpecAtt(int64(attreq.Species_id))
 		if len(t_spAtt) > 0 {
-			resp.Success = true
+			resp.Occ.Success = true
 			resp.Result = t_spAtt
 		} else {
-			resp.Error = "Failed to find."
+			resp.Occ.Error = "Failed to find."
 		}
 	} else {
 		fmt.Println(err)
-		resp.Error = "Failed Parse."
+		resp.Occ.Error = "Failed Parse."
 	}
 	this.Data["json"] = resp
 	this.ServeJSON()
@@ -80,7 +77,7 @@ func (this *SpeciesController) Attributes() {
 func (this *SpeciesController) Add() {
 	var insReq InsSpeReq
 	err := json.Unmarshal(this.Ctx.Input.RequestBody, &insReq)
-	resp := InsSpeResp{Success: false, Error: ""}
+	resp := InsSpeResp{Occ: BaseResp{Success: false, Error: ""}}
 	if err == nil {
 		sp_id := models.AddSpecies(insReq.Species)
 		insReq.Species.Id = sp_id
@@ -91,10 +88,10 @@ func (this *SpeciesController) Add() {
 			insReq.Attributes[i].Id = att_id
 		}
 		resp.Attributes = insReq.Attributes
-		resp.Success = true
+		resp.Occ.Success = true
 	} else {
 		fmt.Println(err)
-		resp.Error = "Failed Parse."
+		resp.Occ.Error = "Failed Parse."
 	}
 	this.Data["json"] = resp
 	this.ServeJSON()

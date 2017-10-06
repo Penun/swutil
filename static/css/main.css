@@ -9,6 +9,7 @@ body {
 	perspective: 1000px;
 	-moz-perspective: 1000px;
 	-webkit-perspective: 1000px;
+	overflow: hidden;
 }
 
 .mainDiv {
@@ -87,7 +88,17 @@ body {
 
 .left_page_col {
 	position: absolute;
-	width: 33%;
+	width: 25%;
+}
+
+.mid_col {
+	left: 25%;
+}
+
+.right_col {
+	width: 49%;
+	float: right;
+	font-size: 1.2em;
 }
 
 .left_page_det {
@@ -112,10 +123,11 @@ body {
 
 .right_page {
 	float: right;
-	width: 66%;
+	width: 74%;
 	overflow: auto;
 	height: 73vh;
 	position: relative;
+	padding-left: 1vw;
 }
 
 .right_page_form {
@@ -129,15 +141,11 @@ body {
 	height: 53vh;
 }
 
-.right_page_in_add {
-	height: 57vh;
-}
-
 .page {
 	z-index: 0;
 	height: 80vh;
-	padding-left: 3vw;
-	padding-right: 3vw;
+	padding-left: 2vw;
+	padding-right: 2vw;
 	margin-top: 4vh;
 }
 
@@ -611,10 +619,10 @@ button:active {
 #loginForm p { width: 100%; }
 
 .characterBlock {
-	width: 95%;
+	width: 100%;
 	font-size: 1.5em;
-	text-align: center;
 	padding-top: 1vh;
+	padding-bottom: 1vh;
 	height: 27px;
 	position: relative;
 	z-index: 100;
@@ -623,6 +631,71 @@ button:active {
 .characterBlock > span {
 	width: 16%;
 	float: left;
+	text-align: center;
+}
+
+.talentBlock > span.talent {
+	width: 20%;
+	float: left;
+	text-align: center;
+	display: inline-block;
+	z-index: 300;
+}
+
+.talentBlock > span.talent:hover {
+	background-image: url("../img/sw_back_h.png");
+	background-size: 100% 100%;
+	background-repeat: round;
+	cursor: pointer;
+}
+
+.talentBlock > span.conn {
+	width: 5%;
+	float: left;
+}
+
+.talentBlock {
+	width: 100%;
+	font-size: 0.8em;
+	padding-top: 0.5vh;
+	padding-bottom: 0.5vh;
+	height: 45px;
+	z-index: 100;
+}
+
+.specialWrap {
+	position: relative;
+	overflow: hidden;
+}
+
+.talentPanel {
+	padding: 3%;
+	position: absolute;
+	bottom: -100%;
+	transition: all 5000ms ease;
+	-webkit-transition: bottom 5000ms ease;
+	-moz-transition: all 5000ms ease;
+}
+
+span.conn > img {
+	width: 100%;
+	position: relative;
+	top: 50%
+}
+
+span.vConn {
+	height: 3vh;
+    width: 24%;
+    display: inline-block;
+	z-index: 100;
+}
+
+.vConn > img {
+	transform: rotate(90deg);
+    width: 3vw;
+    top: 0.5vh;
+    position: relative;
+    left: 24%;
 }
 
 .threshold {

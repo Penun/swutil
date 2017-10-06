@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/Penun/swutil/models"
 	"github.com/astaxie/beego"
+	"encoding/json"
 )
 
 type CareersController struct {
@@ -10,21 +11,55 @@ type CareersController struct {
 }
 
 type GetCarsResp struct {
-    Success bool `json:"success"`
-    Error string `json:"error"`
+    Occ BaseResp `json:"occ"`
     Careers []models.Career `json:"careers"`
 }
 
+type GetCSReq struct {
+	Career_id int `json:"career_id"`
+	Index int `json:"index"`
+}
+
+type GetCSResp struct {
+	Occ BaseResp `json:"occ"`
+	Result []models.Specialization `json:"result"`
+	Index int `json:"index"`
+}
+
 func (this *CareersController) Get() {
-    resp := GetCarsResp{Success: false, Error: ""}
+    resp := GetCarsResp{Occ: BaseResp{Success: false, Error: ""}}
 	var t_cars []models.Career
     t_cars = models.GetCareers()
 	if len(t_cars) > 0{
-		resp.Success = true
+		resp.Occ.Success = true
 		resp.Careers = t_cars
 	} else {
-		resp.Error = "None found."
+		resp.Occ.Error = "None found."
 	}
     this.Data["json"] = resp
     this.ServeJSON()
+}
+
+func (this *CareersController) Specializations() {
+	var req GetCSReq
+	err := json.Unmarshal(this.Ctx.Input.RequestBody, &req)
+	resp := GetCSResp{Occ: BaseResp{Success: false, Error: ""}}
+	if err == nil {
+		resp.Index = req.Index
+		cSpecs := models.GetSpecialByCareer(int64(req.Career_id))
+		if cSLen := len(cSpecs); cSLen > 0 {
+			resSpec := make([]models.Specialization, cSLen)
+			for i := 0; i < cSLen; i++ {
+				resSpec[i] = *cSpecs[i].Specialization
+			}
+			resp.Occ.Success = true
+			resp.Result = resSpec
+		} else {
+			resp.Occ.Error = "Failed to find."
+		}
+	} else {
+		resp.Occ.Error = "Failed Parse."
+	}
+	this.Data["json"] = resp
+	this.ServeJSON()
 }

@@ -15,6 +15,17 @@ func GetSpecializations() []Specialization{
     }
 }
 
+func GetSpecialByCareer(careId int64) []CareerSpec{
+    o := orm.NewOrm()
+    var carSpec []CareerSpec
+    o.QueryTable("career_spec").Filter("career_id", careId).RelatedSel("specialization").All(&carSpec)
+    if len(carSpec) > 0 {
+        return carSpec
+    } else {
+        return []CareerSpec{}
+    }
+}
+
 func AddSpecialization(spec Specialization) int64 {
     o := orm.NewOrm()
 	id, err := o.Insert(&spec)

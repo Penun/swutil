@@ -15,6 +15,17 @@ func GetTalents() []Talent{
     }
 }
 
+func GetTalentsBySpecial(spId int64) []SpecTalent {
+    o := orm.NewOrm()
+    var specTals []SpecTalent
+    o.QueryTable("spec_talent").Filter("specialization_id", spId).RelatedSel("talent").All(&specTals)
+    if len(specTals) > 0 {
+        return specTals
+    } else {
+        return []SpecTalent{}
+    }
+}
+
 func AddTalent(ta Talent) int64 {
 	o := orm.NewOrm()
 	id, err := o.Insert(&ta)

@@ -46,7 +46,7 @@ type SpecTalent struct {
     Specialization *Specialization `orm:"rel(fk)" json:"specialization"`
     Talent *Talent `orm:"rel(fk)" json:"talent"`
     Rank int `json:"rank"`
-    Position int `json:position""`
+    Position int `json:"position"`
     Right bool `json:"right"`
     Down bool `json:"down"`
 }

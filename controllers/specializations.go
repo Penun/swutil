@@ -12,9 +12,19 @@ type SpecializationsController struct {
 }
 
 type GetSpecsResp struct {
-    Success bool `json:"success"`
-    Error string `json:"error"`
+    Occ BaseResp `json:"occ"`
     Specializations []models.Specialization `json:"specializations"`
+}
+
+type GetSpTaReq struct {
+	Specialization_id int `json:"specialization_id"`
+	Index int `json:"index"`
+}
+
+type GetSpTaResp struct {
+	Occ BaseResp `json:"occ"`
+	Result []models.SpecTalent `json:"result"`
+	Index int `json:"index"`
 }
 
 type InsSpecReq struct {
@@ -25,29 +35,48 @@ type InsSpecReq struct {
 }
 
 type InsSpecResp struct{
-	Success bool `json:"success"`
-	Error string `json:"error"`
+	Occ BaseResp `json:"occ"`
     Specialization models.Specialization `json:"specialization"`
 }
 
 func (this *SpecializationsController) Get() {
-    resp := GetSpecsResp{Success: false, Error: ""}
+    resp := GetSpecsResp{Occ: BaseResp{Success: false, Error: ""}}
 	var t_spec []models.Specialization
     t_spec = models.GetSpecializations()
 	if len(t_spec) > 0{
-		resp.Success = true
+		resp.Occ.Success = true
 		resp.Specializations = t_spec
 	} else {
-		resp.Error = "None found."
+		resp.Occ.Error = "None found."
 	}
     this.Data["json"] = resp
     this.ServeJSON()
 }
 
+func (this *SpecializationsController) Talents() {
+	var req GetSpTaReq
+	err := json.Unmarshal(this.Ctx.Input.RequestBody, &req)
+	resp := GetSpTaResp{Occ: BaseResp{Success: false, Error: ""}}
+	if err == nil {
+		resp.Index = req.Index
+		cSpecs := models.GetTalentsBySpecial(int64(req.Specialization_id))
+		if len(cSpecs) > 0 {
+			resp.Occ.Success = true
+			resp.Result = cSpecs
+		} else {
+			resp.Occ.Error = "Failed to find."
+		}
+	} else {
+		resp.Occ.Error = "Failed Parse."
+	}
+	this.Data["json"] = resp
+	this.ServeJSON()
+}
+
 func (this *SpecializationsController) Add() {
 	var insReq InsSpecReq
 	err := json.Unmarshal(this.Ctx.Input.RequestBody, &insReq)
-	resp := InsSpecResp{Success: false, Error: ""}
+	resp := InsSpecResp{Occ: BaseResp{Success: false, Error: ""}}
 	if err == nil {
 		sp_id := models.AddSpecialization(insReq.Specialization)
         if sp_id > 0 {
@@ -71,12 +100,12 @@ func (this *SpecializationsController) Add() {
 				_ = models.AddSpecTalent(insReq.SpecTalents[i])
 			}
             resp.Specialization = insReq.Specialization
-            resp.Success = true
+            resp.Occ.Success = true
         } else {
-            resp.Error = "Failed to insert."
+            resp.Occ.Error = "Failed to insert."
         }
 	} else {
-		resp.Error = "Failed Parse."
+		resp.Occ.Error = "Failed Parse."
 	}
 	this.Data["json"] = resp
 	this.ServeJSON()

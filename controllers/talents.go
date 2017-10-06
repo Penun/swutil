@@ -11,8 +11,7 @@ type TalentsController struct {
 }
 
 type GetTalsResp struct {
-    Success bool `json:"success"`
-    Error string `json:"error"`
+    Occ BaseResp `json:"occ"`
     Talents []models.Talent `json:"talents"`
 }
 
@@ -21,20 +20,19 @@ type InsTalReq struct {
 }
 
 type InsTalResp struct{
-	Success bool `json:"success"`
-	Error string `json:"error"`
+	Occ BaseResp `json:"occ"`
     Talent models.Talent `json:"talent"`
 }
 
 func (this *TalentsController) Get() {
-    resp := GetTalsResp{Success: false, Error: ""}
+    resp := GetTalsResp{Occ: BaseResp{Success: false, Error: ""}}
 	var t_spec []models.Talent
     t_spec = models.GetTalents()
 	if len(t_spec) > 0{
-		resp.Success = true
+		resp.Occ.Success = true
 		resp.Talents = t_spec
 	} else {
-		resp.Error = "None found."
+		resp.Occ.Error = "None found."
 	}
     this.Data["json"] = resp
     this.ServeJSON()
@@ -43,18 +41,18 @@ func (this *TalentsController) Get() {
 func (this *TalentsController) Add() {
 	var insReq InsTalReq
 	err := json.Unmarshal(this.Ctx.Input.RequestBody, &insReq)
-	resp := InsTalResp{Success: false, Error: ""}
+	resp := InsTalResp{Occ: BaseResp{Success: false, Error: ""}}
 	if err == nil {
 		sp_id := models.AddTalent(insReq.Talent)
         if sp_id > 0 {
 	        insReq.Talent.Id = sp_id
             resp.Talent = insReq.Talent
-            resp.Success = true
+            resp.Occ.Success = true
         } else {
-            resp.Error = "Failed to insert."
+            resp.Occ.Error = "Failed to insert."
         }
 	} else {
-		resp.Error = "Failed Parse."
+		resp.Occ.Error = "Failed Parse."
 	}
 	this.Data["json"] = resp
 	this.ServeJSON()

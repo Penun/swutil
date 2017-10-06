@@ -4,10 +4,11 @@
 		this.curTab = 1;
 		$scope.species = [];
 		$scope.speImg = "";
+		$scope.talents = [];
 
 		angular.element(document).ready(function(){
 			$http.get("/species").then(function(ret){
-				if (ret.data.success){
+				if (ret.data.occ.success){
 					$scope.species = ret.data.result;
 				}
 			});
@@ -20,24 +21,108 @@
 					"index": ind
 				}
 				$http.post("/species/attributes", sendData).then(function(ret){
-					if (ret.data.success){
+					if (ret.data.occ.success){
 						$scope.species[ret.data.index].attributes = ret.data.result;
 						$scope.curSpec = $scope.species[ret.data.index];
 						$scope.speImg = $scope.curSpec.img_name;
-						var specRight = angular.element(document.querySelector("#specRight"));
-						specRight.addClass("fade_in");
-
+						angular.element(document.querySelector("#specRight")).addClass("fade_in");
 					}
 				});
 			} else {
 				$scope.curSpec = $scope.species[ind];
 				$scope.speImg = $scope.curSpec.img_name;
-				var specRight = angular.element(document.querySelector("#specRight"));
-				specRight.addClass("fade_in");
+				angular.element(document.querySelector("#specRight")).addClass("fade_in");
 			}
-		}
+		};
+
+		this.RevealCareer = function(ind){
+			if ($scope.careers[ind].specializations == null){
+				var sendData = {
+					"career_id": $scope.careers[ind].id,
+					"index": ind
+				}
+				$http.post("/careers/specializations", sendData).then(function(ret){
+					if (ret.data.occ.success){
+						$scope.careers[ret.data.index].specializations = ret.data.result;
+						$scope.curCar = $scope.careers[ret.data.index];
+					}
+				});
+			} else {
+				$scope.curCar = $scope.careers[ind];
+			}
+			$scope.curSpecial = null;
+		};
+
+		this.RevealSpecialization = function(ind){
+			if ($scope.curCar.specializations[ind].talents == null){
+				var sendData = {
+					"specialization_id": $scope.curCar.specializations[ind].id,
+					"index": ind
+				}
+				$http.post("/specializations/talents", sendData).then(function(ret){
+					if (ret.data.occ.success){
+						$scope.curCar.specializations[ret.data.index].talents = [];
+						for (var i = 0; i < ret.data.result.length; i++){
+							var tale = ret.data.result[i];
+							var found = false;
+							for (var j = 0; j < $scope.talents.length; j++){
+								if ($scope.talents[j].id == tale.talent.id){
+									found = true;
+									tale.index = j;
+									break;
+								}
+							}
+							if (!found){
+								$scope.talents.push(tale.talent);
+								tale.index = $scope.talents.length - 1;
+							}
+							if (tale.right){
+								tale.disp_right = {'visibility': 'visible'};
+							} else {
+								tale.disp_right = {'visibility': 'hidden'};
+							}
+							if (tale.down){
+								tale.disp_down = {'visibility': 'visible'};
+							} else {
+								tale.disp_down = {'visibility': 'hidden'};
+							}
+							delete tale.right;
+							delete tale.down;
+							delete tale.talent;
+							delete tale.specialization;
+							delete tale.id;
+							$scope.curCar.specializations[ret.data.index].talents[i] = tale;
+ 						}
+						$scope.curSpecial = $scope.curCar.specializations[ret.data.index];
+					}
+				});
+			} else {
+				$scope.curSpecial = $scope.curCar.specializations[ind];
+			}
+		};
+
+		this.RevealTalent = function(index){
+			$scope.curTale = $scope.talents[index];
+			this.talPanSty = {'bottom': 0};
+		};
 
 		this.LoadTab = function(newTab){
+			if (newTab == 2){
+				if (typeof $scope.careers === 'undefined'){
+					$http.get("/careers").then(function(ret){
+						if (ret.data.occ.success){
+							$scope.careers = ret.data.careers;
+						}
+					});
+				}
+				if (typeof $scope.skill === 'undefined'){
+					$http.get("/skills").then(function(ret){
+						if(ret.data.occ.success){
+							$scope.skills = ret.data.skills;
+						}
+					});
+				}
+			}
 			this.curTab = newTab;
 		};
 
