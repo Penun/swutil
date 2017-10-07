@@ -31,82 +31,91 @@
         <div ng-show="curCar != null">
             <div class="characterBlock"><b>{{"{{curCar.name}}"}}</b></div>
             <p>Skill Proficiencies: {{"{{curCar.skill_slots}}"}}</p>
+            <ul>
+                <li ng-repeat="(ind, skill) in curCar.skills">
+                    {{"{{skills[skill.index]}}"}}
+                </li>
+            </ul>
         </div>
-        <div ng-show="curSpecial != null" class="specialWrap">
+        <div ng-show="curSpecial != null">
             <div class="characterBlock"><b>{{"{{curSpecial.name}}"}}</b></div>
             <p>Skill Proficiencies: {{"{{curSpecial.skill_slots}}"}}</p>
-            <div class="talentBlock">
-                <span class="talent sw_back" ng-click="mCont.RevealTalent(curSpecial.talents[0].index)">{{"{{talents[curSpecial.talents[0].index].name}}"}}</span>
-                <span class="conn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[0].disp_right" alt="Conn"/></span>
-                <span class="talent sw_back" ng-click="mCont.RevealTalent(curSpecial.talents[1].index)">{{"{{talents[curSpecial.talents[1].index].name}}"}}</span>
-                <span class="conn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[1].disp_right" alt="Conn"/></span>
-                <span class="talent sw_back" ng-click="mCont.RevealTalent(curSpecial.talents[2].index)">{{"{{talents[curSpecial.talents[2].index].name}}"}}</span>
-                <span class="conn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[2].disp_right" alt="Conn"/></span>
-                <span class="talent sw_back" ng-click="mCont.RevealTalent(curSpecial.talents[3].index)">{{"{{talents[curSpecial.talents[3].index].name}}"}}</span>
-            </div>
-            <div class="talentBlock">
-                <span class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[0].disp_down" alt="Conn"/></span>
-                <span class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[1].disp_down" alt="Conn"/></span>
-                <span class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[2].disp_down" alt="Conn"/></span>
-                <span class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[3].disp_down" alt="Conn"/></span>
-            </div>
-            <div class="talentBlock">
-                <span class="talent sw_back" ng-click="mCont.RevealTalent(curSpecial.talents[4].index)">{{"{{talents[curSpecial.talents[4].index].name}}"}}</span>
-                <span class="conn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[4].disp_right" alt="Conn"/></span>
-                <span class="talent sw_back" ng-click="mCont.RevealTalent(curSpecial.talents[5].index)">{{"{{talents[curSpecial.talents[5].index].name}}"}}</span>
-                <span class="conn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[5].disp_right" alt="Conn"/></span>
-                <span class="talent sw_back" ng-click="mCont.RevealTalent(curSpecial.talents[6].index)">{{"{{talents[curSpecial.talents[6].index].name}}"}}</span>
-                <span class="conn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[6].disp_right" alt="Conn"/></span>
-                <span class="talent sw_back" ng-click="mCont.RevealTalent(curSpecial.talents[7].index)">{{"{{talents[curSpecial.talents[7].index].name}}"}}</span>
-            </div>
-            <div class="talentBlock">
-                <span class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[4].disp_down" alt="Conn"/></span>
-                <span class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[5].disp_down" alt="Conn"/></span>
-                <span class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[6].disp_down" alt="Conn"/></span>
-                <span class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[7].disp_down" alt="Conn"/></span>
-            </div>
-            <div class="talentBlock">
-                <span class="talent sw_back" ng-click="mCont.RevealTalent(curSpecial.talents[8].index)">{{"{{talents[curSpecial.talents[8].index].name}}"}}</span>
-                <span class="conn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[8].disp_right" alt="Conn"/></span>
-                <span class="talent sw_back" ng-click="mCont.RevealTalent(curSpecial.talents[9].index)">{{"{{talents[curSpecial.talents[9].index].name}}"}}</span>
-                <span class="conn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[9].disp_right" alt="Conn"/></span>
-                <span class="talent sw_back" ng-click="mCont.RevealTalent(curSpecial.talents[10].index)">{{"{{talents[curSpecial.talents[10].index].name}}"}}</span>
-                <span class="conn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[10].disp_right" alt="Conn"/></span>
-                <span class="talent sw_back" ng-click="mCont.RevealTalent(curSpecial.talents[11].index)">{{"{{talents[curSpecial.talents[11].index].name}}"}}</span>
-            </div>
-            <div class="talentBlock">
-                <span class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[8].disp_down" alt="Conn"/></span>
-                <span class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[9].disp_down" alt="Conn"/></span>
-                <span class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[10].disp_down" alt="Conn"/></span>
-                <span class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[11].disp_down" alt="Conn"/></span>
-            </div>
-            <div class="talentBlock">
-                <span class="talent sw_back" ng-click="mCont.RevealTalent(curSpecial.talents[12].index)">{{"{{talents[curSpecial.talents[12].index].name}}"}}</span>
-                <span class="conn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[12].disp_right" alt="Conn"/></span>
-                <span class="talent sw_back" ng-click="mCont.RevealTalent(curSpecial.talents[13].index)">{{"{{talents[curSpecial.talents[13].index].name}}"}}</span>
-                <span class="conn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[13].disp_right" alt="Conn"/></span>
-                <span class="talent sw_back" ng-click="mCont.RevealTalent(curSpecial.talents[14].index)">{{"{{talents[curSpecial.talents[14].index].name}}"}}</span>
-                <span class="conn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[14].disp_right" alt="Conn"/></span>
-                <span class="talent sw_back" ng-click="mCont.RevealTalent(curSpecial.talents[15].index)">{{"{{talents[curSpecial.talents[15].index].name}}"}}</span>
-            </div>
-            <div class="talentBlock">
-                <span class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[12].disp_down" alt="Conn"/></span>
-                <span class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[13].disp_down" alt="Conn"/></span>
-                <span class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[14].disp_down" alt="Conn"/></span>
-                <span class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[15].disp_down" alt="Conn"/></span>
-            </div>
-            <div class="talentBlock">
-                <span class="talent sw_back" ng-click="mCont.RevealTalent(curSpecial.talents[16].index)">{{"{{talents[curSpecial.talents[16].index].name}}"}}</span>
-                <span class="conn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[16].disp_right" alt="Conn"/></span>
-                <span class="talent sw_back" ng-click="mCont.RevealTalent(curSpecial.talents[17].index)">{{"{{talents[curSpecial.talents[17].index].name}}"}}</span>
-                <span class="conn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[17].disp_right" alt="Conn"/></span>
-                <span class="talent sw_back" ng-click="mCont.RevealTalent(curSpecial.talents[18].index)">{{"{{talents[curSpecial.talents[18].index].name}}"}}</span>
-                <span class="conn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[18].disp_right" alt="Conn"/></span>
-                <span class="talent sw_back" ng-click="mCont.RevealTalent(curSpecial.talents[19].index)">{{"{{talents[curSpecial.talents[19].index].name}}"}}</span>
-            </div>
-            <div class="talentPanel sw_back" ng-show="curTale != null" ng-style="mCont.talPanSty">
-                <div class="characterBlock"><b>{{"{{curTale.name}}"}}</b></div>
-                <p>{{"{{curTale.description}}"}}</p>
+            <div class="specialWrap">
+                <div class="talentBlock talRow1">
+                    <div class="talent sw_back talCol1" ng-click="mCont.RevealTalent(curSpecial.talents[0].index)">{{"{{talents[curSpecial.talents[0].index].name}}"}}</div>
+                    <div class="conn connCol1"><img src="/static/img/connector.png" ng-style="curSpecial.talents[0].disp_right" alt="Conn"/></div>
+                    <div class="talent sw_back talCol2" ng-click="mCont.RevealTalent(curSpecial.talents[1].index)">{{"{{talents[curSpecial.talents[1].index].name}}"}}</div>
+                    <div class="conn connCol2"><img src="/static/img/connector.png" ng-style="curSpecial.talents[1].disp_right" alt="Conn"/></div>
+                    <div class="talent sw_back talCol3" ng-click="mCont.RevealTalent(curSpecial.talents[2].index)">{{"{{talents[curSpecial.talents[2].index].name}}"}}</div>
+                    <div class="conn connCol3"><img src="/static/img/connector.png" ng-style="curSpecial.talents[2].disp_right" alt="Conn"/></div>
+                    <div class="talent sw_back talCol4" ng-click="mCont.RevealTalent(curSpecial.talents[3].index)">{{"{{talents[curSpecial.talents[3].index].name}}"}}</div>
+                </div>
+                <div class="talentBlock vConnRow1">
+                    <div class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[0].disp_down" alt="Conn"/></div>
+                    <div class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[1].disp_down" alt="Conn"/></div>
+                    <div class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[2].disp_down" alt="Conn"/></div>
+                    <div class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[3].disp_down" alt="Conn"/></div>
+                </div>
+                <div class="talentBlock talRow2">
+                    <div class="talent sw_back talCol1" ng-click="mCont.RevealTalent(curSpecial.talents[4].index)">{{"{{talents[curSpecial.talents[4].index].name}}"}}</div>
+                    <div class="conn connCol1"><img src="/static/img/connector.png" ng-style="curSpecial.talents[4].disp_right" alt="Conn"/></div>
+                    <div class="talent sw_back talCol2" ng-click="mCont.RevealTalent(curSpecial.talents[5].index)">{{"{{talents[curSpecial.talents[5].index].name}}"}}</div>
+                    <div class="conn connCol2"><img src="/static/img/connector.png" ng-style="curSpecial.talents[5].disp_right" alt="Conn"/></div>
+                    <div class="talent sw_back talCol3" ng-click="mCont.RevealTalent(curSpecial.talents[6].index)">{{"{{talents[curSpecial.talents[6].index].name}}"}}</div>
+                    <div class="conn connCol3"><img src="/static/img/connector.png" ng-style="curSpecial.talents[6].disp_right" alt="Conn"/></div>
+                    <div class="talent sw_back talCol4" ng-click="mCont.RevealTalent(curSpecial.talents[7].index)">{{"{{talents[curSpecial.talents[7].index].name}}"}}</div>
+                </div>
+                <div class="talentBlock vConnRow2">
+                    <div class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[4].disp_down" alt="Conn"/></div>
+                    <div class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[5].disp_down" alt="Conn"/></div>
+                    <div class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[6].disp_down" alt="Conn"/></div>
+                    <div class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[7].disp_down" alt="Conn"/></div>
+                </div>
+                <div class="talentBlock talRow3">
+                    <div class="talent sw_back talCol1" ng-click="mCont.RevealTalent(curSpecial.talents[8].index)">{{"{{talents[curSpecial.talents[8].index].name}}"}}</div>
+                    <div class="conn connCol1"><img src="/static/img/connector.png" ng-style="curSpecial.talents[8].disp_right" alt="Conn"/></div>
+                    <div class="talent sw_back talCol2" ng-click="mCont.RevealTalent(curSpecial.talents[9].index)">{{"{{talents[curSpecial.talents[9].index].name}}"}}</div>
+                    <div class="conn connCol2"><img src="/static/img/connector.png" ng-style="curSpecial.talents[9].disp_right" alt="Conn"/></div>
+                    <div class="talent sw_back talCol3" ng-click="mCont.RevealTalent(curSpecial.talents[10].index)">{{"{{talents[curSpecial.talents[10].index].name}}"}}</div>
+                    <div class="conn connCol3"><img src="/static/img/connector.png" ng-style="curSpecial.talents[10].disp_right" alt="Conn"/></div>
+                    <div class="talent sw_back talCol4" ng-click="mCont.RevealTalent(curSpecial.talents[11].index)">{{"{{talents[curSpecial.talents[11].index].name}}"}}</div>
+                </div>
+                <div class="talentBlock vConnRow3">
+                    <div class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[8].disp_down" alt="Conn"/></div>
+                    <div class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[9].disp_down" alt="Conn"/></div>
+                    <div class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[10].disp_down" alt="Conn"/></div>
+                    <div class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[11].disp_down" alt="Conn"/></div>
+                </div>
+                <div class="talentBlock talRow4">
+                    <div class="talent sw_back talCol1" ng-click="mCont.RevealTalent(curSpecial.talents[12].index)">{{"{{talents[curSpecial.talents[12].index].name}}"}}</div>
+                    <div class="conn connCol1"><img src="/static/img/connector.png" ng-style="curSpecial.talents[12].disp_right" alt="Conn"/></div>
+                    <div class="talent sw_back talCol2" ng-click="mCont.RevealTalent(curSpecial.talents[13].index)">{{"{{talents[curSpecial.talents[13].index].name}}"}}</div>
+                    <div class="conn connCol2"><img src="/static/img/connector.png" ng-style="curSpecial.talents[13].disp_right" alt="Conn"/></div>
+                    <div class="talent sw_back talCol3" ng-click="mCont.RevealTalent(curSpecial.talents[14].index)">{{"{{talents[curSpecial.talents[14].index].name}}"}}</div>
+                    <div class="conn connCol3"><img src="/static/img/connector.png" ng-style="curSpecial.talents[14].disp_right" alt="Conn"/></div>
+                    <div class="talent sw_back talCol4" ng-click="mCont.RevealTalent(curSpecial.talents[15].index)">{{"{{talents[curSpecial.talents[15].index].name}}"}}</div>
+                </div>
+                <div class="talentBlock vConnRow4">
+                    <div class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[12].disp_down" alt="Conn"/></div>
+                    <div class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[13].disp_down" alt="Conn"/></div>
+                    <div class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[14].disp_down" alt="Conn"/></div>
+                    <div class="vConn"><img src="/static/img/connector.png" ng-style="curSpecial.talents[15].disp_down" alt="Conn"/></div>
+                </div>
+                <div class="talentBlock talRow5">
+                    <div class="talent sw_back talCol1" ng-click="mCont.RevealTalent(curSpecial.talents[16].index)">{{"{{talents[curSpecial.talents[16].index].name}}"}}</div>
+                    <div class="conn connCol1"><img src="/static/img/connector.png" ng-style="curSpecial.talents[16].disp_right" alt="Conn"/></div>
+                    <div class="talent sw_back talCol2" ng-click="mCont.RevealTalent(curSpecial.talents[17].index)">{{"{{talents[curSpecial.talents[17].index].name}}"}}</div>
+                    <div class="conn connCol2"><img src="/static/img/connector.png" ng-style="curSpecial.talents[17].disp_right" alt="Conn"/></div>
+                    <div class="talent sw_back talCol3" ng-click="mCont.RevealTalent(curSpecial.talents[18].index)">{{"{{talents[curSpecial.talents[18].index].name}}"}}</div>
+                    <div class="conn connCol3"><img src="/static/img/connector.png" ng-style="curSpecial.talents[18].disp_right" alt="Conn"/></div>
+                    <div class="talent sw_back talCol4" ng-click="mCont.RevealTalent(curSpecial.talents[19].index)">{{"{{talents[curSpecial.talents[19].index].name}}"}}</div>
+                </div>
+                <div class="sw_back talentPanelOut" ng-show="curTale != null">
+                    <div class="talentPanel">
+                        <div class="characterBlock"><b>{{"{{curTale.name}}"}}</b><button type="button" ng-click="mCont.CloseTalent()" style="font-size: 0.5em; position: absolute; right: 15px;">X</button></div>
+                        <p>{{"{{curTale.description}}"}}</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -51,6 +51,7 @@
 				$scope.curCar = $scope.careers[ind];
 			}
 			$scope.curSpecial = null;
+			$scope.curTale = null;
 		};
 
 		this.RevealSpecialization = function(ind){
@@ -99,11 +100,15 @@
 			} else {
 				$scope.curSpecial = $scope.curCar.specializations[ind];
 			}
+			$scope.curTale = null;
 		};
 
 		this.RevealTalent = function(index){
 			$scope.curTale = $scope.talents[index];
-			this.talPanSty = {'bottom': 0};
+		};
+
+		this.CloseTalent = function(){
+			$scope.curTale = null;
 		};
 
 		this.LoadTab = function(newTab){

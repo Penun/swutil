@@ -97,8 +97,10 @@ body {
 
 .right_col {
 	width: 49%;
-	float: right;
 	font-size: 1.2em;
+	position: absolute;
+	right: 0;
+	height: 73vh;
 }
 
 .left_page_det {
@@ -634,24 +636,91 @@ button:active {
 	text-align: center;
 }
 
-.talentBlock > span.talent {
-	width: 20%;
-	float: left;
-	text-align: center;
-	display: inline-block;
-	z-index: 300;
+.talCol1 {
+	left: 0;
 }
 
-.talentBlock > span.talent:hover {
+.talCol2 {
+	left: 26%;
+}
+
+.talCol3 {
+	left: 52%;
+}
+
+.talCol4 {
+	left: 78%;
+}
+
+.talRow1 {
+	top: 0;
+}
+
+.talRow2 {
+	top: 11vh;
+}
+
+.talRow3 {
+	top: 22vh;
+}
+
+.talRow4 {
+	top: 33vh;
+}
+
+.talRow5 {
+	top: 44vh;
+}
+
+.connCol1 {
+	left: 21%;
+}
+
+.connCol2 {
+	left: 47%;
+}
+
+.connCol3 {
+	left: 73%;
+}
+
+.vConnRow1 {
+	top: 5.5vh;
+}
+
+.vConnRow2 {
+	top: 16.5vh;
+}
+
+.vConnRow3 {
+	top: 27.5vh;
+}
+
+.vConnRow4 {
+	top: 38.5vh;
+}
+
+.talentBlock > div.talent {
+	width: 21%;
+	text-align: center;
+	display: inline-block;
+	z-index: 125;
+	position: absolute;
+	top: 40%;
+	height: 5.4vh;
+}
+
+.talentBlock > div.talent:hover {
 	background-image: url("../img/sw_back_h.png");
 	background-size: 100% 100%;
 	background-repeat: round;
 	cursor: pointer;
 }
 
-.talentBlock > span.conn {
+.talentBlock > div.conn {
 	width: 5%;
-	float: left;
+	position: absolute;
+	top: 75%
 }
 
 .talentBlock {
@@ -659,31 +728,42 @@ button:active {
 	font-size: 0.8em;
 	padding-top: 0.5vh;
 	padding-bottom: 0.5vh;
-	height: 45px;
-	z-index: 100;
+	height: 5.5vh;
+	position: absolute;
 }
 
 .specialWrap {
 	position: relative;
 	overflow: hidden;
+	height: 52vh;
+}
+
+.talentPanelOut {
+	position: absolute;
+	top: 0;
+	padding: 3%;
+	max-height: 94%;
+	height: 94%;
+	z-index: 150;
 }
 
 .talentPanel {
-	padding: 3%;
-	position: absolute;
-	bottom: -100%;
-	transition: all 5000ms ease;
-	-webkit-transition: bottom 5000ms ease;
-	-moz-transition: all 5000ms ease;
+	overflow-y: auto;
+	height: 100%;
+	width: 100%;
 }
 
-span.conn > img {
+.talentPanel > p {
+	font-size: 1.1em;
+}
+
+div.conn > img {
 	width: 100%;
 	position: relative;
 	top: 50%
 }
 
-span.vConn {
+div.vConn {
 	height: 3vh;
     width: 24%;
     display: inline-block;
@@ -692,8 +772,8 @@ span.vConn {
 
 .vConn > img {
 	transform: rotate(90deg);
-    width: 3vw;
-    top: 0.5vh;
+    width: 5.5vh;
+    top: 4vh;
     position: relative;
     left: 24%;
 }
