@@ -720,6 +720,7 @@ li.skill {
 	position: absolute;
 	top: 40%;
 	height: 5.4vh;
+	overflow: hidden;
 }
 
 .talentBlock > div.talent:hover {
@@ -777,8 +778,8 @@ div.conn > img {
 }
 
 div.vConn {
-	height: 3vh;
-    width: 24%;
+	height: 5.5vh;
+    width: 23%;
     display: inline-block;
 	z-index: 100;
 }
@@ -788,7 +789,7 @@ div.vConn {
     width: 5.5vh;
     top: 4vh;
     position: relative;
-    left: 24%;
+    left: 40%;
 }
 
 .threshold {
