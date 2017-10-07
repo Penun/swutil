@@ -101,6 +101,7 @@ body {
 	position: absolute;
 	right: 0;
 	height: 73vh;
+	overflow-y: auto;
 }
 
 .left_page_det {
@@ -620,6 +621,17 @@ button:active {
 
 #loginForm p { width: 100%; }
 
+.skillSpan {
+	display: inline-block;
+}
+
+li.skill {
+	float: left;
+	width: auto;
+	padding: 1% 2%;
+	text-align: center;
+}
+
 .characterBlock {
 	width: 100%;
 	font-size: 1.5em;
@@ -754,6 +766,7 @@ button:active {
 }
 
 .talentPanel > p {
+	width: 100%;
 	font-size: 1.1em;
 }
 

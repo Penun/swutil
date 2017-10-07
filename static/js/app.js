@@ -40,18 +40,36 @@
 				var sendData = {
 					"career_id": $scope.careers[ind].id,
 					"index": ind
-				}
+				};
 				$http.post("/careers/specializations", sendData).then(function(ret){
 					if (ret.data.occ.success){
 						$scope.careers[ret.data.index].specializations = ret.data.result;
-						$scope.curCar = $scope.careers[ret.data.index];
 					}
 				});
-			} else {
-				$scope.curCar = $scope.careers[ind];
+			}
+			if ($scope.careers[ind].skills == null){
+				var sendData = {
+					"career_id": $scope.careers[ind].id,
+					"index": ind
+				};
+				$http.post("/careers/skills", sendData).then(function(ret){
+					if (ret.data.occ.success){
+						var cSkill = [];
+						for (var i = 0; i < ret.data.result.length; i++){
+							for (var j = 0; j < $scope.skills.length; j++){
+								if ($scope.skills[j].id == ret.data.result[i].skill.id){
+									cSkill.push(j);
+									break;
+								}
+							}
+						}
+						$scope.careers[ret.data.index].skills = cSkill;
+					}
+				});
 			}
 			$scope.curSpecial = null;
 			$scope.curTale = null;
+			$scope.curCar = $scope.careers[ind];
 		};
 
 		this.RevealSpecialization = function(ind){
@@ -94,17 +112,37 @@
 							delete tale.id;
 							$scope.curCar.specializations[ret.data.index].talents[i] = tale;
  						}
-						$scope.curSpecial = $scope.curCar.specializations[ret.data.index];
 					}
 				});
-			} else {
-				$scope.curSpecial = $scope.curCar.specializations[ind];
 			}
+			if ($scope.curCar.specializations[ind].skills == null){
+				var sendData = {
+					"specialization_id": $scope.curCar.specializations[ind].id,
+					"index": ind
+				};
+				$http.post("/specializations/skills", sendData).then(function(ret){
+					if (ret.data.occ.success){
+						var cSkill = [];
+						for (var i = 0; i < ret.data.result.length; i++){
+							for (var j = 0; j < $scope.skills.length; j++){
+								if ($scope.skills[j].id == ret.data.result[i].skill.id){
+									cSkill.push(j);
+									break;
+								}
+							}
+						}
+						$scope.curCar.specializations[ret.data.index].skills = cSkill;
+					}
+				});
+			}
+			$scope.curSpecial = $scope.curCar.specializations[ind];
 			$scope.curTale = null;
 		};
 
 		this.RevealTalent = function(index){
 			$scope.curTale = $scope.talents[index];
+			var ele = document.getElementById("right_col");
+			ele.scrollTop = ele.scrollHeight;
 		};
 
 		this.CloseTalent = function(){

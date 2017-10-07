@@ -27,19 +27,24 @@
             </div>
         </div>
     </div>
-    <div class="right_col">
+    <div class="right_col" id="right_col">
         <div ng-show="curCar != null">
             <div class="characterBlock"><b>{{"{{curCar.name}}"}}</b></div>
             <p>Skill Proficiencies: {{"{{curCar.skill_slots}}"}}</p>
-            <ul>
-                <li ng-repeat="(ind, skill) in curCar.skills">
-                    {{"{{skills[skill.index]}}"}}
+            <span class="skillSpan"><ul>
+                <li ng-repeat="(ind, skill) in curCar.skills" class="skill">
+                    <span><i>{{"{{skills[skill].name}}"}}</i></span>
                 </li>
-            </ul>
+            </ul></span>
         </div>
         <div ng-show="curSpecial != null">
             <div class="characterBlock"><b>{{"{{curSpecial.name}}"}}</b></div>
             <p>Skill Proficiencies: {{"{{curSpecial.skill_slots}}"}}</p>
+            <span class="skillSpan"><ul>
+                <li ng-repeat="(ind, skill) in curSpecial.skills" class="skill">
+                    <span><i>{{"{{skills[skill].name}}"}}</i></span>
+                </li>
+            </ul></span>
             <div class="specialWrap">
                 <div class="talentBlock talRow1">
                     <div class="talent sw_back talCol1" ng-click="mCont.RevealTalent(curSpecial.talents[0].index)">{{"{{talents[curSpecial.talents[0].index].name}}"}}</div>

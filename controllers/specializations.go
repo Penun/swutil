@@ -27,6 +27,12 @@ type GetSpTaResp struct {
 	Index int `json:"index"`
 }
 
+type GetSpSkResp struct {
+	Occ BaseResp `json:"occ"`
+	Result []models.SpecSkill `json:"result"`
+	Index int `json:"index"`
+}
+
 type InsSpecReq struct {
 	Specialization models.Specialization `json:"specialization"`
 	Careers []int64 `json:"careers"`
@@ -60,6 +66,26 @@ func (this *SpecializationsController) Talents() {
 	if err == nil {
 		resp.Index = req.Index
 		cSpecs := models.GetTalentsBySpecial(int64(req.Specialization_id))
+		if len(cSpecs) > 0 {
+			resp.Occ.Success = true
+			resp.Result = cSpecs
+		} else {
+			resp.Occ.Error = "Failed to find."
+		}
+	} else {
+		resp.Occ.Error = "Failed Parse."
+	}
+	this.Data["json"] = resp
+	this.ServeJSON()
+}
+
+func (this *SpecializationsController) Skills() {
+	var req GetSpTaReq
+	err := json.Unmarshal(this.Ctx.Input.RequestBody, &req)
+	resp := GetSpSkResp{Occ: BaseResp{Success: false, Error: ""}}
+	if err == nil {
+		resp.Index = req.Index
+		cSpecs := models.GetSkillsBySpecial(int64(req.Specialization_id))
 		if len(cSpecs) > 0 {
 			resp.Occ.Success = true
 			resp.Result = cSpecs

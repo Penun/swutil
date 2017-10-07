@@ -20,6 +20,12 @@ type GetCSReq struct {
 	Index int `json:"index"`
 }
 
+type GetCSKResp struct {
+	Occ BaseResp `json:"occ"`
+	Result []models.CareerSkill `json:"result"`
+	Index int `json:"index"`
+}
+
 type GetCSResp struct {
 	Occ BaseResp `json:"occ"`
 	Result []models.Specialization `json:"result"`
@@ -54,6 +60,26 @@ func (this *CareersController) Specializations() {
 			}
 			resp.Occ.Success = true
 			resp.Result = resSpec
+		} else {
+			resp.Occ.Error = "Failed to find."
+		}
+	} else {
+		resp.Occ.Error = "Failed Parse."
+	}
+	this.Data["json"] = resp
+	this.ServeJSON()
+}
+
+func (this *CareersController) Skills() {
+	var req GetCSReq
+	err := json.Unmarshal(this.Ctx.Input.RequestBody, &req)
+	resp := GetCSKResp{Occ: BaseResp{Success: false, Error: ""}}
+	if err == nil {
+		resp.Index = req.Index
+		cSkills := models.GetSkillsByCareer(int64(req.Career_id))
+		if len(cSkills) > 0 {
+			resp.Occ.Success = true
+			resp.Result = cSkills
 		} else {
 			resp.Occ.Error = "Failed to find."
 		}
