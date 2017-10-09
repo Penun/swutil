@@ -118,7 +118,9 @@
                 <div class="sw_back talentPanelOut" ng-show="curTale != null">
                     <div class="talentPanel">
                         <div class="characterBlock"><b>{{"{{curTale.name}}"}}</b><button type="button" ng-click="mCont.CloseTalent()" style="font-size: 0.5em; position: absolute; right: 15px;">X</button></div>
-                        <p>{{"{{curTale.description}}"}}</p>
+                        <div class="characterBlock">Type: {{"{{curTale.type}}"}}</div>
+                        <div class="characterBlock">Ranked: {{"{{curTale.ranked}}"}}</div>
+                        <div ng-bind-html="curTale.description" class="taleDesc"></div>
                     </div>
                 </div>
             </div>

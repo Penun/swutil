@@ -1,5 +1,5 @@
 (function(){
-	var app = angular.module('ddcharL', []);
+	var app = angular.module('ddcharL', ['ngSanitize']);
 	app.controller('mainController', ['$window', '$scope', '$http', function($window, $scope, $http){
 		this.curTab = 1;
 		$scope.species = [];
