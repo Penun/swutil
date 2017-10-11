@@ -82,7 +82,25 @@ type Talent struct {
     Description string `json:"description"`
 }
 
+type Weapon struct {
+    Id int64 `orm:"pk" json:"id"`
+    Type string `json:"type"`
+    SubType string `json:"sub_type"`
+    Name string `json:"name"`
+    Skill *Skill `orm:"rel(fk)" json:"skill"`
+    Damage int `json:"damage"`
+    Critical int `json:"critical"`
+    Range string `json:"range"`
+    Ecumberance int `json:"ecumberance"`
+    HardPoints int `json:"hard_points"`
+    Price int `json:"price"`
+    Restricted int `json:"restricted"`
+    Rarity int `json:"rarity"`
+    Special string `json:"special"`
+    Description string `json:"description"`
+}
+
 func init() {
     orm.RegisterModel(new(Career), new(CareerSkill), new(CareerSpec), new(Skill), new(SpeAttribute),
-        new(SpecSkill), new(SpecTalent), new(Specialization), new(Species), new(Talent))
+        new(SpecSkill), new(SpecTalent), new(Specialization), new(Species), new(Talent), new(Weapon))
 }

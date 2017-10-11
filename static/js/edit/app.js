@@ -7,6 +7,7 @@
 		$scope.moldSpecies = {};
 		$scope.moldTalent = {type: "Passive"};
 		$scope.moldSpecial = {talents: [], skill_slots: 2};
+		$scope.moldWeapon = {skill: {}};
 
 		angular.element(document).ready(function(){
 			$http.get("/species").then(function(ret){
@@ -117,6 +118,25 @@
 			});
 		};
 
+		this.AddWeapon = function(){
+			$scope.moldWeapon.skill.id = parseInt($scope.moldWeapon.skill.id);
+			var sendData = {
+				'weapon': $scope.moldWeapon
+			};
+			$http.post("/weapons/add", sendData).then(function(ret){
+				if (ret.data.occ.success){
+					if (typeof $scope.weapons === 'undefined'){
+						$scope.weapons = [ret.data.weapon];
+					}
+					else {
+						$scope.weapons.push(ret.data.weapon);
+					}
+					$scope.moldWeapon = {skill: {}};
+					document.getElementById("wepName").focus();
+				}
+			});
+		};
+
 		this.CheckSpec = function(){
 			if ($scope.moldSpecies.name != ""){
 				var found = false;
@@ -153,6 +173,19 @@
 					}
 				}
 				this.ApplyInClass(found, "#specialName");
+			}
+		};
+
+		this.CheckWeapon = function(){
+			if ($scope.moldWeapon.name != ""){
+				var found = false;
+				for (var i = 0; i < $scope.weapons.length; i++){
+					if ($scope.moldWeapon.name == $scope.weapons[i].name){
+						found = true;
+						break;
+					}
+				}
+				this.ApplyInClass(found, "#wepName");
 			}
 		};
 
@@ -194,6 +227,14 @@
 					$http.get("/specializations").then(function(ret){
 						if (ret.data.occ.success){
 							$scope.specializations = ret.data.specializations;
+						}
+					});
+				}
+			} else if (newTab == 4){
+				if (typeof $scope.weapons === 'undefined'){
+					$http.get("/weapons").then(function(ret){
+						if (ret.data.occ.success){
+							$scope.weapons = ret.data.weapons;
 						}
 					});
 				}
