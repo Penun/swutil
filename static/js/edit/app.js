@@ -8,6 +8,7 @@
 		$scope.moldTalent = {type: "Passive"};
 		$scope.moldSpecial = {talents: [], skill_slots: 2};
 		$scope.moldWeapon = {skill: {}};
+		$scope.moldArmor = {};
 
 		angular.element(document).ready(function(){
 			$http.get("/species").then(function(ret){
@@ -137,6 +138,24 @@
 			});
 		};
 
+		this.AddArmor = function(){
+			var sendData = {
+				'armor': $scope.moldArmor
+			};
+			$http.post("/armor/add", sendData).then(function(ret){
+				if (ret.data.occ.success){
+					if (typeof $scope.armor === 'undefined'){
+						$scope.armor = [ret.data.armor];
+					}
+					else {
+						$scope.armor.push(ret.data.armor);
+					}
+					$scope.moldArmor = {};
+					document.getElementById("armType").focus();
+				}
+			});
+		};
+
 		this.CheckSpec = function(){
 			if ($scope.moldSpecies.name != ""){
 				var found = false;
@@ -189,6 +208,19 @@
 			}
 		};
 
+		this.CheckArm = function(){
+			if ($scope.moldArmor.type != ""){
+				var found = false;
+				for (var i = 0; i < $scope.armor.length; i++){
+					if ($scope.moldArmor.type == $scope.armor[i].type){
+						found = true;
+						break;
+					}
+				}
+				this.ApplyInClass(found, "#armType");
+			}
+		};
+
 		this.ApplyInClass = function(found, id){
 			var inpNam = angular.element(document.querySelector(id));
 			if (found){
@@ -210,6 +242,8 @@
 					$http.get("/careers").then(function(ret){
 						if (ret.data.occ.success){
 							$scope.careers = ret.data.careers;
+						} else {
+							$scope.careers = [];
 						}
 					});
 				}
@@ -217,6 +251,8 @@
 					$http.get("/skills").then(function(ret){
 						if (ret.data.occ.success){
 							$scope.skills = ret.data.skills;
+						} else {
+							$scope.skills = [];
 						}
 					});
 				}
@@ -227,6 +263,8 @@
 					$http.get("/specializations").then(function(ret){
 						if (ret.data.occ.success){
 							$scope.specializations = ret.data.specializations;
+						} else {
+							$scope.specializations = [];
 						}
 					});
 				}
@@ -235,6 +273,18 @@
 					$http.get("/weapons").then(function(ret){
 						if (ret.data.occ.success){
 							$scope.weapons = ret.data.weapons;
+						} else {
+							$scope.weapons = [];
+						}
+					});
+				}
+			} else if (newTab == 5){
+				if (typeof $scope.armor === 'undefined'){
+					$http.get("/armor").then(function(ret){
+						if (ret.data.occ.success){
+							$scope.armor = ret.data.armor;
+						} else {
+							$scope.armor = [];
 						}
 					});
 				}

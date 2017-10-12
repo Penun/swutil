@@ -7,7 +7,7 @@ import (
 func GetWeapons() []Weapon{
     o := orm.NewOrm()
     var weapons []Weapon
-    o.QueryTable("weapon").OrderBy("type").OrderBy("sub_type").OrderBy("name").All(&weapons)
+    o.QueryTable("weapon").OrderBy("type", "sub_type", "name").All(&weapons)
     if len(weapons) > 0 {
         return weapons
     } else {

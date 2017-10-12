@@ -89,18 +89,33 @@ type Weapon struct {
     Name string `json:"name"`
     Skill *Skill `orm:"rel(fk)" json:"skill"`
     Damage int `json:"damage"`
+    DamageAdd bool `json:"damage_add"`
     Critical int `json:"critical"`
     Range string `json:"range"`
-    Ecumberance int `json:"ecumberance"`
+    Encumbrance int `json:"encumbrance"`
     HardPoints int `json:"hard_points"`
     Price int `json:"price"`
-    Restricted int `json:"restricted"`
+    Restricted bool `json:"restricted"`
     Rarity int `json:"rarity"`
     Special string `json:"special"`
     Description string `json:"description"`
 }
 
+type Armor struct {
+    Id int64 `orm:"pk" json:"id"`
+    Type string `json:"type"`
+    Defense int `json:"damage"`
+    Soak int `json:"soak"`
+    Price int `json:"price"`
+    Restricted bool `json:"restricted"`
+    Encumbrance int `json:"encumbrance"`
+    HardPoints int `json:"hard_points"`
+    Rarity int `json:"rarity"`
+    Description string `json:"description"`
+}
+
 func init() {
     orm.RegisterModel(new(Career), new(CareerSkill), new(CareerSpec), new(Skill), new(SpeAttribute),
-        new(SpecSkill), new(SpecTalent), new(Specialization), new(Species), new(Talent), new(Weapon))
+        new(SpecSkill), new(SpecTalent), new(Specialization), new(Species), new(Talent), new(Weapon),
+        new (Armor))
 }

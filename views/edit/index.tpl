@@ -9,12 +9,14 @@
 			<span class="tab" ng-click="mCont.LoadTab(2)">Talents</span>
 			<span class="tab" ng-click="mCont.LoadTab(3)">Specializations</span> -->
 			<span class="tab" ng-click="mCont.LoadTab(4)">Weapons</span>
+			<span class="tab" ng-click="mCont.LoadTab(5)">Armor</span>
 		</div>
 		<div class="page sw_back">
 			<!-- template "edit/species.tpl" -->
 			<!-- template "edit/talents.tpl" -->
 			<!-- template "edit/specializations.tpl" -->
 			{{template "edit/weapons.tpl"}}
+			{{template "edit/armor.tpl"}}
 		</div>
 	</div>
 </body>

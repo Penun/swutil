@@ -15,7 +15,7 @@
     </div>
     <div class="right_page right_page_form">
         <form id="weaponAddForm" name="weaponAddForm" novalidate>
-            <p><label><b>Weapon Name:</b></label><input type="text" name="wepName" id="wepName" ng-model="moldWeapon.name" ng-change="mCont.CheckWep()" required/></p>
+            <p><label><b>Weapon Name:</b></label><input type="text" name="wepName" id="wepName" ng-model="moldWeapon.name" ng-change="mCont.CheckWeapon()" required/></p>
             <p><label><b>Type:</b></label><select name="wepType" ng-model="moldWeapon.type" class="sing_select" required>
                 <option value="Ranged">Ranged</option>
                 <option value="Melee">Melee</option>
@@ -44,6 +44,7 @@
                 <option value="26">Ranged (Light)</option>
             </select></p>
             <p><label><b>Damage:</b></label><input type="number" name="wepDamage" ng-model="moldWeapon.damage" min="0" max="99" required/></p>
+            <p><label><b>Damage Additive:</b></label><input type="checkbox" name="wepDamAdd" ng-model="moldWeapon.damage_add" /></p>
             <p><label><b>Critical:</b></label><input type="number" name="wepCritical" ng-model="moldWeapon.critical" min="0" max="9" required/></p>
             <p><label><b>Range:</b></label><select name="wepRange" ng-model="moldWeapon.range" class="sing_select" required>
                 <option value="Engaged">Engaged</option>
@@ -52,7 +53,7 @@
                 <option value="Long">Long</option>
                 <option value="Extreme">Extreme</option>
             </select></p>
-            <p><label><b>Encumberance:</b></label><input type="number" name="wepEcum" ng-model="moldWeapon.ecumberance" min="0" max="99" required/></p>
+            <p><label><b>Encumbrance:</b></label><input type="number" name="wepEcum" ng-model="moldWeapon.encumbrance" min="0" max="99" required/></p>
             <p><label><b>Hard Points:</b></label><input type="number" name="wepHardP" ng-model="moldWeapon.hard_points" min="0" max="9" required/></p>
             <p><label><b>Price:</b></label><input type="number" name="wepPrice" ng-model="moldWeapon.price" min="0" required/></p>
             <p><label><b>Restricted:</b></label><input type="checkbox" name="wepRestricted" ng-model="moldWeapon.restricted" /></p>
