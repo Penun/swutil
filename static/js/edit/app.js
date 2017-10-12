@@ -156,6 +156,24 @@
 			});
 		};
 
+		this.AddGear = function(){
+			var sendData = {
+				'gear': $scope.moldGear
+			};
+			$http.post("/gear/add", sendData).then(function(ret){
+				if (ret.data.occ.success){
+					if (typeof $scope.gear === 'undefined'){
+						$scope.gear = [ret.data.gear];
+					}
+					else {
+						$scope.gear.push(ret.data.gear);
+					}
+					$scope.moldGear = {};
+					document.getElementById("gearItem").focus();
+				}
+			});
+		};
+
 		this.CheckSpec = function(){
 			if ($scope.moldSpecies.name != ""){
 				var found = false;
@@ -218,6 +236,19 @@
 					}
 				}
 				this.ApplyInClass(found, "#armType");
+			}
+		};
+
+		this.CheckGear = function(){
+			if ($scope.moldGear.item != ""){
+				var found = false;
+				for (var i = 0; i < $scope.gear.length; i++){
+					if ($scope.moldGear.item == $scope.gear[i].item){
+						found = true;
+						break;
+					}
+				}
+				this.ApplyInClass(found, "#gearItem");
 			}
 		};
 
@@ -285,6 +316,16 @@
 							$scope.armor = ret.data.armor;
 						} else {
 							$scope.armor = [];
+						}
+					});
+				}
+			} else if (newTab == 6){
+				if (typeof $scope.gear === 'undefined'){
+					$http.get("/gear").then(function(ret){
+						if (ret.data.occ.success){
+							$scope.gear = ret.data.gear;
+						} else {
+							$scope.gear = [];
 						}
 					});
 				}

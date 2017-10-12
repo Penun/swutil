@@ -6,31 +6,31 @@ import (
     "encoding/json"
 )
 
-type ArmorController struct {
+type GearController struct {
 	beego.Controller
 }
 
-type GetArmResp struct {
+type GetGearResp struct {
     Occ BaseResp `json:"occ"`
-    Armor []models.Armor `json:"armor"`
+    Gear []models.Gear `json:"gear"`
 }
 
-type InsArmReq struct {
-	Armor models.Armor `json:"armor"`
+type InsGearReq struct {
+	Gear models.Gear `json:"gear"`
 }
 
-type InsArmResp struct{
+type InsGearResp struct{
 	Occ BaseResp `json:"occ"`
-    Armor models.Armor `json:"armor"`
+    Gear models.Gear `json:"gear"`
 }
 
-func (this *ArmorController) Get() {
-    resp := GetArmResp{Occ: BaseResp{Success: false, Error: ""}}
-	var t_spec []models.Armor
-    t_spec = models.GetArmor()
+func (this *GearController) Get() {
+    resp := GetGearResp{Occ: BaseResp{Success: false, Error: ""}}
+	var t_spec []models.Gear
+    t_spec = models.GetGear()
 	if len(t_spec) > 0{
 		resp.Occ.Success = true
-		resp.Armor = t_spec
+		resp.Gear = t_spec
 	} else {
 		resp.Occ.Error = "None found."
 	}
@@ -38,15 +38,15 @@ func (this *ArmorController) Get() {
     this.ServeJSON()
 }
 
-func (this *ArmorController) Add() {
-	var insReq InsArmReq
+func (this *GearController) Add() {
+	var insReq InsGearReq
 	err := json.Unmarshal(this.Ctx.Input.RequestBody, &insReq)
-	resp := InsArmResp{Occ: BaseResp{Success: false, Error: ""}}
+	resp := InsGearResp{Occ: BaseResp{Success: false, Error: ""}}
 	if err == nil {
-		sp_id := models.AddArmor(insReq.Armor)
+		sp_id := models.AddGear(insReq.Gear)
         if sp_id > 0 {
-	        insReq.Armor.Id = sp_id
-            resp.Armor = insReq.Armor
+	        insReq.Gear.Id = sp_id
+            resp.Gear = insReq.Gear
             resp.Occ.Success = true
         } else {
             resp.Occ.Error = "Failed to insert."

@@ -114,8 +114,19 @@ type Armor struct {
     Description string `json:"description"`
 }
 
+type Gear struct {
+    Id int64 `orm:"pk" json:"id"`
+    Item string `json:"item"`
+    Type string `json:"type"`
+    Price int `json:"price"`
+    Restricted bool `json:"restricted"`
+    Encumbrance int `json:"encumbrance"`
+    Rarity int `json:"rarity"`
+    Description string `json:"description"`
+}
+
 func init() {
     orm.RegisterModel(new(Career), new(CareerSkill), new(CareerSpec), new(Skill), new(SpeAttribute),
         new(SpecSkill), new(SpecTalent), new(Specialization), new(Species), new(Talent), new(Weapon),
-        new (Armor))
+        new (Armor), new(Gear))
 }
