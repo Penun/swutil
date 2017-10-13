@@ -55,7 +55,7 @@
             </select></p>
             <p><label><b>Encumbrance:</b></label><input type="number" name="wepEcum" ng-model="moldWeapon.encumbrance" min="0" max="99" required/></p>
             <p><label><b>Hard Points:</b></label><input type="number" name="wepHardP" ng-model="moldWeapon.hard_points" min="0" max="9" required/></p>
-            <p><label><b>Price:</b></label><input type="number" name="wepPrice" ng-model="moldWeapon.price" min="0" required/></p>
+            <p><label><b>Price:</b></label><input type="number" name="wepPrice" ng-model="moldWeapon.price" min="0" step="10" required/></p>
             <p><label><b>Restricted:</b></label><input type="checkbox" name="wepRestricted" ng-model="moldWeapon.restricted" /></p>
             <p><label><b>Rarity:</b></label><input type="number" name="wepRarity" ng-model="moldWeapon.rarity" min="0" max="99" required/></p>
             <div class="abilities"><label><b>Special:</b></label><textarea name="wepSpec" ng-model="moldWeapon.special" rows="5"></textarea></div>

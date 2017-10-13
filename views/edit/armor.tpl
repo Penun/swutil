@@ -18,7 +18,7 @@
             <p><label><b>Armor Type:</b></label><input type="text" name="armType" id="armType" ng-model="moldArmor.type" ng-change="mCont.CheckArm()" required/></p>
             <p><label><b>Defense:</b></label><input type="number" name="armDefense" ng-model="moldArmor.defense" min="0" max="9" required/></p>
             <p><label><b>Soak:</b></label><input type="number" name="armSoak" ng-model="moldArmor.soak" min="0" max="9" required/></p>
-            <p><label><b>Price:</b></label><input type="number" name="armPrice" ng-model="moldArmor.price" min="0" required/></p>
+            <p><label><b>Price:</b></label><input type="number" name="armPrice" ng-model="moldArmor.price" min="0" step="10" required/></p>
             <p><label><b>Restricted:</b></label><input type="checkbox" name="armRestricted" ng-model="moldArmor.restricted" /></p>
             <p><label><b>Encumbrance:</b></label><input type="number" name="armEcum" ng-model="moldArmor.encumbrance" min="0" max="9" required/></p>
             <p><label><b>Hard Points:</b></label><input type="number" name="armHardP" ng-model="moldArmor.hard_points" min="0" max="9" required/></p>
