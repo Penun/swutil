@@ -9,6 +9,8 @@
 		$scope.moldSpecial = {talents: [], skill_slots: 2};
 		$scope.moldWeapon = {skill: {}};
 		$scope.moldArmor = {};
+		$scope.moldGear = {};
+		$scope.moldAtta = {};
 
 		angular.element(document).ready(function(){
 			$http.get("/species").then(function(ret){
@@ -174,7 +176,25 @@
 			});
 		};
 
-		this.CheckSpec = function(){
+		this.AddAtta = function(){
+			var sendData = {
+				'attachment': $scope.moldAtta
+			};
+			$http.post("/attachments/add", sendData).then(function(ret){
+				if (ret.data.occ.success){
+					if (typeof $scope.attachments === 'undefined'){
+						$scope.attachments = [ret.data.attachment];
+					}
+					else {
+						$scope.attachments.push(ret.data.attachment);
+					}
+					$scope.moldAtta = {};
+					document.getElementById("attaName").focus();
+				}
+			});
+		};
+
+		this.CheckSpecies = function(){
 			if ($scope.moldSpecies.name != ""){
 				var found = false;
 				for (var i = 0; i < $scope.species.length; i++){
@@ -252,6 +272,19 @@
 			}
 		};
 
+		this.CheckAtta = function(){
+			if ($scope.moldAtta.name != ""){
+				var found = false;
+				for (var i = 0; i < $scope.attachments.length; i++){
+					if ($scope.moldAtta.name == $scope.attachments[i].name){
+						found = true;
+						break;
+					}
+				}
+				this.ApplyInClass(found, "#attaName");
+			}
+		};
+
 		this.ApplyInClass = function(found, id){
 			var inpNam = angular.element(document.querySelector(id));
 			if (found){
@@ -326,6 +359,16 @@
 							$scope.gear = ret.data.gear;
 						} else {
 							$scope.gear = [];
+						}
+					});
+				}
+			} else if (newTab == 7){
+				if (typeof $scope.attachments === 'undefined'){
+					$http.get("/attachments").then(function(ret){
+						if (ret.data.occ.success){
+							$scope.attachments = ret.data.attachments;
+						} else {
+							$scope.attachments = [];
 						}
 					});
 				}

@@ -22,6 +22,8 @@ func init() {
 	beego.Router("/armor/add", &controllers.ArmorController{}, "post:Add")
 	beego.Router("/gear", &controllers.GearController{})
 	beego.Router("/gear/add", &controllers.GearController{}, "post:Add")
+	beego.Router("/attachments", &controllers.AttachmentsController{})
+	beego.Router("/attachments/add", &controllers.AttachmentsController{}, "post:Add")
 
 	beego.Router("/edit", &controllers.EditController{})
 	//beego.Router("/species/add", &controllers.SpeciesController{}, "post:Add")

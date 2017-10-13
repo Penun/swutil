@@ -11,6 +11,7 @@
 			<span class="tab" ng-click="mCont.LoadTab(4)">Weapons</span>
 			<span class="tab" ng-click="mCont.LoadTab(5)">Armor</span>
 			<span class="tab" ng-click="mCont.LoadTab(6)">Gear</span>
+			<span class="tab" ng-click="mCont.LoadTab(7)">Attachments</span>
 		</div>
 		<div class="page sw_back">
 			<!-- template "edit/species.tpl" -->
@@ -19,6 +20,7 @@
 			{{template "edit/weapons.tpl"}}
 			{{template "edit/armor.tpl"}}
 			{{template "edit/gear.tpl"}}
+			{{template "edit/attachments.tpl"}}
 		</div>
 	</div>
 </body>
