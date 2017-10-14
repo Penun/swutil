@@ -137,8 +137,43 @@ type Attachment struct {
     Description string `json:"description"`
 }
 
+type Droid struct {
+    Id int64 `orm:"pk" json:"id"`
+    Name string `json:"name"`
+    Price int `json:"price"`
+    Restricted bool `json:"restricted"`
+    Rarity int `json:"rarity"`
+    Brawn int `json:"brawn"`
+    Agility int `json:"agility"`
+    Intellect int `json:"intellect"`
+    Cunning int `json:"cunning"`
+    Willpower int `json:"willpower"`
+    Presence int `json:"presence"`
+    SoakValue int `json:"soak_value"`
+    WoundThreshold int `json:"wound_threshold"`
+    DefenseMelee int `json:"defense_melee"`
+    DefenseRanged int `json:"defense_ranged"`
+    Abilities string `json:"abilities"`
+    Equipment string `json:"equipment"`
+    Description string `json:"description"`
+}
+
+type DroidSkill struct {
+    Id int64 `orm:"pk" json:"id"`
+    Droid *Droid `orm:"rel(fk)" json:"droid"`
+    Skill *Skill `orm:"rel(fk)" json:"skill"`
+    Ranks int `json:"ranks"`
+}
+
+type DroidTalent struct {
+    Id int64 `orm:"pk" json:"id"`
+    Droid *Droid `orm:"rel(fk)" json:"droid"`
+    Talent *Talent `orm:"rel(fk)" json:"talent"`
+    Ranks int `json:"ranks"`
+}
+
 func init() {
     orm.RegisterModel(new(Career), new(CareerSkill), new(CareerSpec), new(Skill), new(SpeAttribute),
         new(SpecSkill), new(SpecTalent), new(Specialization), new(Species), new(Talent), new(Weapon),
-        new (Armor), new(Gear), new(Attachment))
+        new (Armor), new(Gear), new(Attachment), new(Droid), new(DroidSkill), new(DroidTalent))
 }

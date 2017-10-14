@@ -11,6 +11,9 @@
 		$scope.moldArmor = {};
 		$scope.moldGear = {};
 		$scope.moldAtta = {};
+		$scope.moldDroid = {};
+		this.skillsCho = [];
+		this.talCho = null;
 
 		angular.element(document).ready(function(){
 			$http.get("/species").then(function(ret){
@@ -32,6 +35,60 @@
 			}
 			abilTxt.value = "";
 			abilTxt.focus();
+		};
+
+		this.AddSkills = function(){
+			if (typeof $scope.moldDroid.skills === 'undefined'){
+				$scope.moldDroid.skills = [];
+			}
+			for (var i = 0; i < this.skillsCho.length; i++){
+				for (var j = 0; j < $scope.skills.length; j++){
+					if (this.skillsCho[i] == $scope.skills[j].id){
+						var contains = false;
+						for (var k = 0; k < $scope.moldDroid.skills.length; k++){
+							if ($scope.skills[j].id == $scope.moldDroid.skills[k].id){
+								contains = true;
+								break;
+							}
+						}
+						if (!contains){
+							var ski = {
+								"skill": {"id": $scope.skills[j].id},
+								"name": $scope.skills[j].name
+							};
+							$scope.moldDroid.skills.push(ski);
+						}
+						break;
+					}
+				}
+			}
+			this.skillsCho = [];
+		};
+
+		this.AddTals = function(){
+			if (typeof $scope.moldDroid.talents === 'undefined'){
+				$scope.moldDroid.talents = [];
+			}
+			for (var j = 0; j < $scope.talents.length; j++){
+				if (this.talCho == $scope.talents[j].id){
+					var contains = false;
+					for (var k = 0; k < $scope.moldDroid.talents.length; k++){
+						if ($scope.talents[j].id == $scope.moldDroid.talents[k].id){
+							contains = true;
+							break;
+						}
+					}
+					if (!contains){
+						var tal = {
+							"talent": {"id": $scope.talents[j].id},
+							"name": $scope.talents[j].name
+						};
+						$scope.moldDroid.talents.push(tal);
+					}
+					break;
+				}
+			}
+			this.talCho = null;
 		};
 
 		this.AddSpecies = function(){
@@ -194,6 +251,36 @@
 			});
 		};
 
+		this.AddDroid = function(){
+			var skis = $scope.moldDroid.skills;
+			delete $scope.moldDroid.skills;
+			for (var i = 0; i < skis.length; i++){
+				delete skis[i].name;
+			}
+			var tals = $scope.moldDroid.talents;
+			delete $scope.moldDroid.talents;
+			for (var i = 0; i < tals.length; i++){
+				delete tals[i].name;
+			}
+			var sendData = {
+				'droid': $scope.moldDroid,
+				'skills': skis,
+				'talents': tals
+			};
+			$http.post("/droids/add", sendData).then(function(ret){
+				if (ret.data.occ.success){
+					if (typeof $scope.droids === 'undefined'){
+						$scope.droids = [ret.data.droid];
+					}
+					else {
+						$scope.droids.push(ret.data.droid);
+					}
+					$scope.moldDroid = {};
+					document.getElementById("droidName").focus();
+				}
+			});
+		};
+
 		this.CheckSpecies = function(){
 			if ($scope.moldSpecies.name != ""){
 				var found = false;
@@ -285,6 +372,19 @@
 			}
 		};
 
+		this.CheckDroid = function(){
+			if ($scope.moldDroid.name != ""){
+				var found = false;
+				for (var i = 0; i < $scope.droids.length; i++){
+					if ($scope.moldDroid.name == $scope.droids[i].name){
+						found = true;
+						break;
+					}
+				}
+				this.ApplyInClass(found, "#droidName");
+			}
+		};
+
 		this.ApplyInClass = function(found, id){
 			var inpNam = angular.element(document.querySelector(id));
 			if (found){
@@ -312,13 +412,7 @@
 					});
 				}
 				if (typeof $scope.skills === 'undefined'){
-					$http.get("/skills").then(function(ret){
-						if (ret.data.occ.success){
-							$scope.skills = ret.data.skills;
-						} else {
-							$scope.skills = [];
-						}
-					});
+					this.FetchSkills();
 				}
 				if (typeof $scope.talents === 'undefined'){
 					this.FetchTalents();
@@ -372,6 +466,22 @@
 						}
 					});
 				}
+			} else if (newTab == 8){
+				if (typeof $scope.droids === 'undefined'){
+					$http.get("/droids").then(function(ret){
+						if (ret.data.occ.success){
+							$scope.droids = ret.data.droids;
+						} else {
+							$scope.droids = [];
+						}
+					});
+				}
+				if (typeof $scope.skills === 'undefined'){
+					this.FetchSkills();
+				}
+				if (typeof $scope.talents === 'undefined'){
+					this.FetchTalents();
+				}
 			}
 		};
 
@@ -383,6 +493,18 @@
 			$http.get("/talents").then(function(ret){
 				if (ret.data.occ.success){
 					$scope.talents = ret.data.talents;
+				} else {
+					$scope.talents = [];
+				}
+			});
+		};
+
+		this.FetchSkills = function(){
+			$http.get("/skills").then(function(ret){
+				if (ret.data.occ.success){
+					$scope.skills = ret.data.skills;
+				} else {
+					$scope.skills = [];
 				}
 			});
 		};

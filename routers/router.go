@@ -25,11 +25,13 @@ func init() {
 	beego.Router("/gear/add", &controllers.GearController{}, "post:Add")
 	beego.Router("/attachments", &controllers.AttachmentsController{})
 	beego.Router("/attachments/add", &controllers.AttachmentsController{}, "post:Add")
+	beego.Router("/droids", &controllers.DroidsController{})
+	beego.Router("/droids/add", &controllers.DroidsController{}, "post:Add")
 
 	beego.Router("/edit", &controllers.EditController{})
 	//beego.Router("/species/add", &controllers.SpeciesController{}, "post:Add")
 	//beego.Router("/specializations", &controllers.SpecializationsController{})
 	//beego.Router("/specializations/add", &controllers.SpecializationsController{}, "post:Add")
-	//beego.Router("/talents", &controllers.TalentsController{})
+	beego.Router("/talents", &controllers.TalentsController{})
 	//beego.Router("/talents/add", &controllers.TalentsController{}, "post:Add")
 }

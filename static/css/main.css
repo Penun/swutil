@@ -561,3 +561,9 @@ div.vConn {
 	font-size: 1.2em;
 	word-wrap: break-word;
 }
+
+.droidSkill {
+	display: inline-block;
+	padding-top: 1vh;
+	width: auto;
+}
