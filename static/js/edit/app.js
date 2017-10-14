@@ -46,7 +46,7 @@
 					if (this.skillsCho[i] == $scope.skills[j].id){
 						var contains = false;
 						for (var k = 0; k < $scope.moldDroid.skills.length; k++){
-							if ($scope.skills[j].id == $scope.moldDroid.skills[k].id){
+							if ($scope.skills[j].id == $scope.moldDroid.skills[k].skill.id){
 								contains = true;
 								break;
 							}
@@ -73,7 +73,7 @@
 				if (this.talCho == $scope.talents[j].id){
 					var contains = false;
 					for (var k = 0; k < $scope.moldDroid.talents.length; k++){
-						if ($scope.talents[j].id == $scope.moldDroid.talents[k].id){
+						if ($scope.talents[j].id == $scope.moldDroid.talents[k].talent.id){
 							contains = true;
 							break;
 						}
