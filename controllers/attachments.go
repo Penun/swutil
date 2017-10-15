@@ -27,7 +27,7 @@ type InsAttaResp struct{
 func (this *AttachmentsController) Get() {
     resp := GetAttaResp{Occ: BaseResp{Success: false, Error: ""}}
 	var t_spec []models.Attachment
-    t_spec = models.GetAttachment()
+    t_spec = models.GetAttachments()
 	if len(t_spec) > 0{
 		resp.Occ.Success = true
 		resp.Attachment = t_spec

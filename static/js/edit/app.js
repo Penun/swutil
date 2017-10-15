@@ -12,6 +12,7 @@
 		$scope.moldGear = {};
 		$scope.moldAtta = {};
 		$scope.moldDroid = {};
+		$scope.moldVehi = {};
 		this.skillsCho = [];
 		this.talCho = null;
 
@@ -281,6 +282,24 @@
 			});
 		};
 
+		this.AddVehicle = function(){
+			var sendData = {
+				'vehicle': $scope.moldVehi
+			};
+			$http.post("/vehicles/add", sendData).then(function(ret){
+				if (ret.data.occ.success){
+					if (typeof $scope.vehicles === 'undefined'){
+						$scope.vehicles = [ret.data.vehicle];
+					}
+					else {
+						$scope.vehicles.push(ret.data.vehicle);
+					}
+					$scope.moldVehi = {};
+					document.getElementById("vehiModel").focus();
+				}
+			});
+		};
+
 		this.CheckSpecies = function(){
 			if ($scope.moldSpecies.name != ""){
 				var found = false;
@@ -385,6 +404,19 @@
 			}
 		};
 
+		this.CheckVehicle = function(){
+			if ($scope.moldVehi.model != ""){
+				var found = false;
+				for (var i = 0; i < $scope.vehicles.length; i++){
+					if ($scope.moldVehi.model == $scope.vehicles[i].model){
+						found = true;
+						break;
+					}
+				}
+				this.ApplyInClass(found, "#vehiModel");
+			}
+		};
+
 		this.ApplyInClass = function(found, id){
 			var inpNam = angular.element(document.querySelector(id));
 			if (found){
@@ -481,6 +513,16 @@
 				}
 				if (typeof $scope.talents === 'undefined'){
 					this.FetchTalents();
+				}
+			} else if (newTab == 9){
+				if (typeof $scope.vehicles === 'undefined'){
+					$http.get("/vehicles").then(function(ret){
+						if (ret.data.occ.success){
+							$scope.vehicles = ret.data.vehicles;
+						} else {
+							$scope.vehicles = [];
+						}
+					});
 				}
 			}
 		};

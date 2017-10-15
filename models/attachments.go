@@ -4,7 +4,7 @@ import (
     "github.com/astaxie/beego/orm"
 )
 
-func GetAttachment() []Attachment{
+func GetAttachments() []Attachment{
     o := orm.NewOrm()
     var atta []Attachment
     o.QueryTable("attachment").OrderBy("type", "name").All(&atta)

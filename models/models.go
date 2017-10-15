@@ -172,8 +172,35 @@ type DroidTalent struct {
     Ranks int `json:"ranks"`
 }
 
+type Vehicle struct {
+    Id int64 `orm:"pk" json:"id"`
+    Model string `json:"model"`
+    Type string `json:"type"`
+    Silhouette int `json:"silhouette"`
+    Speed int `json:"speed"`
+    Handling int `json:"handling"`
+    DefForward int `json:"def_forward"`
+    DefAft int `json:"def_aft"`
+    DefStarboard int `json:"def_starboard"`
+    DefPort int `json:"def_port"`
+    Armor int `json:"armor"`
+    SsThreshold int `json:"ss_threshold"`
+    HtThreshold int `json:"ht_threshold"`
+    Manufacturer string `json:"manufacturer"`
+    MaxAltitude int `json:"max_altitude"`
+    SensorRange string `json:"sensor_range"`
+    Crew string `json:"crew"`
+    EncCapacity string `json:"crew"`
+    PassCapacity string `json:"pass_capacity"`
+    Cost int `json:"cost"`
+    Rarity int `json:"rarity"`
+    HardPoints int `json:"hard_points"`
+    Description string `json:"description"`
+    Weapons string `json:"weapons"`
+}
+
 func init() {
     orm.RegisterModel(new(Career), new(CareerSkill), new(CareerSpec), new(Skill), new(SpeAttribute),
         new(SpecSkill), new(SpecTalent), new(Specialization), new(Species), new(Talent), new(Weapon),
-        new (Armor), new(Gear), new(Attachment), new(Droid), new(DroidSkill), new(DroidTalent))
+        new(Armor), new(Gear), new(Attachment), new(Droid), new(DroidSkill), new(DroidTalent), new(Vehicle))
 }
