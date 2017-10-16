@@ -30,9 +30,9 @@
             <p><label><b>Speed:</b></label><input type="number" name="starSpeed" ng-model="moldStar.speed" placeholder="1" min="1" max="9" required/></p>
             <p><label><b>Handling:</b></label><input type="number" name="starHand" ng-model="moldStar.handling" placeholder="0" min="-9" max="9" required/></p>
             <p><label><b>Defense Forward:</b></label><input type="number" name="stardefFor" ng-model="moldStar.def_forward" placeholder="0" min="0" max="9" required/></p>
-            <p><label><b>Defense Aft:</b></label><input type="number" name="stardefAft" ng-model="moldStar.def_aft" placeholder="0" min="0" max="9" required/></p>
-            <p><label><b>Defense Port:</b></label><input type="number" name="stardefPor" ng-model="moldStar.def_port" min="0" max="9" /></p>
             <p><label><b>Defense Starboard:</b></label><input type="number" name="stardefStr" ng-model="moldStar.def_starboard" min="0" max="9" /></p>
+            <p><label><b>Defense Port:</b></label><input type="number" name="stardefPor" ng-model="moldStar.def_port" min="0" max="9" /></p>
+            <p><label><b>Defense Aft:</b></label><input type="number" name="stardefAft" ng-model="moldStar.def_aft" placeholder="0" min="0" max="9" required/></p>
             <p><label><b>Armor:</b></label><input type="number" name="starArmo" ng-model="moldStar.armor" placeholder="1" min="0" max="9" required/></p>
             <p><label><b>HT Threshold:</b></label><input type="number" name="starhtThresh" ng-model="moldStar.ht_threshold" placeholder="1" min="1" max="99" required/></p>
             <p><label><b>SS Threshold:</b></label><input type="number" name="starssThresh" ng-model="moldStar.ss_threshold" placeholder="1" min="1" max="99" required/></p>
