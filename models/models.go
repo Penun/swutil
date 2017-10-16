@@ -99,6 +99,7 @@ type Weapon struct {
     Rarity int `json:"rarity"`
     Special string `json:"special"`
     Description string `json:"description"`
+    Book string `json:"book"`
 }
 
 type Armor struct {
@@ -112,6 +113,7 @@ type Armor struct {
     HardPoints int `json:"hard_points"`
     Rarity int `json:"rarity"`
     Description string `json:"description"`
+    Book string `json:"book"`
 }
 
 type Gear struct {
@@ -123,6 +125,7 @@ type Gear struct {
     Encumbrance int `json:"encumbrance"`
     Rarity int `json:"rarity"`
     Description string `json:"description"`
+    Book string `json:"book"`
 }
 
 type Attachment struct {
@@ -135,6 +138,7 @@ type Attachment struct {
     HpRequired int `json:"hp_required"`
     Rarity int `json:"rarity"`
     Description string `json:"description"`
+    Book string `json:"book"`
 }
 
 type Droid struct {
@@ -156,6 +160,7 @@ type Droid struct {
     Abilities string `json:"abilities"`
     Equipment string `json:"equipment"`
     Description string `json:"description"`
+    Book string `json:"book"`
 }
 
 type DroidSkill struct {
@@ -197,10 +202,43 @@ type Vehicle struct {
     HardPoints int `json:"hard_points"`
     Description string `json:"description"`
     Weapons string `json:"weapons"`
+    Book string `json:"book"`
+}
+
+type Starship struct {
+    Id int64 `orm:"pk" json:"id"`
+    Model string `json:"model"`
+    Type string `json:"type"`
+    Silhouette int `json:"silhouette"`
+    Speed int `json:"speed"`
+    Handling int `json:"handling"`
+    DefForward int `json:"def_forward"`
+    DefAft int `json:"def_aft"`
+    DefStarboard int `json:"def_starboard"`
+    DefPort int `json:"def_port"`
+    Armor int `json:"armor"`
+    HtThreshold int `json:"ht_threshold"`
+    SsThreshold int `json:"ss_threshold"`
+    Manufacturer string `json:"manufacturer"`
+    Hyperdrive string `json:"hyperdrive"`
+    Navicomputer string `json:"navicomputer"`
+    SensorRange string `json:"sensor_range"`
+    Complement string `json:"complement"`
+    EncCapacity string `json:"enc_capacity"`
+    PassCapacity string `json:"pass_capacity"`
+    Consumables string `json:"consumables"`
+    Cost int `json:"cost"`
+    Rarity int `json:"rarity"`
+    HardPoints int `json:"hard_points"`
+    Weapons string `json:"weapons"`
+    Customizations string `json:"customizations"`
+    Description string `json:"description"`
+    Book string `json:"book"`
 }
 
 func init() {
     orm.RegisterModel(new(Career), new(CareerSkill), new(CareerSpec), new(Skill), new(SpeAttribute),
         new(SpecSkill), new(SpecTalent), new(Specialization), new(Species), new(Talent), new(Weapon),
-        new(Armor), new(Gear), new(Attachment), new(Droid), new(DroidSkill), new(DroidTalent), new(Vehicle))
+        new(Armor), new(Gear), new(Attachment), new(Droid), new(DroidSkill), new(DroidTalent), new(Vehicle),
+        new(Starship))
 }

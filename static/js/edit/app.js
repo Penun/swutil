@@ -13,6 +13,7 @@
 		$scope.moldAtta = {};
 		$scope.moldDroid = {};
 		$scope.moldVehi = {};
+		$scope.moldStar = {};
 		this.skillsCho = [];
 		this.talCho = null;
 
@@ -300,6 +301,24 @@
 			});
 		};
 
+		this.AddStarship = function(){
+			var sendData = {
+				'starship': $scope.moldStar
+			};
+			$http.post("/starships/add", sendData).then(function(ret){
+				if (ret.data.occ.success){
+					if (typeof $scope.starships === 'undefined'){
+						$scope.starships = [ret.data.starship];
+					}
+					else {
+						$scope.starships.push(ret.data.starship);
+					}
+					$scope.moldStar = {};
+					document.getElementById("starModel").focus();
+				}
+			});
+		};
+
 		this.CheckSpecies = function(){
 			if ($scope.moldSpecies.name != ""){
 				var found = false;
@@ -417,6 +436,19 @@
 			}
 		};
 
+		this.CheckStarship = function(){
+			if ($scope.moldStar.model != ""){
+				var found = false;
+				for (var i = 0; i < $scope.starships.length; i++){
+					if ($scope.moldStar.model == $scope.starships[i].model){
+						found = true;
+						break;
+					}
+				}
+				this.ApplyInClass(found, "#starModel");
+			}
+		};
+
 		this.ApplyInClass = function(found, id){
 			var inpNam = angular.element(document.querySelector(id));
 			if (found){
@@ -521,6 +553,16 @@
 							$scope.vehicles = ret.data.vehicles;
 						} else {
 							$scope.vehicles = [];
+						}
+					});
+				}
+			} else if (newTab == 10){
+				if (typeof $scope.starships === 'undefined'){
+					$http.get("/starships").then(function(ret){
+						if (ret.data.occ.success){
+							$scope.starships = ret.data.starships;
+						} else {
+							$scope.starships = [];
 						}
 					});
 				}

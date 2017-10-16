@@ -14,6 +14,7 @@
 			<span class="tab" ng-click="mCont.LoadTab(7)">Attachments</span>
 			<span class="tab" ng-click="mCont.LoadTab(8)">Droids</span>
 			<span class="tab" ng-click="mCont.LoadTab(9)">Vehicles</span>
+			<span class="tab" ng-click="mCont.LoadTab(10)">Starships</span>
 		</div>
 		<div class="page sw_back">
 			<!-- template "edit/species.tpl" -->
@@ -25,6 +26,7 @@
 			{{template "edit/attachments.tpl"}}
 			{{template "edit/droids.tpl"}}
 			{{template "edit/vehicles.tpl"}}
+			{{template "edit/starships.tpl"}}
 		</div>
 	</div>
 </body>
