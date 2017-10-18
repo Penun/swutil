@@ -4,6 +4,7 @@ import (
 	"github.com/Penun/swutil/models"
 	"github.com/astaxie/beego"
     "encoding/json"
+	"github.com/astaxie/beego/orm"
 )
 
 type WeaponsController struct {
@@ -13,6 +14,22 @@ type WeaponsController struct {
 type GetWeapResp struct {
     Occ BaseResp `json:"occ"`
     Weapons []models.Weapon `json:"weapons"`
+}
+
+type GetTypeResp struct {
+    Occ BaseResp `json:"occ"`
+    Weapons []string `json:"weapons"`
+}
+
+type GetSuTyReq struct {
+	Type string `json:"type"`
+	Index int `json:"index"`
+}
+
+type GetSuTyResp struct {
+    Occ BaseResp `json:"occ"`
+    SubTypes []orm.Params `json:"sub_types"`
+	Index int `json:"index"`
 }
 
 type InsWeapReq struct {
@@ -38,6 +55,37 @@ func (this *WeaponsController) Get() {
     this.ServeJSON()
 }
 
+func (this *WeaponsController) Types() {
+	resp := GetTypeResp{Occ: BaseResp{Success: true, Error: ""}}
+	resp.Weapons = make([]string, 4)
+	resp.Weapons[0] = "Ranged"
+	resp.Weapons[1] = "Melee"
+	resp.Weapons[2] = "Lightsaber"
+	resp.Weapons[3] = "Micro-Rockets"
+    this.Data["json"] = resp
+    this.ServeJSON()
+}
+
+func (this *WeaponsController) SubTypes() {
+	var getReq GetSuTyReq
+	err := json.Unmarshal(this.Ctx.Input.RequestBody, &getReq)
+	resp := GetSuTyResp{Occ: BaseResp{Success: false, Error: ""}}
+	if err == nil {
+		subs := models.GetWeaponSubTypesByType(getReq.Type)
+        if len(subs) > 0 {
+			resp.Index = getReq.Index
+            resp.SubTypes = subs
+            resp.Occ.Success = true
+        } else {
+            resp.Occ.Error = "Failed to find."
+        }
+	} else {
+		resp.Occ.Error = "Failed Parse."
+	}
+	this.Data["json"] = resp
+	this.ServeJSON()
+}
+
 func (this *WeaponsController) Add() {
 	var insReq InsWeapReq
 	err := json.Unmarshal(this.Ctx.Input.RequestBody, &insReq)
@@ -52,7 +100,7 @@ func (this *WeaponsController) Add() {
             resp.Occ.Error = "Failed to insert."
         }
 	} else {
-		resp.Occ.Error = "Failed Parse." + err.Error()
+		resp.Occ.Error = "Failed Parse."
 	}
 	this.Data["json"] = resp
 	this.ServeJSON()

@@ -145,6 +145,28 @@
 			ele.scrollTop = ele.scrollHeight;
 		};
 
+		this.RevealWeaponType = function(index){
+			if ($scope.weapons[index].sub_types == null){
+				var sendData = {
+					'type': $scope.weapons[index].type_name,
+					'index': index
+				};
+				$http.post("/weapons/sub_types", sendData).then(function(ret){
+					if (ret.data.occ.success){
+						$scope.weapons[ret.data.index].sub_types = [];
+						for (var i = 0; i < ret.data.sub_types.length; i++){
+							$scope.weapons[ret.data.index].sub_types.push({
+								'type_name': ret.data.sub_types[i].SubType
+							});
+						}
+						$scope.curWeapType = $scope.weapons[ret.data.index];
+					}
+				});
+			} else {
+				$scope.curWeapType = $scope.weapons[index];
+			}
+		};
+
 		this.CloseTalent = function(){
 			$scope.curTale = null;
 		};
@@ -162,6 +184,19 @@
 					$http.get("/skills").then(function(ret){
 						if(ret.data.occ.success){
 							$scope.skills = ret.data.skills;
+						}
+					});
+				}
+			} else if (newTab == 3){
+				if (typeof $scope.weapons === 'undefined'){
+					$http.get("/weapons/types").then(function(ret){
+						if (ret.data.occ.success){
+							$scope.weapons = [];
+							for (var i = 0; i < ret.data.weapons.length; i++){
+								$scope.weapons.push({
+									'type_name': ret.data.weapons[i]
+								});
+							}
 						}
 					});
 				}
