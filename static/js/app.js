@@ -165,10 +165,46 @@
 			} else {
 				$scope.curWeapType = $scope.weapons[index];
 			}
+			$scope.curWeapSub = null;
+			$scope.curWeap = null;
+		};
+
+		this.RevealWeapons = function(index){
+			if ($scope.curWeapType.sub_types[index].weapons == null){
+				var sendData = {
+					'sub_type': $scope.curWeapType.sub_types[index].type_name,
+					'index': index
+				};
+				$http.post("/weapons/by_sub", sendData).then(function(ret){
+					if (ret.data.occ.success){
+						$scope.curWeapType.sub_types[ret.data.index].weapons = ret.data.weapons;
+						$scope.curWeapSub = $scope.curWeapType.sub_types[ret.data.index];
+					}
+				});
+			} else {
+				$scope.curWeapSub = $scope.curWeapType.sub_types[index];
+			}
+			$scope.curWeap = null;
+		};
+
+		this.RevealWeapon = function(index){
+			$scope.curWeap = $scope.curWeapSub.weapons[index];
+			for (var i = 0; i < $scope.skills.length; i++){
+				if ($scope.curWeap.skill.id == $scope.skills[i].id){
+					$scope.curWeap.skill_ind = i;
+					break;
+				}
+			}
+			var ele = document.getElementById("right_col");
+			ele.scrollTop = ele.scrollHeight;
 		};
 
 		this.CloseTalent = function(){
 			$scope.curTale = null;
+		};
+
+		this.CloseWeapon = function(){
+			$scope.curWeap = null;
 		};
 
 		this.LoadTab = function(newTab){
@@ -180,13 +216,7 @@
 						}
 					});
 				}
-				if (typeof $scope.skill === 'undefined'){
-					$http.get("/skills").then(function(ret){
-						if(ret.data.occ.success){
-							$scope.skills = ret.data.skills;
-						}
-					});
-				}
+				this.FetchSkills();
 			} else if (newTab == 3){
 				if (typeof $scope.weapons === 'undefined'){
 					$http.get("/weapons/types").then(function(ret){
@@ -200,8 +230,19 @@
 						}
 					});
 				}
+				this.FetchSkills();
 			}
 			this.curTab = newTab;
+		};
+
+		this.FetchSkills = function(){
+			if (typeof $scope.skill === 'undefined'){
+				$http.get("/skills").then(function(ret){
+					if(ret.data.occ.success){
+						$scope.skills = ret.data.skills;
+					}
+				});
+			}
 		};
 
 		this.ShowTab = function(tab_id){

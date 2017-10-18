@@ -1,6 +1,6 @@
 body {
-	background-image: url("../img/starscape.png");
-	background-size: 100%;
+	background-image: url("/static/img/starscape.png");
+	background-size: 100% 100%;
 	background-repeat: round;
 	color: #a4dde5;
 	font-family: 'Share Tech Mono', monospace;
@@ -18,7 +18,7 @@ body {
 }
 
 .sw_back {
-	background-image: url("../img/sw_back.png");
+	background-image: url("/static/img/sw_back.png");
 	background-size: 100% 100%;
 	background-repeat: round;
 }
@@ -149,7 +149,7 @@ body {
 }
 
 .tab {
-	background-image: url("../img/light_underline.png");
+	background-image: url("/static/img/light_underline.png");
 	background-repeat: no-repeat;
 	background-position: center bottom;
 	background-size: 100%;
@@ -158,7 +158,7 @@ body {
 }
 
 .tab:hover {
-	background-image: url("../img/light_underline_high.png");
+	background-image: url("/static/img/light_underline_high.png");
 	color: #293c56;
 }
 
@@ -312,7 +312,7 @@ input.found {
 }
 
 .clickable {
-	background-image: url("../img/light_underline.png");
+	background-image: url("/static/img/light_underline.png");
 	background-repeat: no-repeat;
 	background-position: center bottom;
 	background-size: 100%;
@@ -324,7 +324,7 @@ input.found {
 }
 
 .clickable:hover {
-	background-image: url("../img/light_underline_high.png");
+	background-image: url("/static/img/light_underline_high.png");
 	color: #293c56;
 	font-weight: 200;
 }
@@ -377,7 +377,7 @@ li.skill {
 	width: auto;
 	padding: 1% 2%;
 	text-align: center;
-	background-image: url('../img/light_underline.png');
+	background-image: url('/static/img/light_underline.png');
 	background-repeat: no-repeat;
 	background-position: center bottom;
 	background-size: 95% 20%;
@@ -385,10 +385,9 @@ li.skill {
 
 .characterBlock {
 	width: 100%;
-	font-size: 1.5em;
-	padding-top: 1vh;
-	padding-bottom: 1vh;
-	height: 27px;
+	font-size: 1.3em;
+	padding-top: 1%;
+	padding-bottom: 1%;
 	position: relative;
 	z-index: 100;
 }
@@ -396,6 +395,7 @@ li.skill {
 .characterBlock > span {
 	width: 16%;
 	float: left;
+	height: 4vh;
 	text-align: center;
 }
 
@@ -475,7 +475,7 @@ li.skill {
 }
 
 .talentBlock > div.talent:hover {
-	background-image: url("../img/sw_back_h.png");
+	background-image: url("/static/img/sw_back_h.png");
 	background-size: 100% 100%;
 	background-repeat: round;
 	cursor: pointer;
@@ -547,6 +547,7 @@ div.vConn {
 
 .taleDesc {
 	white-space: pre-line;
+	margin-top: 2%;
 }
 
 .taleDesc > img {
@@ -574,4 +575,35 @@ div.vConn {
 	display: inline-block;
 	padding-top: 1vh;
 	width: auto;
+}
+
+table {
+	width: 100%;
+	padding: 2%;
+}
+
+tr {
+	background-image: url("/static/img/light_underline.png");
+	background-size: 105% 20%;
+	background-repeat: no-repeat;
+	background-position: bottom center;
+}
+
+tr.item {
+	cursor: pointer;
+}
+
+tr.item:hover {
+	background-image: url("/static/img/light_underline_high.png");
+	background-size: 100% 100%;
+	color: #293c56;
+	font-weight: 200;
+}
+
+td.numb {
+	text-align: right;
+}
+
+td.rang {
+	text-align: center;
 }

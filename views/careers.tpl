@@ -119,7 +119,10 @@
                     <div class="talentPanel">
                         <div class="characterBlock"><b>{{"{{curTale.name}}"}}</b><button type="button" ng-click="mCont.CloseTalent()" style="font-size: 0.5em; position: absolute; right: 15px;">X</button></div>
                         <div class="characterBlock">Type: {{"{{curTale.type}}"}}</div>
-                        <div class="characterBlock">Ranked: {{"{{curTale.ranked}}"}}</div>
+                        <div class="characterBlock">Ranked:
+                            <span style="float: none;" ng-if="curTale.ranked">Yes</span>
+                            <span style="float: none;" ng-if="!curTale.ranked">No</span>
+                        </div>
                         <div ng-bind-html="curTale.description" class="taleDesc"></div>
                     </div>
                 </div>

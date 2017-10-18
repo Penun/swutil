@@ -26,6 +26,17 @@ func GetWeaponSubTypesByType(typ string) []orm.Params{
     }
 }
 
+func GetWeaponsBySub(typ string) []Weapon{
+    o := orm.NewOrm()
+    var weaps []Weapon
+    o.QueryTable("weapon").Filter("sub_type", typ).OrderBy("skill_id", "range", "damage", "name").All(&weaps)
+    if len(weaps) > 0 {
+        return weaps
+    } else {
+        return []Weapon{}
+    }
+}
+
 func AddWeapon(wea Weapon) int64 {
 	o := orm.NewOrm()
 	id, err := o.Insert(&wea)

@@ -29,9 +29,35 @@
     </div>
     <div class="right_col" id="right_col">
         <div ng-show="curWeapSub != null">
-            <span ng-repeat="(ind, weap) in curWeapSub.weapons">
-                {{"{{weap.name}}"}}
-            </span>
+            <table class="sw_back">
+                <tr>
+                    <th>Name</th>
+                    <th>Dam</th>
+                    <th>Crit</th>
+                    <th>Range</th>
+                </tr>
+                <tr ng-repeat="(ind, weap) in curWeapSub.weapons" ng-click="mCont.RevealWeapon(ind)" class="item">
+                    <td>{{"{{weap.name}}"}}</td>
+                    <td class="numb"><span style="float: none;" ng-if="weap.damage_add">+</span>{{"{{weap.damage}}"}}</td>
+                    <td class="numb">{{"{{weap.critical}}"}}</td>
+                    <td class="rang">{{"{{weap.range}}"}}</td>
+                </tr>
+            </table>
+            <div class="sw_back talentPanelOut" ng-show="curWeap != null">
+                <div class="talentPanel">
+                    <div class="characterBlock"><b>{{"{{curWeap.name}}"}}</b><button type="button" ng-click="mCont.CloseWeapon()" style="font-size: 0.5em; position: absolute; right: 15px;">X</button></div>
+                    <div class="characterBlock">Skill: {{"{{skills[curWeap.skill_ind].name}}"}}</div>
+                    <div class="characterBlock">Damage: <span style="float: none;" ng-if="curWeap.damage_add">+</span>{{"{{curWeap.damage}}"}}</div>
+                    <div class="characterBlock">Critical: {{"{{curWeap.critical}}"}}</div>
+                    <div class="characterBlock">Range: {{"{{curWeap.range}}"}}</div>
+                    <div class="characterBlock">Encumbrance: {{"{{curWeap.encumbrance}}"}}</div>
+                    <div class="characterBlock">Hard Points: {{"{{curWeap.hard_points}}"}}</div>
+                    <div class="characterBlock">Price: <span style="float: none;" ng-if="curWeap.restricted">(R)</span> {{"{{curWeap.price}}"}}</div>
+                    <div class="characterBlock">Rarity: {{"{{curWeap.rarity}}"}}</div>
+                    <div class="characterBlock" ng-show="curWeap.special != ''">Special: {{"{{curWeap.special}}"}}</div>
+                    <div ng-bind-html="curWeap.description" class="taleDesc"></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

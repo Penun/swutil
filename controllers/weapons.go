@@ -32,6 +32,17 @@ type GetSuTyResp struct {
 	Index int `json:"index"`
 }
 
+type GetBySuReq struct {
+	SubType string `json:"sub_type"`
+	Index int `json:"index"`
+}
+
+type GetBySuResp struct {
+    Occ BaseResp `json:"occ"`
+    Weapons []models.Weapon `json:"weapons"`
+	Index int `json:"index"`
+}
+
 type InsWeapReq struct {
 	Weapon models.Weapon `json:"weapon"`
 }
@@ -75,6 +86,26 @@ func (this *WeaponsController) SubTypes() {
         if len(subs) > 0 {
 			resp.Index = getReq.Index
             resp.SubTypes = subs
+            resp.Occ.Success = true
+        } else {
+            resp.Occ.Error = "Failed to find."
+        }
+	} else {
+		resp.Occ.Error = "Failed Parse."
+	}
+	this.Data["json"] = resp
+	this.ServeJSON()
+}
+
+func (this *WeaponsController) BySub() {
+	var getReq GetBySuReq
+	err := json.Unmarshal(this.Ctx.Input.RequestBody, &getReq)
+	resp := GetBySuResp{Occ: BaseResp{Success: false, Error: ""}}
+	if err == nil {
+		weaps := models.GetWeaponsBySub(getReq.SubType)
+        if len(weaps) > 0 {
+			resp.Index = getReq.Index
+            resp.Weapons = weaps
             resp.Occ.Success = true
         } else {
             resp.Occ.Error = "Failed to find."
