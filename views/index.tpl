@@ -8,11 +8,13 @@
 			<span class="tab" ng-click="mCont.LoadTab(1)">Species</span>
 			<span class="tab" ng-click="mCont.LoadTab(2)">Careers</span>
 			<span class="tab" ng-click="mCont.LoadTab(3)">Weapons</span>
+			<span class="tab" ng-click="mCont.LoadTab(4)">Armor</span>
 		</div>
 		<div class="page sw_back">
 			{{template "species.tpl"}}
 			{{template "careers.tpl"}}
 			{{template "weapons.tpl"}}
+			{{template "armor.tpl"}}
 		</div>
 	</div>
 </body>

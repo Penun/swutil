@@ -45,7 +45,7 @@
             <div>
                 <ul class="specAbil">
                     <li ng-repeat="(ind, attrib) in curSpec.attributes">
-                        <span>{{"{{attrib.description}}"}}</span>
+                        <span ng-bind-html="attrib.description" class="taleDesc"></span>
                     </li>
                 </ul>
             </div>

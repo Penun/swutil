@@ -19,10 +19,10 @@ func init() {
 	beego.Router("/weapons/types", &controllers.WeaponsController{}, "get:Types")
 	beego.Router("/weapons/sub_types", &controllers.WeaponsController{}, "post:SubTypes")
 	beego.Router("/weapons/by_sub", &controllers.WeaponsController{}, "Post:BySub")
+	beego.Router("/armor", &controllers.ArmorController{})
 
 	beego.Router("/weapons", &controllers.WeaponsController{})
 	beego.Router("/weapons/add", &controllers.WeaponsController{}, "post:Add")
-	beego.Router("/armor", &controllers.ArmorController{})
 	beego.Router("/armor/add", &controllers.ArmorController{}, "post:Add")
 	beego.Router("/gear", &controllers.GearController{})
 	beego.Router("/gear/add", &controllers.GearController{}, "post:Add")

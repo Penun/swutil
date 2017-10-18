@@ -105,7 +105,7 @@ type Weapon struct {
 type Armor struct {
     Id int64 `orm:"pk" json:"id"`
     Type string `json:"type"`
-    Defense int `json:"damage"`
+    Defense int `json:"defense"`
     Soak int `json:"soak"`
     Price int `json:"price"`
     Restricted bool `json:"restricted"`

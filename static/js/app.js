@@ -199,6 +199,10 @@
 			ele.scrollTop = ele.scrollHeight;
 		};
 
+		this.RevealArmor = function(ind){
+			$scope.curArmor = $scope.armor[ind];
+		};
+
 		this.CloseTalent = function(){
 			$scope.curTale = null;
 		};
@@ -231,6 +235,14 @@
 					});
 				}
 				this.FetchSkills();
+			} else if  (newTab == 4){
+				if (typeof $scope.armor === 'undefined'){
+					$http.get("/armor").then(function(ret){
+						if (ret.data.occ.success){
+							$scope.armor = ret.data.armor;
+						}
+					});
+				}
 			}
 			this.curTab = newTab;
 		};

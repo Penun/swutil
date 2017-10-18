@@ -7,7 +7,7 @@ import (
 func GetArmor() []Armor{
     o := orm.NewOrm()
     var armor []Armor
-    o.QueryTable("armor").OrderBy("type").All(&armor)
+    o.QueryTable("armor").OrderBy("type", "defense", "soak", "hard_points").All(&armor)
     if len(armor) > 0 {
         return armor
     } else {
