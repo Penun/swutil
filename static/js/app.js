@@ -236,7 +236,7 @@
 		};
 
 		this.FetchSkills = function(){
-			if (typeof $scope.skill === 'undefined'){
+			if (typeof $scope.skills === 'undefined'){
 				$http.get("/skills").then(function(ret){
 					if(ret.data.occ.success){
 						$scope.skills = ret.data.skills;
