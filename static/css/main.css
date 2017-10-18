@@ -387,7 +387,6 @@ li.skill {
 	width: 100%;
 	font-size: 1.3em;
 	padding-top: 1%;
-	padding-bottom: 1%;
 	position: relative;
 	z-index: 100;
 }
@@ -517,6 +516,7 @@ li.skill {
 	overflow-y: auto;
 	height: 100%;
 	width: 100%;
+	margin-top: 2%;
 }
 
 .talentPanel > p {

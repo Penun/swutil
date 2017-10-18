@@ -211,6 +211,10 @@
 			$scope.curWeap = null;
 		};
 
+		this.CloseArmor = function(){
+			$scope.curArmor = null;
+		};
+
 		this.LoadTab = function(newTab){
 			if (newTab == 2){
 				if (typeof $scope.careers === 'undefined'){

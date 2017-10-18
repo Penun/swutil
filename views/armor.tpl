@@ -1,28 +1,30 @@
 <div ng-show="mCont.ShowTab(4)" class="sixty_he fade_in">
-    <div class="left_page_col">
-        <div style="width: 100%">
-            <h2>Armor</h2>
-            <div class="innerList">
-                <ul>
-				    <li ng-repeat="(ind, arm) in armor">
-					    <span ng-click="mCont.RevealArmor(ind)" class="clickable">
-                            {{"{{arm.type}}"}}
-					    </span>
-				    </li>
-			    </ul>
+    <div style="height: 70vh; font-size: 1.25em;">
+        <table class="sw_back">
+            <tr>
+                <th>Type</th>
+                <th>Def</th>
+                <th>Soak</th>
+                <th>HP</th>
+            </tr>
+            <tr ng-repeat="(ind, arm) in armor" ng-click="mCont.RevealArmor(ind)" class="item">
+                <td>{{"{{arm.type}}"}}</td>
+                <td class="numb">{{"{{arm.defense}}"}}</td>
+                <td class="numb">{{"{{arm.soak}}"}}</td>
+                <td class="rang">{{"{{arm.hard_points}}"}}</td>
+            </tr>
+        </table>
+        <div class="sw_back talentPanelOut" ng-show="curArmor != null">
+            <div class="talentPanel">
+                <div class="characterBlock"><b>{{"{{curArmor.type}}"}}</b><button type="button" ng-click="mCont.CloseArmor()" style="font-size: 0.5em; position: absolute; right: 15px;">X</button></div>
+                <div class="characterBlock">Defense: {{"{{curArmor.defense}}"}}</div>
+                <div class="characterBlock">Soak: {{"{{curArmor.soak}}"}}</div>
+                <div class="characterBlock">Price: <span style="float: none;" ng-if="curArmor.restricted">(R)</span> {{"{{curArmor.price}}"}}</div>
+                <div class="characterBlock">Encumbrance: {{"{{curArmor.encumbrance}}"}}</div>
+                <div class="characterBlock">Hard Points: {{"{{curArmor.hard_points}}"}}</div>
+                <div class="characterBlock">Rarity: {{"{{curArmor.rarity}}"}}</div>
+                <div ng-bind-html="curArmor.description" class="taleDesc"></div>
             </div>
-        </div>
-    </div>
-    <div class="right_page" ng-show="curArmor != null" id="armRight">
-        <div class="right_page_in">
-            <h1>{{"{{curArmor.type}}"}}</h1>
-            <div class="characterBlock">Defense: {{"{{curArmor.defense}}"}}</div>
-            <div class="characterBlock">Soak: {{"{{curArmor.soak}}"}}</div>
-            <div class="characterBlock">Price: <span style="float: none;" ng-if="curArmor.restricted">(R)</span> {{"{{curArmor.price}}"}}</div>
-            <div class="characterBlock">Encumbrance: {{"{{curArmor.encumbrance}}"}}</div>
-            <div class="characterBlock">Hard Points: {{"{{curArmor.hard_points}}"}}</div>
-            <div class="characterBlock">Rarity: {{"{{curArmor.rarity}}"}}</div>
-            <div ng-bind-html="curArmor.description" class="taleDesc"></div>
         </div>
     </div>
 </div>
