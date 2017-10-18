@@ -377,6 +377,10 @@ li.skill {
 	width: auto;
 	padding: 1% 2%;
 	text-align: center;
+	background-image: url('../img/light_underline.png');
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	background-size: 95% 20%;
 }
 
 .characterBlock {
@@ -539,6 +543,10 @@ div.vConn {
     top: 4vh;
     position: relative;
     left: 40%;
+}
+
+.taleDesc {
+	white-space: pre-line;
 }
 
 .taleDesc > img {
