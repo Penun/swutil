@@ -115,7 +115,7 @@
                     <div class="conn connCol3"><img src="/static/img/connector.png" ng-style="curSpecial.talents[18].disp_right" alt="Conn"/></div>
                     <div class="talent sw_back talCol4" ng-click="mCont.RevealTalent(curSpecial.talents[19].index)">{{"{{talents[curSpecial.talents[19].index].name}}"}}</div>
                 </div>
-                <div class="sw_back talentPanelOut" ng-show="curTale != null">
+                <div class="sw_back_s talentPanelOut" ng-show="curTale != null">
                     <div class="talentPanel">
                         <div class="characterBlock"><b>{{"{{curTale.name}}"}}</b><button type="button" ng-click="mCont.CloseTalent()" style="font-size: 0.5em; position: absolute; right: 15px;">X</button></div>
                         <div class="characterBlock">Type: {{"{{curTale.type}}"}}</div>

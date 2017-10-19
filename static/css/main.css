@@ -23,6 +23,12 @@ body {
 	background-repeat: no-repeat;
 }
 
+.sw_back_s {
+	background-image: url("/static/img/sw_back_s.png");
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+}
+
 .headDiv {
 	padding: 1%;
     position: relative;
@@ -601,9 +607,6 @@ tr {
 	background-size: 105% 20%;
 	background-repeat: no-repeat;
 	background-position: bottom center;
-}
-
-tr.item {
 	cursor: pointer;
 }
 
