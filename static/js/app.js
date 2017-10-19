@@ -269,17 +269,30 @@
 			return this.curTab === tab_id;
 		};
 
-		this.SortList = function(varList){
-			for (i = 0; i < varList.length; ++i){
-				var minInd = i;
-				for (j = i; j < varList.length; ++j){
-					if (Number(varList[j].init) > Number(varList[minInd].init)){
-						minInd = j;
+		this.SortList = function(list, varName, colC){
+			if (this.lastSort != colC + "_" + "d"){
+				for (var i = 0; i < list.length; i++){
+					var minInd = i;
+					for (j = i; j < list.length; ++j){
+						if (list[j][varName] > list[minInd][varName]){
+							minInd = j;
+						}
 					}
+					[list[i], list[minInd]] = [list[minInd], list[i]];
 				}
-				[varList[i], varList[minInd]] = [varList[minInd], varList[i]];
+				this.lastSort = colC + "_" + "d";
+			} else {
+				for (var i = 0; i < list.length; i++){
+					var minInd = i;
+					for (j = i; j < list.length; ++j){
+						if (list[j][varName] < list[minInd][varName]){
+							minInd = j;
+						}
+					}
+					[list[i], list[minInd]] = [list[minInd], list[i]];
+				}
+				this.lastSort = colC + "_" + "a";
 			}
-			return varList;
 		};
 
 		this.MoveBook = function(mouseEvent){

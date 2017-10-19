@@ -31,10 +31,10 @@
         <div ng-show="curWeapSub != null">
             <table class="sw_back">
                 <tr>
-                    <th>Name</th>
-                    <th>Dam</th>
-                    <th>Crit</th>
-                    <th>Range</th>
+                    <th ng-click="mCont.SortList(curWeapSub.weapons, 'name', 'weNa')">Name</th>
+                    <th ng-click="mCont.SortList(curWeapSub.weapons, 'damage', 'weDa')">Dam</th>
+                    <th ng-click="mCont.SortList(curWeapSub.weapons, 'critical', 'weCr')">Crit</th>
+                    <th ng-click="mCont.SortList(curWeapSub.weapons, 'range', 'weRa')">Range</th>
                 </tr>
                 <tr ng-repeat="(ind, weap) in curWeapSub.weapons" ng-click="mCont.RevealWeapon(ind)" class="item">
                     <td>{{"{{weap.name}}"}}</td>
@@ -43,7 +43,7 @@
                     <td class="rang">{{"{{weap.range}}"}}</td>
                 </tr>
             </table>
-            <div class="sw_back talentPanelOut" ng-show="curWeap != null">
+            <div class="sw_back_s talentPanelOut" ng-show="curWeap != null">
                 <div class="talentPanel">
                     <div class="characterBlock"><b>{{"{{curWeap.name}}"}}</b><button type="button" ng-click="mCont.CloseWeapon()" style="font-size: 0.5em; position: absolute; right: 15px;">X</button></div>
                     <div class="characterBlock">Skill: {{"{{skills[curWeap.skill_ind].name}}"}}</div>

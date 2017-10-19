@@ -1,20 +1,21 @@
 <div ng-show="mCont.ShowTab(1)" class="sixty_he fade_in">
-    <div class="tablePage sw_back">
+    <div class="tablePage">
         <div class="tabPag_inner">
             <table>
                 <tr class="bg_none">
                     <td colspan="4" class="table_name">Species</td>
                 </tr>
                 <tr>
-                    <th>Name</th>
-                    <th>Br</th>
-                    <th>Ag</th>
-                    <th>In</th>
-                    <th>Cu</th>
-                    <th>Wi</th>
-                    <th>Pr</th>
-                    <th>Wound Threshold</th>
-                    <th>Strain Threshold</th>
+                    <th ng-click="mCont.SortList(species, 'name', 'spNa')">Name</th>
+                    <th ng-click="mCont.SortList(species, 'brawn', 'spBr')">Br</th>
+                    <th ng-click="mCont.SortList(species, 'agility', 'spAg')">Ag</th>
+                    <th ng-click="mCont.SortList(species, 'intellect', 'spIn')">In</th>
+                    <th ng-click="mCont.SortList(species, 'cunning', 'spCu')">Cu</th>
+                    <th ng-click="mCont.SortList(species, 'willpower', 'spWi')">Wi</th>
+                    <th ng-click="mCont.SortList(species, 'presence', 'spPr')">Pr</th>
+                    <th ng-click="mCont.SortList(species, 'wound_threshold', 'spWt')">Wound Threshold</th>
+                    <th ng-click="mCont.SortList(species, 'strain_threshold', 'spSt')">Strain Threshold</th>
+                    <th ng-click="mCont.SortList(species, 'starting_xp', 'spSx')">Starting XP</th>
                 </tr>
                 <tr ng-repeat="(ind, spec) in species" ng-click="mCont.RevealSpecies(ind)" class="item">
                     <td>{{"{{spec.name}}"}}</td>
@@ -26,9 +27,10 @@
                     <td class="rang">{{"{{spec.presence}}"}}</td>
                     <td class="rang">{{"{{spec.wound_threshold}}"}}</td>
                     <td class="rang">{{"{{spec.strain_threshold}}"}}</td>
+                    <td class="rang">{{"{{spec.starting_xp}}"}}</td>
                 </tr>
             </table>
-            <div class="sw_back talentPanelOut" ng-show="curSpec != null">
+            <div class="sw_back_s talentPanelOut" ng-show="curSpec != null">
                 <div class="talentPanel">
                     {{str2html rawImg}}
                     <h1>{{"{{curSpec.name}}"}}</h1><button type="button" ng-click="mCont.CloseSpecies()" style="font-size: 0.5em; position: absolute; right: 25px;">X</button>
