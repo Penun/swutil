@@ -215,6 +215,10 @@
 			$scope.curArmor = null;
 		};
 
+		this.CloseSpecies = function(){
+			$scope.curSpec = null;
+		};
+
 		this.LoadTab = function(newTab){
 			if (newTab == 2){
 				if (typeof $scope.careers === 'undefined'){
