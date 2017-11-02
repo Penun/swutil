@@ -192,6 +192,12 @@ h2 {
 	top: 10px;
 }
 
+.inline_butt {
+	position: relative;
+	padding: 0.25em 0.75em;
+	float: none;
+}
+
 ul {
 	list-style: none;
 	width: 100%;
@@ -236,6 +242,10 @@ p {
 	font-size: 1.1em;
 	margin-right: 0;
 	height: fit-content;
+}
+
+.s_ws_p_inline {
+	font-size: 1.5em;
 }
 
 span.left_label {

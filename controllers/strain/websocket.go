@@ -1,6 +1,7 @@
 package strain
 
 import (
+	"time"
 	"encoding/json"
 	"strconv"
 	"net/http"
@@ -16,6 +17,11 @@ type WebSocketController struct {
 
 type GetSubsResp struct {
     Players []PSub `json:"Players"`
+}
+
+type AdjustReq struct {
+	Threshold int64 `json:"thresh"`
+	Direction int64 `json:"direction"`
 }
 
 type PSub struct {
@@ -49,6 +55,11 @@ func (this *WebSocketController) Join() {
 			this.Redirect("/", 302)
 			return
 		}
+	} else if ws_type == "watch" {
+		uname = "watch" + strconv.FormatInt(time.Now().Unix(), 10)
+	} else {
+		this.Redirect("/", 302)
+		return
 	}
 
 	this.TplName = "strain/end.html"
@@ -69,20 +80,43 @@ func (this *WebSocketController) Join() {
 
 	// Message receive loop.
 	for {
-		_, _, err := ws.ReadMessage()
+		_, adj, err := ws.ReadMessage()
 		if err != nil {
 			return
 		}
-		publish <- newEvent(sockets.EVENT_INCREASE, uname, wound, strain, ws_type)
+		var adjReq AdjustReq
+		err = json.Unmarshal(adj, &adjReq)
+		if err == nil {
+			var addVal int64
+			if adjReq.Direction == 1 {
+				addVal = 1
+			} else {
+				addVal = -1
+			}
+
+			for i := 0; i < len(subscribers); i++ {
+				if subscribers[i].Name == uname {
+					if (adjReq.Threshold == 1){
+						wound += addVal
+						subscribers[i].Wound += addVal
+					} else {
+						strain += addVal
+						subscribers[i].Strain += addVal
+					}
+					break
+				}
+			}
+		}
+		publish <- newEvent(sockets.EVENT_ADJUST, uname, wound, strain, ws_type)
 	}
 
 }
 
 func (this *WebSocketController) Subs() {
 	var subs = make([]PSub, 0)
-	for sub := subscribers.Front(); sub != nil; sub = sub.Next() {
-		if sub.Value.(Subscriber).Type == "play" {
-			psub := PSub{Name: sub.Value.(Subscriber).Name, Wound: sub.Value.(Subscriber).Wound, Strain: sub.Value.(Subscriber).Strain, Type: sub.Value.(Subscriber).Type}
+	for i := 0; i < len(subscribers); i++ {
+		if subscribers[i].Type == "play" {
+			psub := PSub{Name: subscribers[i].Name, Wound: subscribers[i].Wound, Strain: subscribers[i].Strain, Type: subscribers[i].Type}
 			subs = append(subs, psub)
 		}
 	}
@@ -99,13 +133,13 @@ func broadcastWebSocket(event sockets.Event) {
 		return
 	}
 
-	for sub := subscribers.Front(); sub != nil; sub = sub.Next() {
+	for i := 0; i < len(subscribers); i++ {
 		// Immediately send event to WebSocket users.
-		ws := sub.Value.(Subscriber).Conn
-		if ws != nil && sub.Value.(Subscriber).Type == "watch" {
+		ws := subscribers[i].Conn
+		if ws != nil && subscribers[i].Type == "watch" {
 			if ws.WriteMessage(websocket.TextMessage, data) != nil {
 				// User disconnected.
-				unsubscribe <- sub.Value.(Subscriber).Name
+				unsubscribe <- subscribers[i].Name
 			}
 		}
 	}

@@ -11,9 +11,11 @@
                 </form>
             </div>
             <div ng-show="mCont.ShowStep(2)" class="sixty_he">
-                <p><label><b>{{"{{mCont.char.name}}"}}</b></label></p>
-                <p><label><b>W:</b></label> {{"{{mCont.char.wound}}"}}</p>
-                <p><label><b>S:</b></label> {{"{{mCont.char.strain}}"}}</p>
+                <p class="s_ws_p_inline"><label><b>{{"{{mCont.char.name}}"}}</b></label></p>
+                <p class="s_ws_p_inline"><label><b>W:</b></label> {{"{{mCont.char.wound}}"}}</p>
+				<p class="s_ws_p_inline"><button ng-click="mCont.Adjust(1, 1)" class="inline_butt">+</button> <button ng-click="mCont.Adjust(1, 0)" class="inline_butt">-</button></p>
+                <p class="s_ws_p_inline"><label><b>S:</b></label> {{"{{mCont.char.strain}}"}}</p>
+				<p class="s_ws_p_inline"><button ng-click="mCont.Adjust(2, 1)" class="inline_butt">+</button> <button ng-click="mCont.Adjust(2, 0)" class="inline_butt">-</button></p>
             </div>
 		</div>
 	</div>

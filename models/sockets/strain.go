@@ -9,8 +9,7 @@ type EventType int
 const (
 	EVENT_JOIN = iota
 	EVENT_LEAVE
-	EVENT_INCREASE
-	EVENT_DECREASE
+	EVENT_ADJUST
 )
 
 type Event struct {

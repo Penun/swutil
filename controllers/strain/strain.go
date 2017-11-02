@@ -1,7 +1,6 @@
 package strain
 
 import (
-	"container/list"
 	"github.com/astaxie/beego"
 	"github.com/gorilla/websocket"
 	"github.com/Penun/swutil/models/sockets"
@@ -39,7 +38,7 @@ var (
 	unsubscribe = make(chan string, 10)
 	// Send events here to publish them.
 	publish = make(chan sockets.Event, 10)
-	subscribers = list.New()
+	subscribers = make([]Subscriber, 0)
 )
 
 // This function handles all incoming chan messages.
@@ -48,7 +47,7 @@ func tracker() {
 		select {
 		case sub := <-subscribe:
 			if !isUserExist(subscribers, sub.Name) {
-				subscribers.PushBack(sub) // Add user to the end of list.
+				subscribers = append(subscribers, sub) // Add user to the end of list.
 				// Publish a JOIN event.
 				publish <- newEvent(sockets.EVENT_JOIN, sub.Name, sub.Wound, sub.Strain, sub.Type)
 				beego.Info("New user:", sub.Name, ";WebSocket:", sub.Conn != nil)
@@ -58,11 +57,16 @@ func tracker() {
 		case event := <-publish:
 			broadcastWebSocket(event)
 		case unsub := <-unsubscribe:
-			for sub := subscribers.Front(); sub != nil; sub = sub.Next() {
-				if sub.Value.(Subscriber).Name == unsub {
-					subscribers.Remove(sub)
-					// Clone connection.
-					ws := sub.Value.(Subscriber).Conn
+			subL := len(subscribers)
+			for i := 0; i < subL; i++ {
+				if subscribers[i].Name == unsub {
+					ws := subscribers[i].Conn // Clone connection.
+					if i == subL - 1 {
+						subscribers = subscribers[:subL-1]
+					} else {
+						subscribers = append(subscribers[:i], subscribers[i+1:]...)
+					}
+
 					if ws != nil {
 						ws.Close()
 						beego.Error("WebSocket closed:", unsub)
@@ -79,9 +83,9 @@ func init() {
 	go tracker()
 }
 
-func isUserExist(subscribers *list.List, user string) bool {
-	for sub := subscribers.Front(); sub != nil; sub = sub.Next() {
-		if sub.Value.(Subscriber).Name == user {
+func isUserExist(subscribers []Subscriber, user string) bool {
+	for i := 0; i < len(subscribers); i++ {
+		if subscribers[i].Name == user {
 			return true
 		}
 	}

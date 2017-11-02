@@ -18,10 +18,17 @@
 					for (var i = 0; i < $scope.players.length; i++){
 						if ($scope.players[i].Name == data.Player.Name){
 							$scope.players.splice(i, 1);
+							break;
 						}
 					}
 		            break;
-		        case 2: // MESSAGE
+		        case 2: // ADJUST
+					for (var i = 0; i < $scope.players.length; i++){
+						if ($scope.players[i].Name == data.Player.Name){
+							$scope.players[i] = data.Player;
+							break;
+						}
+					}
 		            break;
 		        }
 				$scope.$apply();
