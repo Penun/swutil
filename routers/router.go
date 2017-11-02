@@ -2,6 +2,7 @@ package routers
 
 import (
 	"github.com/Penun/swutil/controllers"
+	"github.com/Penun/swutil/controllers/strain"
 	"github.com/astaxie/beego"
 )
 
@@ -20,6 +21,11 @@ func init() {
 	beego.Router("/weapons/sub_types", &controllers.WeaponsController{}, "post:SubTypes")
 	beego.Router("/weapons/by_sub", &controllers.WeaponsController{}, "Post:BySub")
 	beego.Router("/armor", &controllers.ArmorController{})
+
+	beego.Router("/track", &strain.WebSocketController{})
+	beego.Router("/track/watch", &strain.WebSocketController{}, "get:Watch")
+	beego.Router("/track/subs", &strain.WebSocketController{}, "get:Subs")
+	beego.Router("/track/join", &strain.WebSocketController{}, "get:Join")
 
 	beego.Router("/weapons", &controllers.WeaponsController{})
 	beego.Router("/weapons/add", &controllers.WeaponsController{}, "post:Add")

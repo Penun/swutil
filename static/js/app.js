@@ -5,6 +5,7 @@
 		$scope.species = [];
 		$scope.speImg = "";
 		$scope.talents = [];
+		this.rotateDeg = 20;
 
 		angular.element(document).ready(function(){
 			$http.get("/species").then(function(ret){
