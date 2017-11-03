@@ -6,6 +6,23 @@
 
 		this.AddChar = function(){
 			this.char.name = this.char.name.trim();
+			if (typeof this.char.name === 'undefined' || this.char.name.length == 0){
+				var charName = document.getElementById("charName");
+				charName.focus();
+				return;
+			}
+			if (typeof this.char.wound === 'undefined' || this.char.wound <= 0){
+				this.char.wound = null;
+				var charWound = document.getElementById("charWound");
+				charWound.focus();
+				return;
+			}
+			if (typeof this.char.strain === 'undefined' || this.char.strain <= 0){
+				this.char.strain = null;
+				var charStrain = document.getElementById("charStrain");
+				charStrain.focus();
+				return;
+			}
 			this.sock = new WebSocket('ws://' + window.location.host + '/track/join?type=play&uname=' + this.char.name + '&wound=' + this.char.wound + '&strain=' + this.char.strain);
 			this.curStep = 2;
 		};
