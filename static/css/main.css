@@ -197,6 +197,11 @@ h2 {
 	padding: 0.25em 0.75em;
 	float: none;
 	width: 3em;
+	min-width: fit-content;
+}
+
+.inline_span {
+	width: auto;
 }
 
 ul {
@@ -308,6 +313,7 @@ textarea {
 	resize: vertical;
 	width: 100%;
 	text-align: left;
+	height: 10em;
 }
 
 input:focus, textarea:focus, select:focus, select:active {
@@ -332,7 +338,7 @@ input.found {
 	background-image: url("/static/img/light_underline.png");
 	background-repeat: no-repeat;
 	background-position: center bottom;
-	background-size: 100%;
+	background-size: 100% 10%;
 	cursor: pointer;
 	text-align: center;
 	font-size: 150%;
@@ -342,6 +348,7 @@ input.found {
 
 .clickable:hover {
 	background-image: url("/static/img/light_underline_high.png");
+	background-size: 100% 100%;
 	color: #293c56;
 	font-weight: 200;
 }
@@ -641,5 +648,19 @@ td.rang {
 }
 
 td.table_name {
+	font-size: 1.25em;
+}
+
+.activePlayer {
+	background-image: url("/static/img/light_underline_high.png");
+	background-size: 100% 100%;
+	font-size: 1.35em;
+	margin: 5px auto;
+	height: 25px;
+	color: #293c56;
+	font-weight: 200;
+}
+
+.watchSpan {
 	font-size: 1.25em;
 }

@@ -24,8 +24,11 @@ func init() {
 
 	beego.Router("/track", &strain.WebSocketController{})
 	beego.Router("/track/watch", &strain.WebSocketController{}, "get:Watch")
+	beego.Router("/track/master", &strain.WebSocketController{}, "get:Master")
 	beego.Router("/track/subs", &strain.WebSocketController{}, "get:Subs")
+	beego.Router("/track/status", &strain.WebSocketController{}, "get:GameStatus")
 	beego.Router("/track/join", &strain.WebSocketController{}, "get:Join")
+	beego.Router("/track/joinm", &strain.WebSocketController{}, "get:JoinM")
 
 	beego.Router("/weapons", &controllers.WeaponsController{})
 	beego.Router("/weapons/add", &controllers.WeaponsController{}, "post:Add")

@@ -4,10 +4,11 @@
 		<div class="page sw_back">
             <div class="sixty_he">
 				<ul>
-					<li ng-repeat="(ind, play) in players">
-                		<p><label><b>{{"{{play.Name}}"}}</b></label></p>
-                		<p><label><b>W:</b></label> {{"{{play.Wound}}"}}</p>
-                		<p><label><b>S:</b></label> {{"{{play.Strain}}"}}</p>
+					<li ng-repeat="(ind, play) in players" ng-class="{activePlayer: startInit && play.isTurn, player: !play.isTurn || !startInit }">
+                		<span class="watchSpan"><b>{{"{{play.name}}"}}</b></label></span>
+                		<span class="watchSpan"><b>W:</b></label> {{"{{play.wound}}"}}</span>
+                		<span class="watchSpan"><b>S:</b></label> {{"{{play.strain}}"}}</span>
+						<span class="watchSpan"><b>Init:</b> {{"{{play.initiative}}"}}</span>
 					</li>
 				</ul>
             </div>

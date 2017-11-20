@@ -11,22 +11,8 @@ type Subscription struct {
 	New     <-chan sockets.Event // New events coming in.
 }
 
-func newEvent(ep sockets.EventType, user string, wnd int64, str int64, ws_type string) sockets.Event {
-	return sockets.Event{ep, sockets.Player{user, wnd, str, ws_type}}
-}
-
-func Join(user string, wound int64, strain int64, ws_type string, ws *websocket.Conn) {
-	subscribe <- Subscriber{Name: user, Wound: wound, Strain: strain, Type: ws_type, Conn: ws}
-}
-
-func Leave(user string) {
-	unsubscribe <- user
-}
-
 type Subscriber struct {
 	Name string `json:"Name"`
-    Wound int64 `json:"Wound"`
-    Strain int64 `json:"Strain"`
     Type string `json:"Type"`
 	Conn *websocket.Conn `json:"Conn"`// Only for WebSocket users; otherwise nil.
 }
@@ -49,7 +35,7 @@ func tracker() {
 			if !isUserExist(subscribers, sub.Name) {
 				subscribers = append(subscribers, sub) // Add user to the end of list.
 				// Publish a JOIN event.
-				publish <- newEvent(sockets.EVENT_JOIN, sub.Name, sub.Wound, sub.Strain, sub.Type)
+				publish <- newEvent(sockets.EVENT_JOIN, sub.Name, sub.Type, nil, "")
 				beego.Info("New user:", sub.Name, ";WebSocket:", sub.Conn != nil)
 			} else {
 				beego.Info("Old user:", sub.Name, ";WebSocket:", sub.Conn != nil)
@@ -71,7 +57,7 @@ func tracker() {
 						ws.Close()
 						beego.Error("WebSocket closed:", unsub)
 					}
-					publish <- newEvent(sockets.EVENT_LEAVE, unsub, 0, 0, "") // Publish a LEAVE event.
+					publish <- newEvent(sockets.EVENT_LEAVE, unsub, "", nil, "") // Publish a LEAVE event.
 					break
 				}
 			}
@@ -81,6 +67,18 @@ func tracker() {
 
 func init() {
 	go tracker()
+}
+
+func newEvent(ep sockets.EventType, user string, ws_type string, targets []string, data string) sockets.Event {
+	return sockets.Event{ep, sockets.Sender{user, ws_type}, targets, data}
+}
+
+func Join(user string, ws_type string, ws *websocket.Conn) {
+	subscribe <- Subscriber{Name: user, Type: ws_type, Conn: ws}
+}
+
+func Leave(user string) {
+	unsubscribe <- user
 }
 
 func isUserExist(subscribers []Subscriber, user string) bool {
