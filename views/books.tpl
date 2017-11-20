@@ -35,6 +35,10 @@
 							<a href="/static/pdf/Source/Force and Destiny - Nexus of Power (SWF29).pdf" target="_blank">FaD Nexus of Power</a><br />
 							<a href="/static/pdf/Source/Force and Destiny - Savage Spirits (SWF41).pdf" target="_blank">FaD Savage Spirits</a>
 						</p>
+						<h2>Beginner</h2>
+						<p>
+							<a href="/static/pdf/Beginner/Edge of the Empire - Beginner Game (SWE01) [OCR].pdf" target="_blank">EoE Beginner</a><br />
+						</p>
 					</div>
 				</div>
 			</div>
