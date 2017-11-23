@@ -13,7 +13,7 @@
 				</ul>
             </div>
 			<div ng-show="mCont.ShowStep(2)" class="sixty_he">
-				<p class="menu_p"><button ng-click="mCont.ClearForm(2, true)">Menu</button></p>
+				<p><button class="menu_p" ng-click="mCont.ClearForm(2, true)">Menu</button></p>
 				<form name="inTextForm" id="inTextForm" novalidate>
 					<select name="subSelInText" id="subSelInText" ng-show="subs.length > 0" ng-model="mCont.inText.players" ng-options="sub.name as sub.name for sub in subs" multiple required></select>
 					<p class="s_ws_p_inline"><label for="inTextMessage"><b>{{"{{mCont.inTextText}}"}}:</b></label></p>
@@ -22,7 +22,7 @@
 				</form>
 			</div>
 			<div ng-show="mCont.ShowStep(3)" class="sixty_he">
-				<p class="menu_p"><button ng-click="mCont.ClearForm(3, true)">Menu</button></p>
+				<p><button class="menu_p" ng-click="mCont.ClearForm(3, true)">Menu</button></p>
 				<form name="actForm" id="actForm" ng-show="!mCont.startInit" novalidate>
 					<select name="subSelAct" id="subSelAct" ng-model="mCont.action.players" ng-options="sub.name as sub.name for sub in subs" multiple required></select>
 					<button ng-show="actForm.$valid" ng-click="mCont.Action()">{{"{{mCont.actionText}}"}}</button>
@@ -39,7 +39,7 @@
 				</p>
 			</div>
 			<div ng-show="mCont.ShowStep(5)" class="sixty_he">
-				<p class="menu_p"><button ng-click="mCont.ClearForm(5, true)">Cancel</button></p>
+				<p><button class="menu_p" ng-click="mCont.ClearForm(5, true)">Cancel</button></p>
 				<form name="addForm" id="addForm" novalidate>
 					<p class="s_ws_p_inline"><label for="addName"><b>Name:</b></label> <input type="text" name="addName" id="addName" ng-model="mCont.addForm.name" placeholder="Name" required/></p>
 					<p class="s_ws_p_inline"><label for="addInit"><b>Initiative:</b></label> <input type="number" name="addInit" id="addInit" ng-model="mCont.addForm.initiative" placeholder="0" required/></p>
@@ -47,14 +47,14 @@
 				</form>
 			</div>
 			<div ng-show="mCont.ShowStep(6)" class="sixty_he">
-				<p class="menu_p"><button ng-click="mCont.ClearForm(6, true)">Cancel</button></p>
+				<p><button class="menu_p" ng-click="mCont.ClearForm(6, true)">Cancel</button></p>
 				<form name="delEnForm" id="delEnForm" novalidate>
 					<select name="enemSel" id="enemSel" ng-show="enems.length > 0" ng-model="mCont.delEnem.enems" ng-options="enem.name as enem.name for enem in enems" multiple required></select>
 					<button ng-show="delEnForm.$valid" ng-click="mCont.DelEnemy(false)">Delete</button>
 				</form>
 			</div>
 			<div ng-show="mCont.ShowStep(4)" class="sixty_he">
-				<p class="menu_p"><button ng-click="mCont.ClearForm(4, true)">Menu</button></p>
+				<p><button class="menu_p" ng-click="mCont.ClearForm(4, true)">Menu</button></p>
 				<form name="inpForm" id="inpForm" novalidate>
 					<select name="subSelInp" id="subSelInp" ng-show="subs.length > 0" ng-model="mCont.inpForm.players" ng-options="sub.name as sub.name for sub in subs" multiple required></select>
 					<p class="s_ws_p_inline"><label for="inpIn"><b>{{"{{mCont.inputText}}"}}:</b></label> <input type="number" name="inpIn" id="inpIn" ng-model="mCont.inpForm.input" placeholder="0" required/></p>

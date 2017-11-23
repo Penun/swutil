@@ -27,7 +27,13 @@
 				$scope.sock.onmessage = $scope.HandleMessage;
 				$http.get("/track/subs?type=master").then(function(ret){
 					if (ret.data.success){
-						$scope.subs = ret.data.result;
+						for (var i = 0; i < ret.data.result.length; i++){
+							if (ret.data.result[i].type == "PC"){
+								$scope.subs.push(ret.data.result[i]);
+							} else if ("NPC") {
+								$scope.enems.push(ret.data.result[i]);
+							}
+						}
 					}
 				});
 			}

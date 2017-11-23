@@ -298,7 +298,6 @@ func broadcastWebSocket(event sockets.Event) {
 		watch := subscribers[i].Type == "watch"
 		switch event.Type {
 		case sockets.EVENT_JOIN:
-			beego.Info("Sender Type", event.Sender.Type)
 			if event.Sender.Type == "master" {
 				if event.Data == "" {
 					send = true
@@ -309,15 +308,13 @@ func broadcastWebSocket(event sockets.Event) {
 				send = true
 			}
 		case sockets.EVENT_LEAVE:
-			beego.Info("Sender Type", event.Sender.Type)
 			if event.Sender.Type == "master" {
-				beego.Info(event.Data)
 				if event.Data == "" {
 					send = true
 				} else if watch {
 					send = true
 				}
-			} else if event.Sender.Type == "play" {
+			} else {
 				send = true
 			}
 		case sockets.EVENT_NOTE:
@@ -386,8 +383,7 @@ func broadcastWebSocket(event sockets.Event) {
 func SetupLeave(uname string, play sockets.Player) {
 	Leave(uname)
 	if play != (sockets.Player{}) {
-		playLen := len(players)
-		for i := 0; i < playLen; i++ {
+		for i := 0; i < len(players); i++ {
 			if players[i].Name == play.Name {
 				RemovePlayer(i)
 				break
@@ -400,6 +396,17 @@ func SetupLeaveM(uname string) {
 	Leave(uname)
 	master = false
 	initStarted = false
+	var tPlays []*sockets.Player
+	for i := 0; i < len(players); i++ {
+		if players[i].Type == "NPC" {
+			tPlays = append(tPlays, players[i])
+			RemovePlayer(i)
+			i--
+		}
+	}
+	resp, _ := json.Marshal(tPlays)
+	publish <- newEvent(sockets.EVENT_LEAVE, "DM", "master", nil, string(resp))
+	SortPlayerInit()
 }
 
 func FindInSlice(targets []string, sub Subscriber) bool {

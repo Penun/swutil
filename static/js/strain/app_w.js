@@ -52,14 +52,7 @@
 				}
 				break;
 			case 1: // LEAVE
-				if (data.player.type == "play"){
-					for (var i = 0; i < $scope.players.length; i++){
-						if ($scope.players[i].name == data.player.name){
-							$scope.players.splice(i, 1);
-							break;
-						}
-					}
-				} else if (data.player.type == "master") {
+				if (data.player.type == "master") {
 					if (data.data !== ""){
 						var tPlay = JSON.parse(data.data);
 						for (var i = 0; i < tPlay.length; i++){
@@ -69,6 +62,13 @@
 									j--;
 								}
 							}
+						}
+					}
+				} else {
+					for (var i = 0; i < $scope.players.length; i++){
+						if ($scope.players[i].name == data.player.name){
+							$scope.players.splice(i, 1);
+							break;
 						}
 					}
 				}
