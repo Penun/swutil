@@ -30,6 +30,7 @@ type Player struct {
 	Wound int `json:"wound"`
     Strain int `json:"strain"`
 	Initiative float64 `json:"initiative"`
+	Type string `json:"type"`
 }
 
 type Sender struct {

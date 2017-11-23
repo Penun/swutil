@@ -22,7 +22,7 @@
                 </form>
             </div>
             <div ng-show="mCont.ShowStep(2)" class="sixty_he">
-				<p class="s_ws_p_inline"><button ng-click="SetStep(0, false)">Menu</button></p>
+				<p class="menu_p"><button ng-click="SetStep(0, false)">Menu</button></p>
                 <p class="s_ws_p_inline"><label><b>{{"{{char.name}}"}}</b></label></p>
                 <p class="s_ws_p_inline"><label><b>W:</b></label> {{"{{curChar.wound}}"}}</p>
 				<p class="s_ws_p_inline"><button ng-click="mCont.Wound(1)" class="inline_butt">+</button> <button ng-click="mCont.Wound(-1)" class="inline_butt">-</button></p>
@@ -32,7 +32,7 @@
                 <p class="s_ws_p_inline"><button ng-click="mCont.EndTurn()" ng-show="isTurn">End Turn</button></p>
             </div>
 			<div ng-show="mCont.ShowStep(3)" class="sixty_he">
-				<p class="s_ws_p_inline"><button ng-click="SetStep(0, false)">Menu</button></p>
+				<p class="menu_p"><button ng-click="SetStep(0, false)">Menu</button></p>
 				<form name="noteForm" id="noteForm" novalidate>
 					<select name="subSel" id="subSel" ng-show="subs.length > 0" ng-model="note.players" ng-options="sub.name as sub.name for sub in subs" multiple required></select>
 					<p class="s_ws_p_inline"><label for="noteMessage"><b>Note:</b></label></p>
@@ -41,7 +41,7 @@
 				</form>
 			</div>
 			<div ng-show="mCont.ShowStep(4)" class="sixty_he">
-				<p class="s_ws_p_inline"><button ng-click="mCont.ClearForm()">Cancel</button></p>
+				<p class="menu_p"><button ng-click="mCont.ClearForm()">Cancel</button></p>
 				<form name="inpForm" id="inpForm" novalidate>
 					<p class="s_ws_p_inline"><label for="damIn"><b>{{"{{mCont.formInput}}"}}:</b></label> <input type="number" name="inpIn" id="inpIn" ng-model="mCont.inpForm.input" placeholder="0" required/></p>
 					<button ng-show="inpForm.$valid" ng-click="mCont.Input()">{{"{{mCont.formInput}}"}}</button>

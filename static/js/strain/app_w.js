@@ -39,16 +39,40 @@
 			switch (data.type) {
 			case 0: // JOIN
 				if (data.player.type == "play"){
+					data.player.initiative = 0;
 					$scope.players.push(data.player);
+				} else if (data.player.type == "master") {
+					if (data.data !== ""){
+						var tPlay = JSON.parse(data.data);
+						tPlay.wound = 0;
+						tPlay.strain = 0;
+						$scope.players.push(tPlay);
+						$scope.SortList($scope.players, "initiative");
+					}
 				}
 				break;
 			case 1: // LEAVE
-				for (var i = 0; i < $scope.players.length; i++){
-					if ($scope.players[i].name == data.player.name){
-						$scope.players.splice(i, 1);
-						break;
+				if (data.player.type == "play"){
+					for (var i = 0; i < $scope.players.length; i++){
+						if ($scope.players[i].name == data.player.name){
+							$scope.players.splice(i, 1);
+							break;
+						}
+					}
+				} else if (data.player.type == "master") {
+					if (data.data !== ""){
+						var tPlay = JSON.parse(data.data);
+						for (var i = 0; i < tPlay.length; i++){
+							for (var j = 0; j < $scope.players.length; j++){
+								if ($scope.players[j].name == tPlay[i].name){
+									$scope.players.splice(j, 1);
+									j--;
+								}
+							}
+						}
 					}
 				}
+				$scope.SortList($scope.players, "initiative");
 				break;
 			case 3: // WOUND
 				if (data.player.type != "master"){

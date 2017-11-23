@@ -86,7 +86,7 @@ func (this *WebSocketController) Join() {
 				return
 			}
 		}
-		curPlay = sockets.Player{Name: uname}
+		curPlay = sockets.Player{Name: uname, Type: "PC"}
 		players = append(players, &curPlay)
 	} else if ws_type == "watch" {
 		uname = "watch" + strconv.FormatInt(time.Now().Unix(), 10)
@@ -224,6 +224,34 @@ func (this *WebSocketController) JoinM() {
 					}
 				}
 				publish <- newEvent(sockets.EVENT_INIT_T, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+			case "add":
+				var newPlay sockets.Player
+				err = json.Unmarshal([]byte(conReq.Data.Message), &newPlay)
+				if err == nil {
+					newPlay.Type = "NPC"
+					players = append(players, &newPlay)
+					SortPlayerInit()
+					publish <- newEvent(sockets.EVENT_JOIN, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+				} else {
+					beego.Error(err.Error())
+				}
+			case "delete":
+				var targs []sockets.Player
+				err = json.Unmarshal([]byte(conReq.Data.Message), &targs)
+				if err == nil {
+					for i := 0; i < len(targs); i++ {
+						for j := 0; j < len(players); j++ {
+							if players[j].Name == targs[i].Name {
+								RemovePlayer(j)
+								j--
+							}
+						}
+					}
+					SortPlayerInit()
+					publish <- newEvent(sockets.EVENT_LEAVE, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+				} else {
+					beego.Error(err.Error())
+				}
 			}
 		} else {
 			beego.Error(err.Error())
@@ -233,14 +261,25 @@ func (this *WebSocketController) JoinM() {
 
 func (this *WebSocketController) Subs() {
 	resp := GetSubsResp{Success: false}
-	if len(players) > 0 {
-		resp.Result = players
-		resp.Success = true
-	}
 	typ := this.GetString("type")
-	if typ == "play" && master {
-		tempPlay := sockets.Player{Name: "DM"}
-		resp.Result = append(resp.Result, &tempPlay)
+	if typ == "play" {
+		var playOnl []*sockets.Player
+		for i := 0; i < len(players); i++ {
+			if players[i].Type == "PC" {
+				playOnl = append(playOnl, players[i])
+			}
+		}
+		if master {
+			tempPlay := sockets.Player{Name: "DM"}
+			playOnl = append(playOnl, &tempPlay)
+		}
+		resp.Result = playOnl
+		resp.Success = true
+	} else {
+		if len(players) > 0 {
+			resp.Result = players
+			resp.Success = true
+		}
 	}
 	this.Data["json"] = resp
 	this.ServeJSON()
@@ -259,9 +298,28 @@ func broadcastWebSocket(event sockets.Event) {
 		watch := subscribers[i].Type == "watch"
 		switch event.Type {
 		case sockets.EVENT_JOIN:
-			send = true
+			beego.Info("Sender Type", event.Sender.Type)
+			if event.Sender.Type == "master" {
+				if event.Data == "" {
+					send = true
+				} else if watch {
+					send = true
+				}
+			} else if event.Sender.Type == "play" {
+				send = true
+			}
 		case sockets.EVENT_LEAVE:
-			send = true
+			beego.Info("Sender Type", event.Sender.Type)
+			if event.Sender.Type == "master" {
+				beego.Info(event.Data)
+				if event.Data == "" {
+					send = true
+				} else if watch {
+					send = true
+				}
+			} else if event.Sender.Type == "play" {
+				send = true
+			}
 		case sockets.EVENT_NOTE:
 			send = FindInSlice(event.Targets, subscribers[i])
 		case sockets.EVENT_INIT_D:
@@ -331,18 +389,7 @@ func SetupLeave(uname string, play sockets.Player) {
 		playLen := len(players)
 		for i := 0; i < playLen; i++ {
 			if players[i].Name == play.Name {
-				if i == playLen - 1 {
-					players = players[:playLen-1]
-				} else {
-					players = append(players[:i], players[i+1:]...)
-				}
-				if curInitInd == i {
-					if len(players) == 0 {
-						curInitInd = 0
-					} else if i == len(players) {
-						curInitInd--
-					}
-				}
+				RemovePlayer(i)
 				break
 			}
 		}
@@ -362,6 +409,22 @@ func FindInSlice(targets []string, sub Subscriber) bool {
 		}
 	}
 	return false
+}
+
+func RemovePlayer(i int) {
+	playLen := len(players)
+	if i == playLen - 1 {
+		players = players[:playLen-1]
+	} else {
+		players = append(players[:i], players[i+1:]...)
+	}
+	if curInitInd == i {
+		if len(players) == 0 {
+			curInitInd = 0
+		} else if i == len(players) {
+			curInitInd--
+		}
+	}
 }
 
 func SortPlayerInit() {

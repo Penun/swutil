@@ -247,11 +247,19 @@ p {
 	width: 95%;
 	font-size: 1.1em;
 	margin-right: 0;
-	height: fit-content;
+	height: 1.25em;
 }
 
 .s_ws_p_inline {
 	font-size: 1.5em;
+}
+
+.menu_p {
+	position: absolute;
+}
+
+.act_p {
+	height: 3em;
 }
 
 span.left_label {
@@ -625,10 +633,10 @@ tr {
 	background-size: 105% 20%;
 	background-repeat: no-repeat;
 	background-position: bottom center;
-	cursor: pointer;
 }
 
 tr.item:hover {
+	cursor: pointer;
 	background-image: url("/static/img/light_underline_high.png");
 	background-size: 100% 100%;
 	color: #293c56;
@@ -637,6 +645,10 @@ tr.item:hover {
 
 tr.bg_none {
 	background: none;
+}
+
+tr.player {
+	font-size: 1.25em;
 }
 
 td.numb {

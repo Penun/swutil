@@ -19,8 +19,8 @@
                 </tr>
                 <tr ng-repeat="(ind, spec) in species" ng-click="mCont.RevealSpecies(ind)" class="item">
                     <td>{{"{{spec.name}}"}}</td>
-                    <td class="numb">{{"{{spec.brawn}}"}}</td>
-                    <td class="numb">{{"{{spec.agility}}"}}</td>
+                    <td class="rang">{{"{{spec.brawn}}"}}</td>
+                    <td class="rang">{{"{{spec.agility}}"}}</td>
                     <td class="rang">{{"{{spec.intellect}}"}}</td>
                     <td class="rang">{{"{{spec.cunning}}"}}</td>
                     <td class="rang">{{"{{spec.willpower}}"}}</td>

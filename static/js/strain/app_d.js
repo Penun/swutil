@@ -6,6 +6,9 @@
 		this.inText = {};
 		this.action = {};
 		this.inpForm = {};
+		this.addForm = {};
+		$scope.enems = [];
+		this.delEnem = {};
 		$scope.backStep = $scope.curStep = 1;
 		this.textareaReq = true;
 		$scope.activeNote = "";
@@ -159,6 +162,58 @@
 			this.ClearForm(4, true);
 		};
 
+		this.AddEnemy = function(setup){
+			if (setup){
+				$scope.SetStep(5, false);
+			} else {
+				var enim = {
+					name: this.addForm.name,
+					initiative: this.addForm.initiative
+				};
+				$scope.enems.push(enim);
+				sendData = {
+					type: "add",
+					data: {
+						message: JSON.stringify(enim)
+					}
+				};
+				sendData = JSON.stringify(sendData);
+				$scope.sock.send(sendData);
+				this.ClearForm(5, true);
+			}
+		};
+
+		this.DelEnemy = function(setup){
+			if (setup){
+				$scope.SetStep(6, false);
+			} else {
+				if (this.delEnem.enems.length <= 0){
+					return;
+				}
+				var enemPlays = [];
+				for (var i = 0; i < this.delEnem.enems.length; i++){
+					enemPlays.push({name: this.delEnem.enems[i]});
+				}
+				sendData = {
+					type: "delete",
+					data: {
+						message: JSON.stringify(enemPlays)
+					}
+				};
+				sendData = JSON.stringify(sendData);
+				$scope.sock.send(sendData);
+				for (var i = 0; i < this.delEnem.enems.length; i++){
+					for (var j = 0; j < $scope.enems.length; j++){
+						if ($scope.enems[j].name == this.delEnem.enems[i]){
+							$scope.enems.splice(j, 1);
+							j--;
+						}
+					}
+				}
+				this.ClearForm(6, true);
+			}
+		};
+
 		this.ClearForm = function(form, move){
 			switch(form){
 				case 2:
@@ -180,6 +235,18 @@
 					if (move){
 						this.inputText = "";
 						$scope.SetStep(1, true);
+					}
+					break;
+				case 5:
+					this.addForm = {};
+					if (move){
+						$scope.SetStep($scope.backStep, false);
+					}
+					break;
+				case 6:
+					this.delEnem = {};
+					if (move){
+						$scope.SetStep($scope.backStep, false);
 					}
 					break;
 				default:
