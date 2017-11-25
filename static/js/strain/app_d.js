@@ -9,6 +9,7 @@
 		this.addForm = {};
 		$scope.enems = [];
 		this.delEnem = {};
+		this.damEnem = {type: "wound"};
 		$scope.backStep = $scope.curStep = 1;
 		this.textareaReq = true;
 		$scope.activeNote = "";
@@ -172,11 +173,25 @@
 			if (setup){
 				$scope.SetStep(5, false);
 			} else {
+				if (typeof this.addForm.name === 'undefined' || this.addForm.name <= 0){
+					var addName = document.getElementById("addName");
+					addName.focus();
+					return;
+				}
+				if (typeof this.addForm.initiative === 'undefined' || this.addForm.initiative <= 0){
+					var addInit = document.getElementById("addInit");
+					addInit.focus();
+					return;
+				}
+				if (typeof this.addForm.wound === 'undefined' || this.addForm.wound <= 0){
+					var addWound = document.getElementById("addWound");
+					addWound.focus();
+					return;
+				}
 				var enim = {
 					name: this.addForm.name,
 					initiative: this.addForm.initiative
 				};
-				$scope.enems.push(enim);
 				sendData = {
 					type: "add",
 					data: {
@@ -185,7 +200,49 @@
 				};
 				sendData = JSON.stringify(sendData);
 				$scope.sock.send(sendData);
+				enim.wound = this.addForm.wound;
+				enim.strain = this.addForm.strain;
+				$scope.enems.push(enim);
 				this.ClearForm(5, true);
+			}
+		};
+
+		this.DamageEnemy = function(setup, takeDam){
+			if (setup){
+				$scope.SetStep(7, false);
+			} else {
+				if (this.damEnem.enems.length <= 0){
+					return;
+				}
+				if (typeof this.damEnem.type === 'undefined'){
+					return;
+				}
+				if (typeof this.damEnem.damage === 'undefined' || this.damEnem.damage <= 0){
+					var damEnemIn = document.getElementById("damEnemIn");
+					damEnemIn.focus();
+					return;
+				}
+				for (var i = 0; i < this.damEnem.enems.length; i++){
+					for (var j = 0; j < $scope.enems.length; j++){
+						if ($scope.enems[j].name == this.damEnem.enems[i]){
+							if (this.damEnem.type == "wound"){
+								if (takeDam){
+									$scope.enems[j].wound -= this.damEnem.damage;
+								} else {
+									$scope.enems[j].wound += this.damEnem.damage;
+								}
+							} else if (typeof $scope.enems[j].strain !== 'undefined') {
+								if (takeDam){
+									$scope.enems[j].strain -= this.damEnem.damage;
+								} else {
+									$scope.enems[j].strain += this.damEnem.damage;
+								}
+							}
+							break;
+						}
+					}
+				}
+				this.ClearForm(7, true);
 			}
 		};
 
@@ -251,6 +308,12 @@
 					break;
 				case 6:
 					this.delEnem = {};
+					if (move){
+						$scope.SetStep($scope.backStep, false);
+					}
+					break;
+				case 7:
+					this.damEnem = {type: "wound"};
 					if (move){
 						$scope.SetStep($scope.backStep, false);
 					}
