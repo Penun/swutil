@@ -63,6 +63,9 @@
 								}
 							}
 						}
+					} else {
+						$scope.startInit = false;
+						$scope.curInitInd = 0;
 					}
 				} else {
 					for (var i = 0; i < $scope.players.length; i++){
