@@ -13,7 +13,7 @@
 				</ul>
             </div>
 			<div ng-show="mCont.ShowStep(2)" class="sixty_he">
-				<p><button class="menu_p" ng-click="mCont.ClearForm(2, true)">Menu</button></p>
+				<button class="menu_p" ng-click="mCont.ClearForm(2, true)">Menu</button>
 				<form name="inTextForm" id="inTextForm" novalidate>
 					<p class="s_ws_p_inline"><label for="subSelInText"><b>Players:</b></label></p>
 					<select name="subSelInText" id="subSelInText" ng-show="subs.length > 0" ng-model="mCont.inText.players" ng-options="sub.name as sub.name for sub in subs" multiple required></select>
@@ -23,7 +23,7 @@
 				</form>
 			</div>
 			<div ng-show="mCont.ShowStep(3)" class="sixty_he">
-				<p><button class="menu_p" ng-click="mCont.ClearForm(3, true)">Menu</button></p>
+				<button class="menu_p" ng-click="mCont.ClearForm(3, true)">Menu</button>
 				<form name="actForm" id="actForm" ng-show="!mCont.startInit" novalidate>
 					<p class="s_ws_p_inline"><label for="subSelAct"><b>Players:</b></label></p>
 					<select name="subSelAct" id="subSelAct" ng-model="mCont.action.players" ng-options="sub.name as sub.name for sub in subs" multiple required></select>
@@ -47,12 +47,12 @@
 				<p class="act_p" ng-show="mCont.actionText == 'Initiative' && mCont.startInit && enems.length > 0"><button ng-click="mCont.DamageEnemy(true, false)">Adjust Enemy</button></p>
 			</div>
 			<div ng-show="mCont.ShowStep(5)" class="sixty_he">
-				<p><button class="menu_p" ng-click="mCont.ClearForm(5, true)">Cancel</button></p>
+				<button class="menu_p" ng-click="mCont.ClearForm(5, true)">Cancel</button>
 				<form name="addForm" id="addForm" novalidate>
 					<p class="s_ws_p_inline"><label for="addName"><b>Name:</b></label> <input type="text" name="addName" id="addName" ng-model="mCont.addForm.name" placeholder="Name" required/></p>
 					<p class="s_ws_p_inline"><label for="addInit"><b>Initiative:</b></label> <input type="number" name="addInit" id="addInit" ng-model="mCont.addForm.initiative" placeholder="0" required/></p>
 					<p class="s_ws_p_inline"><label for="addWound"><b>Wound:</b></label> <input type="number" name="addWound" id="addWound" ng-model="mCont.addForm.wound" placeholder="0" required/></p>
-					<p class="s_ws_p_inline"><label for="addStrain"><b>Strain:</b></label> <input type="number" name="addStrain" id="addStrain" ng-model="mCont.addForm.strain" placeholder="0" required/></p>
+					<p class="s_ws_p_inline"><label for="addStrain"><b>Strain:</b></label> <input type="number" name="addStrain" id="addStrain" ng-model="mCont.addForm.strain" placeholder="0" /></p>
 					<button ng-show="addForm.$valid" ng-click="mCont.AddEnemy(false)">Add</button>
 				</form>
 			</div>
@@ -72,8 +72,8 @@
 					<p class="s_ws_p_inline"><label for="damEnemIn"><b>Wound:</b></label> <input type="radio" name="damEnemType" ng-model="mCont.damEnem.type" value="wound" required/>
 					<label for="damEnemIn"><b>Strain:</b></label> <input type="radio" name="damEnemType" ng-model="mCont.damEnem.type" value="strain" required/></p>
 					<p class="s_ws_p_inline"><label for="damEnemIn"><b>Amount:</b></label> <input type="number" name="damEnemIn" id="damEnemIn" ng-model="mCont.damEnem.damage" placeholder="0" required/></p>
-					<button ng-show="damEnForm.$valid" ng-click="mCont.DamageEnemy(false, true)">Damage</button>
-					<button ng-show="damEnForm.$valid" ng-click="mCont.DamageEnemy(false, false)">Heal</button>
+					<p class="act_p"><button ng-show="damEnForm.$valid" ng-click="mCont.DamageEnemy(false, true)">Damage</button>
+					<button ng-show="damEnForm.$valid" ng-click="mCont.DamageEnemy(false, false)">Heal</button></p>
 				</form>
 			</div>
 			<div ng-show="mCont.ShowStep(4)" class="sixty_he">

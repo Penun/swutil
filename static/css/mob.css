@@ -10,8 +10,25 @@ body {
 }
 
 .page {
-    padding-left: 19%;
-    width: 80%;
+    padding-left: 10%;
+    width: 88%;
     height: 100%;
     margin-top: 0;
+}
+
+.sixty_he {
+    padding-top: 10%
+}
+
+.s_ws_p_inline {
+    font-size: 1.1em;
+}
+
+span.full_width {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+input[type="number"] {
+    max-width: 25vw;
 }

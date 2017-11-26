@@ -98,6 +98,9 @@ body {
     float: left;
     width: 100%;
     position: relative;
+	overflow-y: auto;
+	overflow-x: hidden;
+	height: 74vh;
 }
 
 ul {

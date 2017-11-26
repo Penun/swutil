@@ -10,14 +10,18 @@
 	width: auto;
 }
 
+span.full_width {
+	display: inline-block;
+}
+
 .s_ws_p_inline {
 	font-size: 1.5em;
 }
 
 .menu_p {
 	position: absolute;
-	right: 10px;
-	top: -10px;
+	right: 16px;
+	top: 8px;
 }
 
 .act_p {
