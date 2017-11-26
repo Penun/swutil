@@ -1,0 +1,50 @@
+.inline_butt {
+	position: relative;
+	padding: 0.25em 0.75em;
+	float: none;
+	width: 3em;
+	min-width: fit-content;
+}
+
+.inline_span {
+	width: auto;
+}
+
+.s_ws_p_inline {
+	font-size: 1.5em;
+}
+
+.menu_p {
+	position: absolute;
+	right: 10px;
+	top: -10px;
+}
+
+.act_p {
+	height: 3em;
+}
+
+tr.player {
+	font-size: 1.25em;
+}
+
+td.rang {
+    text-align: center;
+}
+
+.activePlayer {
+	background-image: url("/static/img/light_underline_high.png");
+	background-size: 100% 100%;
+	font-size: 1.65em;
+	margin: 5px auto;
+	height: 25px;
+	color: #293c56;
+    text-shadow: -1px -1px 0 #83d9e6,
+        1px -1px 0 #83d9e6,
+        -1px 1px 0 #83d9e6,
+        1px 1px 0 #83d9e6;
+}
+
+.watchSpan {
+	font-size: 1.25em;
+}

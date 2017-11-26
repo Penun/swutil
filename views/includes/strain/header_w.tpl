@@ -5,6 +5,6 @@
 <meta name="Viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
 
 <title>SWUTIL Track</title>
-{{template "includes/styles.html"}}
+{{template "includes/strain/styles.html"}}
 {{template "includes/strain/js_w.html"}}
 </head>

@@ -1,21 +1,18 @@
 {{template "includes/header.tpl"}}
 <body ng-controller="mainController as mCont" ng-cloak>
-	<div class="headDiv" id="headDiv">
-
-	</div>
-	<div class="mainDiv" id="forwardMain" ng-mousemove="mCont.MoveBook($event)" ng-style="{'transform': 'rotateX('+mCont.rotateDeg+'deg)', '-moz-transform': 'rotateX('+mCont.rotateDeg+'deg)', '-webkit-transform': 'rotateX('+mCont.rotateDeg+'deg)'}">
+	<div class="mainDiv sw_back" id="forwardMain" ng-mousemove="mCont.MoveBook($event)" ng-style="{'transform': 'rotateX('+mCont.rotateDeg+'deg)', '-moz-transform': 'rotateX('+mCont.rotateDeg+'deg)', '-webkit-transform': 'rotateX('+mCont.rotateDeg+'deg)'}">
 		<div class="page">
 			<div class="sixty_he">
 				<div class="left_page_col left_page">
         			<div class="fade_in" style="width: 85%; overflow: auto; height: 69vh;">
-						<h2>Core</h2>
-						<p>
+						<span>
+							<h2>Core</h2>
 							<a href="/static/pdf/Core/Edge of the Empire - Core Rulebook (SWE02) [OCR].pdf" target="_blank">EoE Core Rulebook</a><br />
 							<a href="/static/pdf/Core/Age of Rebellion - Core Rulebook (SWA02).pdf" target="_blank">AoR Core Rulebook</a><br />
 							<a href="/static/pdf/Core/Force and Destiny - Core Rulebook (SWF02).pdf" target="_blank">FaD Core Rulebook</a>
-						</p>
-						<h2>Source</h2>
-						<p>
+						</span>
+						<span>
+							<h2>Source</h2>
 							<a href="/static/pdf/Source/Edge of the Empire - Dangerous Covenants (SWE08).pdf" target="_blank">EoE Dangerous Covenants</a><br />
 							<a href="/static/pdf/Source/Edge of the Empire - Enter the Unknown (SWE06).pdf" target="_blank">EoE Enter the Unknown</a><br />
 							<a href="/static/pdf/Source/Edge of the Empire - Far Horizons (SWE10).pdf" target="_blank">EoE Far Horizons</a><br />
@@ -34,11 +31,11 @@
 							<a href="/static/pdf/Source/Force and Destiny - Keeping the Peace (SWF24).pdf" target="_blank">FaD Keeping the Peace</a><br />
 							<a href="/static/pdf/Source/Force and Destiny - Nexus of Power (SWF29).pdf" target="_blank">FaD Nexus of Power</a><br />
 							<a href="/static/pdf/Source/Force and Destiny - Savage Spirits (SWF41).pdf" target="_blank">FaD Savage Spirits</a>
-						</p>
-						<h2>Beginner</h2>
-						<p>
+						</span>
+						<span>
+							<h2>Beginner</h2>
 							<a href="/static/pdf/Beginner/Edge of the Empire - Beginner Game (SWE01) [OCR].pdf" target="_blank">EoE Beginner</a><br />
-						</p>
+						</span>
 					</div>
 				</div>
 			</div>
