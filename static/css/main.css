@@ -163,7 +163,8 @@ option[label]{
 input, textarea, select {
 	background: transparent;
 	color: #a4dde5;
-	border: none;
+	border-width: thin;
+	border-color: #83d9e6;
 	text-align: center;
 	font-size: 1em;
 }
@@ -181,7 +182,6 @@ textarea {
 
 input:focus, textarea:focus, select:focus, select:active {
 	outline-color: #c0eaf1;
-	border: none;
 }
 
 input.found {
