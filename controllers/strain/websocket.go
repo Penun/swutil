@@ -344,13 +344,13 @@ func broadcastWebSocket(event sockets.Event) {
 		case sockets.EVENT_INIT_S:
 			if watch {
 				send = true
-			} else if players[curInitInd].Name == subscribers[i].Name {
+			} else if len(players) > 0 && players[curInitInd].Name == subscribers[i].Name {
 				send = true
 			}
 		case sockets.EVENT_INIT_T:
 			if watch {
 				send = true
-			} else if players[curInitInd].Name == subscribers[i].Name {
+			} else if len(players) > 0 && players[curInitInd].Name == subscribers[i].Name {
 				send = true
 			} else if event.Sender.Type == "master" && players[prevInitInd].Name == subscribers[i].Name {
 				send = true

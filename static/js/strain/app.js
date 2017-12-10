@@ -12,6 +12,7 @@
 		$scope.charNameSug = "Name";
 		this.formInput = "";
 		$scope.isTurn = false;
+		$scope.audObj = document.createElement("AUDIO");
 
 		this.AddChar = function(){
 			$scope.char.name = $scope.char.name.trim();
@@ -96,6 +97,10 @@
 				case 7:
 				case 8:
 					$scope.isTurn = $scope.isTurn ? false : true;
+					if ($scope.isTurn && $scope.audObj.paused){
+						$scope.audObj.src = "static/snd/alarm.mp3";
+						$scope.audObj.play();
+					}
 					break;
 				default:
 					return;
@@ -129,7 +134,9 @@
 				}
 			};
 			sendData = JSON.stringify(sendData);
-			$scope.sock.send(sendData);
+			if ($scope.sock.readyState == 1){
+				$scope.sock.send(sendData);
+			}
 			this.lastNote = Date.now();
 			$scope.note = {};
 			$scope.SetStep(2, true);
@@ -189,7 +196,9 @@
 				}
 			};
 			sendData = JSON.stringify(sendData);
-			$scope.sock.send(sendData);
+			if ($scope.sock.readyState == 1){
+				$scope.sock.send(sendData);
+			}
 		};
 
 		this.Strain = function(str){
@@ -205,7 +214,9 @@
 				}
 			};
 			sendData = JSON.stringify(sendData);
-			$scope.sock.send(sendData);
+			if ($scope.sock.readyState == 1){
+				$scope.sock.send(sendData);
+			}
 		};
 
 		$scope.SendInit = function(init){
@@ -216,7 +227,9 @@
 				}
 			};
 			sendData = JSON.stringify(sendData);
-			$scope.sock.send(sendData);
+			if ($scope.sock.readyState == 1){
+				$scope.sock.send(sendData);
+			}
 		};
 
 		this.ClearForm = function(){
@@ -237,7 +250,44 @@
 				}
 			};
 			sendData = JSON.stringify(sendData);
-			$scope.sock.send(sendData);
+			if ($scope.sock.readyState == 1){
+				$scope.sock.send(sendData);
+			}
+
+			if ($scope.audObj.paused){
+				var file = Math.floor(Math.random() * 9);
+				switch (file){
+					case 0:
+						$scope.audObj.src = "static/snd/buildingFreakOut.mp3"
+						break;
+					case 1:
+						$scope.audObj.src = "static/snd/curtReply.mp3"
+						break;
+					case 2:
+						$scope.audObj.src = "static/snd/happyThreeChirp.mp3"
+						break;
+					case 3:
+						$scope.audObj.src = "static/snd/pullingTogether.mp3"
+						break;
+					case 4:
+						$scope.audObj.src = "static/snd/shortRaspberry.mp3"
+						break;
+					case 5:
+						$scope.audObj.src = "static/snd/singSongResponse.mp3"
+						break;
+					case 6:
+						$scope.audObj.src = "static/snd/startledWhoop.mp3"
+						break;
+					case 7:
+						$scope.audObj.src = "static/snd/testyBlowup.mp3"
+						break;
+					case 8:
+						$scope.audObj.src = "static/snd/upsetTwoTone.mp3"
+						break;
+				}
+
+				$scope.audObj.play();
+			}
 		};
 
 		this.ShowStep = function(step){
