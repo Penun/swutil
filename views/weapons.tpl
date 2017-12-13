@@ -13,7 +13,7 @@
             </div>
         </div>
     </div>
-    <div class="left_page_col mid_col" ng-show="curWeapType.sub_types != null">
+    <div class="left_page_col mid_col fade_in" ng-show="curWeapType.sub_types != null">
         <div style="width: 100%">
             <h2>Weapon Sub-Types</h2>
             <div class="innerList">
@@ -28,22 +28,24 @@
         </div>
     </div>
     <div class="right_col" id="right_col">
-        <div ng-show="curWeapSub != null">
+        <div class="fade_in" ng-show="curWeapSub != null">
             <table class="sw_back">
                 <tr>
                     <th ng-click="mCont.SortList(curWeapSub.weapons, 'name', 'weNa')">Name</th>
-                    <th ng-click="mCont.SortList(curWeapSub.weapons, 'damage', 'weDa')">Dam</th>
-                    <th ng-click="mCont.SortList(curWeapSub.weapons, 'critical', 'weCr')">Crit</th>
+                    <th ng-click="mCont.SortList(curWeapSub.weapons, 'rarity', 'weRa')">Rarity</th>
+                    <th ng-click="mCont.SortList(curWeapSub.weapons, 'damage', 'weDa')">Damage</th>
+                    <th ng-click="mCont.SortList(curWeapSub.weapons, 'critical', 'weCr')">Critical</th>
                     <th ng-click="mCont.SortList(curWeapSub.weapons, 'range', 'weRa')">Range</th>
                 </tr>
                 <tr ng-repeat="(ind, weap) in curWeapSub.weapons" ng-click="mCont.RevealWeapon(ind)" class="item">
                     <td>{{"{{weap.name}}"}}</td>
-                    <td class="numb"><span style="float: none;" ng-if="weap.damage_add">+</span>{{"{{weap.damage}}"}}</td>
-                    <td class="numb">{{"{{weap.critical}}"}}</td>
+                    <td class="rang">{{"{{weap.rarity}}"}}</td>
+                    <td class="rang"><span style="float: none;" ng-if="weap.damage_add">+</span>{{"{{weap.damage}}"}}</td>
+                    <td class="rang">{{"{{weap.critical}}"}}</td>
                     <td class="rang">{{"{{weap.range}}"}}</td>
                 </tr>
             </table>
-            <div class="sw_back_s talentPanelOut" ng-show="curWeap != null">
+            <div class="sw_back_s talentPanelOut fade_in" ng-show="curWeap != null">
                 <div class="talentPanel">
                     <div class="characterBlock"><b>{{"{{curWeap.name}}"}}</b><button type="button" ng-click="mCont.CloseWeapon()" style="font-size: 0.5em; position: absolute; right: 15px;">X</button></div>
                     <div class="characterBlock">Skill: {{"{{skills[curWeap.skill_ind].name}}"}}</div>

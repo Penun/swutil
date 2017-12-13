@@ -30,7 +30,7 @@
                     <td class="rang">{{"{{spec.starting_xp}}"}}</td>
                 </tr>
             </table>
-            <div class="sw_back_s talentPanelOut" ng-show="curSpec != null">
+            <div class="sw_back_s talentPanelOut fade_in" ng-show="curSpec != null">
                 <div class="talentPanel">
                     {{str2html rawImg}}
                     <h1>{{"{{curSpec.name}}"}}</h1><button type="button" ng-click="mCont.CloseSpecies()" style="font-size: 0.5em; position: absolute; right: 25px;">X</button>
