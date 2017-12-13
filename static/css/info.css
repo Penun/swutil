@@ -149,6 +149,10 @@ li.skill {
 	text-align: center;
 }
 
+.specializ {
+	margin-top: 4vh;
+}
+
 .talCol1 {
 	left: 0;
 }
@@ -351,4 +355,8 @@ tr.item:hover {
 
 td.rang {
 	text-align: center;
+}
+
+th:hover {
+	cursor: crosshair;
 }

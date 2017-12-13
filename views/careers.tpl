@@ -13,7 +13,7 @@
             </div>
         </div>
     </div>
-    <div class="left_page_col mid_col" ng-show="curCar.specializations != null">
+    <div class="left_page_col mid_col fade_in" ng-show="curCar.specializations != null" id="carSpecCol">
         <div style="width: 100%">
             <h2>Specializations</h2>
             <div class="innerList">
@@ -28,7 +28,7 @@
         </div>
     </div>
     <div class="right_col" id="right_col">
-        <div ng-show="curCar != null">
+        <div class="fade_in" ng-show="curCar != null">
             <div class="characterBlock"><b>{{"{{curCar.name}}"}}</b></div>
             <p>Skill Proficiencies: {{"{{curCar.skill_slots}}"}}</p>
             <span class="skillSpan"><ul>
@@ -37,7 +37,7 @@
                 </li>
             </ul></span>
         </div>
-        <div ng-show="curSpecial != null">
+        <div class="fade_in specializ" ng-show="curSpecial != null">
             <div class="characterBlock"><b>{{"{{curSpecial.name}}"}}</b></div>
             <p>Skill Proficiencies: {{"{{curSpecial.skill_slots}}"}}</p>
             <span class="skillSpan"><ul>
@@ -115,7 +115,7 @@
                     <div class="conn connCol3"><img src="/static/img/connector.png" ng-style="curSpecial.talents[18].disp_right" alt="Conn"/></div>
                     <div class="talent sw_back talCol4" ng-click="mCont.RevealTalent(curSpecial.talents[19].index)">{{"{{talents[curSpecial.talents[19].index].name}}"}}</div>
                 </div>
-                <div class="sw_back_s talentPanelOut" ng-show="curTale != null">
+                <div class="sw_back_s talentPanelOut fade_in" ng-show="curTale != null">
                     <div class="talentPanel">
                         <div class="characterBlock"><b>{{"{{curTale.name}}"}}</b><button type="button" ng-click="mCont.CloseTalent()" style="font-size: 0.5em; position: absolute; right: 15px;">X</button></div>
                         <div class="characterBlock">Type: {{"{{curTale.type}}"}}</div>

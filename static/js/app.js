@@ -1,11 +1,15 @@
 (function(){
 	var app = angular.module('ddcharL', ['ngSanitize']);
-	app.controller('mainController', ['$window', '$scope', '$http', function($window, $scope, $http){
+	app.controller('mainController', ['$window', '$scope', '$http', '$timeout', function($window, $scope, $http, $timeout){
 		this.curTab = 1;
 		$scope.species = [];
 		$scope.speImg = "";
 		$scope.talents = [];
 		this.rotateDeg = 20;
+		$scope.pendCar = null;
+		$scope.pendCarSpec = null;
+		$scope.pendWeapT = null;
+		$scope.pendWeapSub = null;
 
 		angular.element(document).ready(function(){
 			$http.get("/species").then(function(ret){
@@ -26,17 +30,18 @@
 						$scope.species[ret.data.index].attributes = ret.data.result;
 						$scope.curSpec = $scope.species[ret.data.index];
 						$scope.speImg = $scope.curSpec.img_name;
-						angular.element(document.querySelector("#specRight")).addClass("fade_in");
 					}
 				});
 			} else {
 				$scope.curSpec = $scope.species[ind];
 				$scope.speImg = $scope.curSpec.img_name;
-				angular.element(document.querySelector("#specRight")).addClass("fade_in");
 			}
 		};
 
 		this.RevealCareer = function(ind){
+			if ($scope.curCar != null && $scope.curCar.name == $scope.careers[ind].name){
+				return;
+			}
 			if ($scope.careers[ind].specializations == null){
 				var sendData = {
 					"career_id": $scope.careers[ind].id,
@@ -68,12 +73,22 @@
 					}
 				});
 			}
+			$scope.curCar = null;
+			$scope.pendCar = ind;
+			$timeout(this.DelaCar, 10);
 			$scope.curSpecial = null;
 			$scope.curTale = null;
-			$scope.curCar = $scope.careers[ind];
+		};
+
+		this.DelaCar = function(){
+			$scope.curCar = $scope.careers[$scope.pendCar];
+			$scope.pendCar = null;
 		};
 
 		this.RevealSpecialization = function(ind){
+			if ($scope.curSpecial != null && $scope.curCar.specializations[ind].name == $scope.curSpecial.name){
+				return;
+			}
 			if ($scope.curCar.specializations[ind].talents == null){
 				var sendData = {
 					"specialization_id": $scope.curCar.specializations[ind].id,
@@ -136,8 +151,15 @@
 					}
 				});
 			}
-			$scope.curSpecial = $scope.curCar.specializations[ind];
+			$scope.curSpecial = null;
+			$scope.pendCarSpec = ind;
+			$timeout(this.DelaCarSpec, 10);
 			$scope.curTale = null;
+		};
+
+		this.DelaCarSpec = function(){
+			$scope.curSpecial = $scope.curCar.specializations[$scope.pendCarSpec];
+			$scope.pendCarSpec = null;
 		};
 
 		this.RevealTalent = function(index){
@@ -147,6 +169,9 @@
 		};
 
 		this.RevealWeaponType = function(index){
+			if ($scope.curWeapType != null && $scope.curWeapType.type_name == $scope.weapons[index].type_name){
+				return;
+			}
 			if ($scope.weapons[index].sub_types == null){
 				var sendData = {
 					'type': $scope.weapons[index].type_name,
@@ -163,14 +188,23 @@
 						$scope.curWeapType = $scope.weapons[ret.data.index];
 					}
 				});
-			} else {
-				$scope.curWeapType = $scope.weapons[index];
 			}
+			$scope.curWeapType = null;
+			$scope.pendWeapT = index;
+			$timeout(this.DelaWeap, 10);
 			$scope.curWeapSub = null;
 			$scope.curWeap = null;
 		};
 
+		this.DelaWeap = function(){
+			$scope.curWeapType = $scope.weapons[$scope.pendWeapT];
+			$scope.pendWeapT = null;
+		};
+
 		this.RevealWeapons = function(index){
+			if ($scope.curWeapSub != null && $scope.curWeapSub.type_name == $scope.curWeapType.sub_types[index].type_name){
+				return;
+			}
 			if ($scope.curWeapType.sub_types[index].weapons == null){
 				var sendData = {
 					'sub_type': $scope.curWeapType.sub_types[index].type_name,
@@ -182,10 +216,16 @@
 						$scope.curWeapSub = $scope.curWeapType.sub_types[ret.data.index];
 					}
 				});
-			} else {
-				$scope.curWeapSub = $scope.curWeapType.sub_types[index];
 			}
+			$scope.curWeapSub = null;
+			$scope.pendWeapSub = index;
+			$timeout(this.DelaWeapSub, 10);
 			$scope.curWeap = null;
+		};
+
+		this.DelaWeapSub = function(){
+			$scope.curWeapSub = $scope.curWeapType.sub_types[$scope.pendWeapSub];
+			$scope.pendWeapSub = null;
 		};
 
 		this.RevealWeapon = function(index){
