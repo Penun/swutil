@@ -17,13 +17,18 @@ type WebSocketController struct {
 
 type GetSubsResp struct {
 	Success bool `json:"success"`
-    Result []*sockets.Player `json:"result"`
+    Result []*sockets.LivePlayer `json:"result"`
 }
 
 type GetStatusResp struct {
 	Success bool `json:"success"`
 	StartInit bool `json:"start_init"`
 	CurInitInd int `json:"cur_init_ind"`
+}
+
+type FindPlayerResp struct {
+	Success bool `json:"success"`
+	Players sockets.Player `json:"players"`
 }
 
 type ControllerReq struct {
@@ -62,18 +67,57 @@ func (this *WebSocketController) Master() {
 }
 
 var (
-	players = make([]*sockets.Player, 0)
+	players = make([]*sockets.LivePlayer, 0)
 	master = false
 	curInitInd = 0
 	prevInitInd = 0
 	initStarted = false
 )
 
+func (this *WebSocketController) Subs() {
+	resp := GetSubsResp{Success: false}
+	typ := this.GetString("type")
+	if typ == "play" {
+		var playOnl []*sockets.LivePlayer
+		for i := 0; i < len(players); i++ {
+			if players[i].Type == "PC" {
+				playOnl = append(playOnl, players[i])
+			}
+		}
+		if master {
+			tempPlay := sockets.Player{Name: "DM"}
+			tempLPlay := sockets.LivePlayer{Player: &tempPlay}
+			playOnl = append(playOnl, &tempLPlay)
+		}
+		resp.Result = playOnl
+		resp.Success = true
+	} else {
+		if len(players) > 0 {
+			resp.Result = players
+			resp.Success = true
+		}
+	}
+	this.Data["json"] = resp
+	this.ServeJSON()
+}
+
+func (this *WebSocketController) GameStatus() {
+	resp := GetStatusResp{true, initStarted, curInitInd}
+	this.Data["json"] = resp
+	this.ServeJSON()
+}
+
+func (this *WebSocketController) FindPlayer() {
+	//resp := FindPlayerResp{true, curInitInd}
+	//this.Data["json"] = resp
+	//this.ServeJSON()
+}
+
 // Join method handles WebSocket requests for WebSocketController.
 func (this *WebSocketController) Join() {
 	uname := ""
 	ws_type := this.GetString("type")
-	var curPlay sockets.Player
+	var curPlay sockets.LivePlayer
 	if ws_type == "play" {
 		uname = this.GetString("uname")
 		if len(uname) == 0 {
@@ -86,7 +130,8 @@ func (this *WebSocketController) Join() {
 				return
 			}
 		}
-		curPlay = sockets.Player{Name: uname, Type: "PC"}
+		newPlay := sockets.Player{Name: uname}
+		curPlay = sockets.LivePlayer{Player: &newPlay, Type: "PC"}
 		players = append(players, &curPlay)
 	} else if ws_type == "watch" {
 		uname = "watch" + strconv.FormatInt(time.Now().Unix(), 10)
@@ -125,12 +170,12 @@ func (this *WebSocketController) Join() {
 				publish <- newEvent(sockets.EVENT_NOTE, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "wound":
 				wound, _ := strconv.Atoi(conReq.Data.Message)
-				curPlay.Wound += wound
+				curPlay.Player.Wound += wound
 				// this.SetSession("player", curPlay)
 				publish <- newEvent(sockets.EVENT_WOUND, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "strain":
 				strain, _ := strconv.Atoi(conReq.Data.Message)
-				curPlay.Strain += strain
+				curPlay.Player.Strain += strain
 				// this.SetSession("player", curPlay)
 				publish <- newEvent(sockets.EVENT_STRAIN, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "initiative":
@@ -225,7 +270,7 @@ func (this *WebSocketController) JoinM() {
 				}
 				publish <- newEvent(sockets.EVENT_INIT_T, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "add":
-				var newPlay sockets.Player
+				var newPlay sockets.LivePlayer
 				err = json.Unmarshal([]byte(conReq.Data.Message), &newPlay)
 				if err == nil {
 					newPlay.Type = "NPC"
@@ -241,7 +286,7 @@ func (this *WebSocketController) JoinM() {
 				if err == nil {
 					for i := 0; i < len(targs); i++ {
 						for j := 0; j < len(players); j++ {
-							if players[j].Name == targs[i].Name {
+							if players[j].Player.Name == targs[i].Name {
 								RemovePlayer(j)
 								j--
 							}
@@ -257,38 +302,6 @@ func (this *WebSocketController) JoinM() {
 			beego.Error(err.Error())
 		}
 	}
-}
-
-func (this *WebSocketController) Subs() {
-	resp := GetSubsResp{Success: false}
-	typ := this.GetString("type")
-	if typ == "play" {
-		var playOnl []*sockets.Player
-		for i := 0; i < len(players); i++ {
-			if players[i].Type == "PC" {
-				playOnl = append(playOnl, players[i])
-			}
-		}
-		if master {
-			tempPlay := sockets.Player{Name: "DM"}
-			playOnl = append(playOnl, &tempPlay)
-		}
-		resp.Result = playOnl
-		resp.Success = true
-	} else {
-		if len(players) > 0 {
-			resp.Result = players
-			resp.Success = true
-		}
-	}
-	this.Data["json"] = resp
-	this.ServeJSON()
-}
-
-func (this *WebSocketController) GameStatus() {
-	resp := GetStatusResp{true, initStarted, curInitInd}
-	this.Data["json"] = resp
-	this.ServeJSON()
 }
 
 // broadcastWebSocket broadcasts messages to WebSocket users.
@@ -344,15 +357,15 @@ func broadcastWebSocket(event sockets.Event) {
 		case sockets.EVENT_INIT_S:
 			if watch {
 				send = true
-			} else if len(players) > 0 && players[curInitInd].Name == subscribers[i].Name {
+			} else if len(players) > 0 && players[curInitInd].Player.Name == subscribers[i].Name {
 				send = true
 			}
 		case sockets.EVENT_INIT_T:
 			if watch {
 				send = true
-			} else if len(players) > 0 && players[curInitInd].Name == subscribers[i].Name {
+			} else if len(players) > 0 && players[curInitInd].Player.Name == subscribers[i].Name {
 				send = true
-			} else if event.Sender.Type == "master" && players[prevInitInd].Name == subscribers[i].Name {
+			} else if event.Sender.Type == "master" && players[prevInitInd].Player.Name == subscribers[i].Name {
 				send = true
 			}
 		}
@@ -380,11 +393,11 @@ func broadcastWebSocket(event sockets.Event) {
 	}
 }
 
-func SetupLeave(uname string, play sockets.Player) {
+func SetupLeave(uname string, play sockets.LivePlayer) {
 	Leave(uname)
-	if play != (sockets.Player{}) {
+	if play != (sockets.LivePlayer{}) {
 		for i := 0; i < len(players); i++ {
-			if players[i].Name == play.Name {
+			if players[i].Player.Name == play.Player.Name {
 				RemovePlayer(i)
 				break
 			}
@@ -396,7 +409,7 @@ func SetupLeaveM(uname string) {
 	Leave(uname)
 	master = false
 	initStarted = false
-	var tPlays []*sockets.Player
+	var tPlays []*sockets.LivePlayer
 	for i := 0; i < len(players); i++ {
 		if players[i].Type == "NPC" {
 			tPlays = append(tPlays, players[i])

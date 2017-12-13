@@ -1,8 +1,8 @@
 package sockets
 
-// import (
-// 	"container/list"
-// )
+import (
+    "github.com/astaxie/beego/orm"
+)
 
 type EventType int
 
@@ -26,9 +26,14 @@ type Event struct {
 }
 
 type Player struct {
+	Id int64 `orm:"pk" json:"id"`
     Name string `json:"name"`
 	Wound int `json:"wound"`
     Strain int `json:"strain"`
+}
+
+type LivePlayer struct {
+	Player *Player `json:"player"`
 	Initiative float64 `json:"initiative"`
 	Type string `json:"type"`
 }
@@ -36,4 +41,8 @@ type Player struct {
 type Sender struct {
 	Name string `json:"name"`
 	Type string `json:"type"`
+}
+
+func init() {
+	orm.RegisterModel(new(Player))
 }
