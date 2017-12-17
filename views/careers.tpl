@@ -116,8 +116,9 @@
                     <div class="talent sw_back talCol4" ng-click="mCont.RevealTalent(curSpecial.talents[19].index)">{{"{{talents[curSpecial.talents[19].index].name}}"}}</div>
                 </div>
                 <div class="sw_back_s talentPanelOut fade_in" ng-show="curTale != null">
+                    <button type="button" ng-click="mCont.CloseTalent()" class="closeButton">X</button>
                     <div class="talentPanel">
-                        <div class="characterBlock"><b>{{"{{curTale.name}}"}}</b><button type="button" ng-click="mCont.CloseTalent()" style="font-size: 0.5em; position: absolute; right: 15px;">X</button></div>
+                        <div class="characterBlock"><b>{{"{{curTale.name}}"}}</b></div>
                         <div class="characterBlock">Type: {{"{{curTale.type}}"}}</div>
                         <div class="characterBlock">Ranked:
                             <span style="float: none;" ng-if="curTale.ranked">Yes</span>

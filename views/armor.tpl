@@ -21,8 +21,9 @@
                 </tr>
             </table>
             <div class="sw_back_s talentPanelOut fade_in" ng-show="curArmor != null">
+                <button type="button" ng-click="mCont.CloseArmor()" class="closeButton">X</button>
                 <div class="talentPanel">
-                    <div class="characterBlock"><b>{{"{{curArmor.type}}"}}</b><button type="button" ng-click="mCont.CloseArmor()" style="font-size: 0.5em; position: absolute; right: 15px;">X</button></div>
+                    <div class="characterBlock"><b>{{"{{curArmor.type}}"}}</b></div>
                     <div class="characterBlock">Defense: {{"{{curArmor.defense}}"}}</div>
                     <div class="characterBlock">Soak: {{"{{curArmor.soak}}"}}</div>
                     <div class="characterBlock">Price: <span style="float: none;" ng-if="curArmor.restricted">(R)</span> {{"{{curArmor.price}}"}}</div>

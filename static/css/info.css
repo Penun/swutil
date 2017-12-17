@@ -134,6 +134,17 @@ li.skill {
 	background-size: 95% 20%;
 }
 
+img.detail_img {
+	width: auto;
+	max-width: 95%;
+	height: auto;
+	max-height: 95%;
+	position: absolute;
+	right: 2em;
+	top: 10vh;
+	z-index: -1;
+}
+
 .characterBlock {
 	width: 100%;
 	font-size: 1.3em;
@@ -224,8 +235,9 @@ li.skill {
 	z-index: 125;
 	position: absolute;
 	top: 40%;
-	height: 5.4vh;
+	height: 4.4vh;
 	overflow: hidden;
+	padding-top: 1vh;
 }
 
 .talentBlock > div.talent:hover {
@@ -310,6 +322,13 @@ div.vConn {
 	height: 1em;
 }
 
+.closeButton {
+	font-size: 0.75em;
+	position: absolute;
+	right: 4vw;
+	top: 2vh;
+}
+
 .threshold {
 	text-align: left;
 	width: 100%;
@@ -334,15 +353,26 @@ div.vConn {
 }
 
 .tablePage {
-	height: 75vh;
-	font-size: 1.35em;
-	overflow: auto;
+	height: 99%;
+	font-size: 1.15em;
+	overflow: hidden;
 }
 
 .tabPag_inner {
 	margin-top: 2%;
-	height: 92%;
-	overflow: auto;
+	height: 96%;
+	overflow: hidden;
+}
+
+.headTable {
+	position: absolute;
+	height: 7vh;
+}
+
+.follTable {
+	 margin-top: 7vh;
+	 height: 75vh;
+	 overflow-y: auto;
 }
 
 tr.item:hover {
@@ -357,6 +387,24 @@ td.rang {
 	text-align: center;
 }
 
+td.name, th.name {
+	width: 20%;
+}
+
+td.char, th.char {
+	width: 3%;
+}
+
+td.char_w, th.char_w {
+	width: 12%;
+}
+
+tr.head {
+	background-image: url("/static/img/light_underline_high.png");
+	background-size: 100% 100%;
+	color: #293c56;
+}
+
 th:hover {
-	cursor: crosshair;
+	cursor: row-resize;
 }

@@ -100,7 +100,7 @@ body {
     position: relative;
 	overflow-y: auto;
 	overflow-x: hidden;
-	height: 74vh;
+	height: 92%;
 }
 
 ul {
@@ -120,16 +120,6 @@ li {
 span {
 	width: 100%;
 	display: inline;
-}
-
-img.detail_img {
-	width: auto;
-	max-width: 95%;
-	height: auto;
-	max-height: 95%;
-	position: absolute;
-	right: 2em;
-	top: 10vh;
 }
 
 p {
@@ -163,7 +153,8 @@ option[label]{
 input, textarea, select {
 	background: transparent;
 	color: #a4dde5;
-	border: none;
+	border-width: thin;
+	border-color: #83d9e6;
 	text-align: center;
 	font-size: 1em;
 }
@@ -181,6 +172,8 @@ textarea {
 
 input:focus, textarea:focus, select:focus, select:active {
 	outline-color: #c0eaf1;
+	outline-width: medium;
+	outline-style: ridge;
 	border: none;
 }
 
@@ -242,7 +235,6 @@ button:active {
 
 table {
 	width: 100%;
-	padding-left: 2%;
 }
 
 tr {
@@ -258,4 +250,21 @@ tr.bg_none {
 
 td.table_name {
 	font-size: 1.25em;
+}
+
+.loginBlock {
+	width: 60vw;
+    margin: auto;
+    height: 20em;
+}
+
+.login {
+	width: 50%;
+	padding: 4em;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.login > p > input {
+	max-width: 50%;
 }

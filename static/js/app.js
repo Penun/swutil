@@ -3,9 +3,9 @@
 	app.controller('mainController', ['$window', '$scope', '$http', '$timeout', function($window, $scope, $http, $timeout){
 		this.curTab = 1;
 		$scope.species = [];
-		$scope.speImg = "";
+		$scope.speImg = "pix.png";
 		$scope.talents = [];
-		this.rotateDeg = 20;
+		this.rotateDeg = 5;
 		$scope.pendCar = null;
 		$scope.pendCarSpec = null;
 		$scope.pendWeapT = null;
@@ -350,7 +350,7 @@
 		 	}
 
 		 	if (mouseEvent.target){
-				this.rotateDeg = ((resY - 100) * 10 / mouseEvent.currentTarget.scrollHeight) + 20;
+				this.rotateDeg = ((resY - 100) * 10 / mouseEvent.currentTarget.scrollHeight) + 5;
 	 		}
 		};
 	}]);

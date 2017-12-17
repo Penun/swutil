@@ -46,8 +46,9 @@
                 </tr>
             </table>
             <div class="sw_back_s talentPanelOut fade_in" ng-show="curWeap != null">
+                <button type="button" ng-click="mCont.CloseWeapon()" class="closeButton">X</button>
                 <div class="talentPanel">
-                    <div class="characterBlock"><b>{{"{{curWeap.name}}"}}</b><button type="button" ng-click="mCont.CloseWeapon()" style="font-size: 0.5em; position: absolute; right: 15px;">X</button></div>
+                    <div class="characterBlock"><b>{{"{{curWeap.name}}"}}</b></div>
                     <div class="characterBlock">Skill: {{"{{skills[curWeap.skill_ind].name}}"}}</div>
                     <div class="characterBlock">Damage: <span style="float: none;" ng-if="curWeap.damage_add">+</span>{{"{{curWeap.damage}}"}}</div>
                     <div class="characterBlock">Critical: {{"{{curWeap.critical}}"}}</div>
