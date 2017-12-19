@@ -148,15 +148,17 @@ img.detail_img {
 .characterBlock {
 	width: 100%;
 	font-size: 1.3em;
-	padding-top: 1%;
+	padding-top: 0.65em;
+	padding-bottom: 0.65em;
 	position: relative;
 	z-index: 100;
+	display: inline-block;
 }
 
-.characterBlock > span {
+.innerCharBlock > span {
 	width: 16%;
 	float: left;
-	height: 4vh;
+	height: 1.3em;
 	text-align: center;
 }
 
@@ -407,4 +409,16 @@ tr.head {
 
 th:hover {
 	cursor: row-resize;
+}
+
+.tablePad {
+	padding-left: 2em;
+}
+
+.tablePadT {
+	padding-top: 2vh;
+}
+
+.mobOnly {
+	display: none;
 }

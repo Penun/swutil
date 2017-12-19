@@ -19,3 +19,46 @@ input[type="number"] {
     width: 84vw;
     padding: 1vw;
 }
+
+.characterBlock {
+    font-size: 1em;
+    padding-top: 0.5em;
+	padding-bottom: 0.5em;
+}
+
+.innerCharBlock > span {
+    height: 1em;
+}
+
+.tablePad {
+	padding-left: 1em;
+}
+
+.tablePadT {
+	padding-top: 2vh;
+}
+
+.mobOnly {
+    width: 75vw;
+    position: relative;
+    display: inline-block;
+    height: 10%;
+    padding-left: 2em;
+    z-index: 130;
+}
+
+.mobCol {
+    width: 100%;
+}
+
+.right_col {
+    font-size: 1em;
+}
+
+.mid_col {
+    left: 0;
+}
+
+.unexposed {
+    display: none;
+}

@@ -1,5 +1,5 @@
-<div ng-show="mCont.ShowTab(2)" class="sixty_he fade_in">
-    <div class="left_page_col">
+<div ng-show="mCont.ShowTab(2)" class="sixty_he">
+    <div class="left_page_col fade_in mobCol" id="left_col">
         <div style="width: 100%">
             <h2>Careers</h2>
             <div class="innerList">
@@ -13,7 +13,8 @@
             </div>
         </div>
     </div>
-    <div class="left_page_col mid_col fade_in" ng-show="curCar.specializations != null" id="carSpecCol">
+    <div class="left_page_col mid_col fade_in mobCol unexposed" ng-show="curCar.specializations != null" id="mid_col">
+        <div class="mobOnly"><h3>{{"{{curCar.name}}"}}</h3><button type="button" ng-click="mCont.BackToLeftCar()" class="closeButton">Back</button></div>
         <div style="width: 100%">
             <h2>Specializations</h2>
             <div class="innerList">
@@ -27,9 +28,10 @@
             </div>
         </div>
     </div>
-    <div class="right_col" id="right_col">
-        <div class="fade_in" ng-show="curCar != null">
-            <div class="characterBlock"><b>{{"{{curCar.name}}"}}</b></div>
+    <div class="right_col mobCol unexposed fade_in" id="right_col" ng-show="curCar != null">
+        <div class="mobOnly"><button type="button" ng-click="mCont.BackToMidCar()" class="closeButton">Back</button></div>
+        <div>
+            <div class="characterBlock"><h3>{{"{{curCar.name}}"}}</h3></div>
             <p>Skill Proficiencies: {{"{{curCar.skill_slots}}"}}</p>
             <span class="skillSpan"><ul>
                 <li ng-repeat="(ind, skill) in curCar.skills" class="skill">
@@ -37,14 +39,17 @@
                 </li>
             </ul></span>
         </div>
-        <div class="fade_in specializ" ng-show="curSpecial != null">
-            <div class="characterBlock"><b>{{"{{curSpecial.name}}"}}</b></div>
+        <div class="fade_in" ng-show="curSpecial != null">
+            <div class="characterBlock"><h3>{{"{{curSpecial.name}}"}}</h3></div>
             <p>Skill Proficiencies: {{"{{curSpecial.skill_slots}}"}}</p>
-            <span class="skillSpan"><ul>
-                <li ng-repeat="(ind, skill) in curSpecial.skills" class="skill">
-                    <span><i>{{"{{skills[skill].name}}"}}</i></span>
-                </li>
-            </ul></span>
+            <span class="skillSpan">
+                <ul>
+                    <li ng-repeat="(ind, skill) in curSpecial.skills" class="skill">
+                        <span><i>{{"{{skills[skill].name}}"}}</i></span>
+                    </li>
+                </ul>
+            </span>
+            <div class="characterBlock specializ"><b>Talent Tree</b></div>
             <div class="specialWrap">
                 <div class="talentBlock talRow1">
                     <div class="talent sw_back talCol1" ng-click="mCont.RevealTalent(curSpecial.talents[0].index)">{{"{{talents[curSpecial.talents[0].index].name}}"}}</div>

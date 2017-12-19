@@ -73,6 +73,7 @@
 					}
 				});
 			}
+			this.ToMidCar();
 			$scope.curCar = null;
 			$scope.pendCar = ind;
 			$timeout(this.DelaCar, 10);
@@ -151,6 +152,7 @@
 					}
 				});
 			}
+			this.ToRightCar();
 			$scope.curSpecial = null;
 			$scope.pendCarSpec = ind;
 			$timeout(this.DelaCarSpec, 10);
@@ -189,6 +191,7 @@
 					}
 				});
 			}
+			this.ToMidWeap();
 			$scope.curWeapType = null;
 			$scope.pendWeapT = index;
 			$timeout(this.DelaWeap, 10);
@@ -217,6 +220,7 @@
 					}
 				});
 			}
+			this.ToRightWeap();
 			$scope.curWeapSub = null;
 			$scope.pendWeapSub = index;
 			$timeout(this.DelaWeapSub, 10);
@@ -352,6 +356,66 @@
 		 	if (mouseEvent.target){
 				this.rotateDeg = ((resY - 100) * 10 / mouseEvent.currentTarget.scrollHeight) + 5;
 	 		}
+		};
+
+		this.ToMidCar = function(){
+			var midCol = angular.element(document.getElementById("mid_col"));
+			midCol.removeClass('unexposed');
+			var leftCol = angular.element(document.getElementById("left_col"));
+			leftCol.addClass('unexposed');
+		};
+
+		this.ToRightCar = function(){
+			var rightCol = angular.element(document.getElementById("right_col"));
+			rightCol.removeClass('unexposed');
+			var midCol = angular.element(document.getElementById("mid_col"));
+			midCol.addClass('unexposed');
+		};
+
+		this.BackToLeftCar = function(){
+			var leftCol = angular.element(document.getElementById("left_col"));
+			leftCol.removeClass('unexposed');
+			var midCol = angular.element(document.getElementById("mid_col"));
+			midCol.addClass('unexposed');
+			$scope.curCar = null;
+		};
+
+		this.BackToMidCar = function(){
+			var midCol = angular.element(document.getElementById("mid_col"));
+			midCol.removeClass('unexposed');
+			var rightCol = angular.element(document.getElementById("right_col"));
+			rightCol.addClass('unexposed');
+			$scope.curSpecial = null;
+		};
+
+		this.ToMidWeap = function(){
+			var midCol = angular.element(document.getElementById("mid_col_w"));
+			midCol.removeClass('unexposed');
+			var leftCol = angular.element(document.getElementById("left_col_w"));
+			leftCol.addClass('unexposed');
+		};
+
+		this.ToRightWeap = function(){
+			var rightCol = angular.element(document.getElementById("right_col_w"));
+			rightCol.removeClass('unexposed');
+			var midCol = angular.element(document.getElementById("mid_col_w"));
+			midCol.addClass('unexposed');
+		};
+
+		this.BackToLeftWeap = function(){
+			var leftCol = angular.element(document.getElementById("left_col_w"));
+			leftCol.removeClass('unexposed');
+			var midCol = angular.element(document.getElementById("mid_col_w"));
+			midCol.addClass('unexposed');
+			$scope.curWeapType = null;
+		};
+
+		this.BackToMidWeap = function(){
+			var midCol = angular.element(document.getElementById("mid_col_w"));
+			midCol.removeClass('unexposed');
+			var rightCol = angular.element(document.getElementById("right_col_w"));
+			rightCol.addClass('unexposed');
+			$scope.curWeapSub = null;
 		};
 	}]);
 })();

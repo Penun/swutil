@@ -22,8 +22,8 @@ body {
     margin-top: 0;
 }
 
-.inner_list {
-    height: 80vh;
+.innerList {
+    height: 85vh;
 }
 
 .loginBlock {
@@ -55,4 +55,12 @@ td.char, th.char {
 
 td.char_w, th.char_w {
     display: none;
+}
+
+.left_page_col {
+    height: 90vh;
+}
+
+.right_col {
+    height: 90vh;
 }

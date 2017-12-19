@@ -3,7 +3,7 @@
         <div class="tabPag_inner">
             <table class="headTable sw_back">
                 <tr class="head">
-                    <td colspan="10" class="table_name">Species</td>
+                    <td colspan="10" class="table_name tablePad">Species</td>
                 </tr>
                 <tr class="head">
                     <th class="name rang" ng-click="mCont.SortList(species, 'name', 'spNa')">Name</th>
@@ -40,20 +40,22 @@
                     {{str2html rawImg}}
                     <h1>{{"{{curSpec.name}}"}}</h1>
                     <div class="characterBlock">
-                        <span><b>Br</b></span>
-                        <span><b>Ag</b></span>
-                        <span><b>In</b></span>
-                        <span><b>Cu</b></span>
-                        <span><b>Wi</b></span>
-                        <span><b>Pr</b></span>
-                    </div>
-                    <div class="characterBlock">
-                        <span>{{"{{curSpec.brawn}}"}}</span>
-                        <span>{{"{{curSpec.agility}}"}}</span>
-                        <span>{{"{{curSpec.intellect}}"}}</span>
-                        <span>{{"{{curSpec.cunning}}"}}</span>
-                        <span>{{"{{curSpec.willpower}}"}}</span>
-                        <span>{{"{{curSpec.presence}}"}}</span>
+                        <div class="innerCharBlock">
+                            <span><b>Br</b></span>
+                            <span><b>Ag</b></span>
+                            <span><b>In</b></span>
+                            <span><b>Cu</b></span>
+                            <span><b>Wi</b></span>
+                            <span><b>Pr</b></span>
+                        </div>
+                        <div class="innerCharBlock">
+                            <span>{{"{{curSpec.brawn}}"}}</span>
+                            <span>{{"{{curSpec.agility}}"}}</span>
+                            <span>{{"{{curSpec.intellect}}"}}</span>
+                            <span>{{"{{curSpec.cunning}}"}}</span>
+                            <span>{{"{{curSpec.willpower}}"}}</span>
+                            <span>{{"{{curSpec.presence}}"}}</span>
+                        </div>
                     </div>
                     <div class="characterBlock">
                         <b>Wound Threshold:</b> {{"{{curSpec.wound_threshold}}"}} + Brawn
