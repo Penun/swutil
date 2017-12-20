@@ -43,6 +43,8 @@ func init() {
 	beego.Router("/vehicles/add", &controllers.VehiclesController{}, "post:Add")
 	beego.Router("/starships", &controllers.StarshipsController{})
 	beego.Router("/starships/add", &controllers.StarshipsController{}, "post:Add")
+	beego.Router("/players", &controllers.PlayersController{})
+	beego.Router("/players/add", &controllers.PlayersController{}, "post:Add")
 
 	beego.Router("/edit", &controllers.EditController{})
 	//beego.Router("/species/add", &controllers.SpeciesController{}, "post:Add")

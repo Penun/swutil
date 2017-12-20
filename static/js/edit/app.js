@@ -16,6 +16,7 @@
 		$scope.moldStar = {};
 		this.skillsCho = [];
 		this.talCho = null;
+		this.rotateDeg = 5;
 
 		angular.element(document).ready(function(){
 			$http.get("/species").then(function(ret){
@@ -319,6 +320,24 @@
 			});
 		};
 
+		this.AddPlay = function(){
+			var sendData = {
+				'player': $scope.moldPlay
+			};
+			$http.post("/players/add", sendData).then(function(ret){
+				if (ret.data.occ.success){
+					if (typeof $scope.players === 'undefined'){
+						$scope.players = [ret.data.player];
+					}
+					else {
+						$scope.players.push(ret.data.player);
+					}
+					$scope.moldPlay = {};
+					document.getElementById("playName").focus();
+				}
+			});
+		};
+
 		this.CheckSpecies = function(){
 			if ($scope.moldSpecies.name != ""){
 				var found = false;
@@ -449,6 +468,19 @@
 			}
 		};
 
+		this.CkeckPlay = function(){
+			if ($scope.moldPlay.name != ""){
+				var found = false;
+				for (var i = 0; i < $scope.players.length; i++){
+					if ($scope.moldPlay.name == $scope.players[i].name){
+						found = true;
+						break;
+					}
+				}
+				this.ApplyInClass(found, "#playName");
+			}
+		};
+
 		this.ApplyInClass = function(found, id){
 			var inpNam = angular.element(document.querySelector(id));
 			if (found){
@@ -566,6 +598,19 @@
 						}
 					});
 				}
+			} else if (newTab == 11){
+				if (typeof $scope.players === 'undefined'){
+					$http.get("/players").then(function(ret){
+						if (ret.data.occ.success){
+							$scope.players = ret.data.players;
+						} else {
+							$scope.players = [];
+						}
+					});
+				}
+				if (typeof $scope.talents === 'undefined'){
+					this.FetchTalents();
+				}
 			}
 		};
 
@@ -604,24 +649,6 @@
 				[varList[i], varList[minInd]] = [varList[minInd], varList[i]];
 			}
 			return varList;
-		};
-
-		this.MoveBook = function(mouseEvent){
-			var resY = 0;
-
-		 	if (!mouseEvent){
-		   		mouseEvent = window.event;
-		 	}
-
-		 	if (mouseEvent.pageY){
-		   		resY = mouseEvent.pageY;
-		 	} else if (mouseEvent.clientY){
-		   		resY = mouseEvent.clientY + document.body.scrollTop + document.documentElement.scrollTop;
-		 	}
-
-		 	if (mouseEvent.target){
-				this.rotateDeg = ((resY - 100) * 12 / mouseEvent.currentTarget.scrollHeight) + 20;
-	 		}
 		};
 	}]);
 })();

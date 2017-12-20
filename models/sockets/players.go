@@ -26,6 +26,17 @@ func GetPlayerLike(name string) []Player {
     }
 }
 
+func GetPlayers() []Player{
+    o := orm.NewOrm()
+    var plays []Player
+    o.QueryTable("player").OrderBy("name").All(&plays)
+    if len(plays) > 0 {
+        return plays
+    } else {
+        return []Player{}
+    }
+}
+
 func AddPlayer(pla Player) int64 {
 	o := orm.NewOrm()
 	id, err := o.Insert(&pla)

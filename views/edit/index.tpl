@@ -12,6 +12,7 @@
 			<span class="tab" ng-click="mCont.LoadTab(8)">Droids</span>
 			<span class="tab" ng-click="mCont.LoadTab(9)">Vehicles</span>
 			<span class="tab" ng-click="mCont.LoadTab(10)">Starships</span>
+			<span class="tab" ng-click="mCont.LoadTab(11)">Players</span>
 		</div>
 		<div class="page sw_back">
 			<!-- template "edit/species.tpl" -->
@@ -24,6 +25,7 @@
 			{{template "edit/droids.tpl"}}
 			{{template "edit/vehicles.tpl"}}
 			{{template "edit/starships.tpl"}}
+			{{template "edit/player.tpl"}}
 		</div>
 	</div>
 </body>
