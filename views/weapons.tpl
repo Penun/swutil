@@ -43,7 +43,7 @@
                     <td class="tablePad">{{"{{weap.name}}"}}</td>
                     <td class="rang"><span style="float: none;" ng-if="weap.restricted">(R)</span> {{"{{weap.rarity}}"}}</td>
                     <td class="rang"><span style="float: none;" ng-if="weap.damage_add">+</span>{{"{{weap.damage}}"}}</td>
-                    <td class="rang">{{"{{weap.critical}}"}}</td>
+                    <td class="rang"><span style="float: none;" ng-if="weap.critical == 0">-</span><span style="float: none;" ng-if="weap.critical >= 1">{{"{{weap.critical}}"}}</span></td>
                     <td class="rang">{{"{{weap.range}}"}}</td>
                 </tr>
             </table>
@@ -53,7 +53,7 @@
                     <div class="characterBlock"><b>{{"{{curWeap.name}}"}}</b></div>
                     <div class="characterBlock">Skill: {{"{{skills[curWeap.skill_ind].name}}"}}</div>
                     <div class="characterBlock">Damage: <span style="float: none;" ng-if="curWeap.damage_add">+</span>{{"{{curWeap.damage}}"}}</div>
-                    <div class="characterBlock">Critical: {{"{{curWeap.critical}}"}}</div>
+                    <div class="characterBlock">Critical: <span style="float: none;" ng-if="curWeap.critical == 0">-</span><span style="float: none;" ng-if="curWeap.critical >= 1">{{"{{curWeap.critical}}"}}</span></div>
                     <div class="characterBlock">Range: {{"{{curWeap.range}}"}}</div>
                     <div class="characterBlock">Encumbrance: {{"{{curWeap.encumbrance}}"}}</div>
                     <div class="characterBlock">Hard Points: {{"{{curWeap.hard_points}}"}}</div>

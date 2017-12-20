@@ -33,6 +33,42 @@
 				charStrain.focus();
 				return;
 			}
+			if (typeof $scope.char.brawn === 'undefined' || $scope.char.brawn <= 0){
+				$scope.char.brawn = null;
+				var charBrawn = document.getElementById("charBrawn");
+				charBrawn.focus();
+				return;
+			}
+			if (typeof $scope.char.agility === 'undefined' || $scope.char.agility <= 0){
+				$scope.char.agility = null;
+				var charAgility = document.getElementById("charAgility");
+				charAgility.focus();
+				return;
+			}
+			if (typeof $scope.char.intellect === 'undefined' || $scope.char.intellect <= 0){
+				$scope.char.intellect = null;
+				var charIntellect = document.getElementById("charIntellect");
+				charIntellect.focus();
+				return;
+			}
+			if (typeof $scope.char.cunning === 'undefined' || $scope.char.cunning <= 0){
+				$scope.char.cunning = null;
+				var charCunning = document.getElementById("charCunning");
+				charCunning.focus();
+				return;
+			}
+			if (typeof $scope.char.willpower === 'undefined' || $scope.char.willpower <= 0){
+				$scope.char.willpower = null;
+				var charWillpower = document.getElementById("charWillpower");
+				charWillpower.focus();
+				return;
+			}
+			if (typeof $scope.char.presence === 'undefined' || $scope.char.presence <= 0){
+				$scope.char.presence = null;
+				var charPresence = document.getElementById("charPresence");
+				charPresence.focus();
+				return;
+			}
 			angular.copy($scope.char, $scope.curChar);
 			$scope.curChar.initiative = 0;
 			$scope.sock = new WebSocket('ws://' + window.location.host + '/track/join?type=play&uname=' + $scope.char.name);

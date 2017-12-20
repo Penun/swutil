@@ -45,7 +45,7 @@
             </select></p>
             <p><label><b>Damage:</b></label><input type="number" name="wepDamage" ng-model="moldWeapon.damage" min="0" max="99" required/></p>
             <p><label><b>Damage Additive:</b></label><input type="checkbox" name="wepDamAdd" ng-model="moldWeapon.damage_add" /></p>
-            <p><label><b>Critical:</b></label><input type="number" name="wepCritical" ng-model="moldWeapon.critical" min="0" max="9" required/></p>
+            <p><label><b>Critical:</b></label><input type="number" name="wepCritical" ng-model="moldWeapon.critical" min="0" max="9" /></p>
             <p><label><b>Range:</b></label><select name="wepRange" ng-model="moldWeapon.range" class="sing_select" required>
                 <option value="Engaged">Engaged</option>
                 <option value="Short">Short</option>
