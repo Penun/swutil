@@ -30,12 +30,12 @@ input[type="number"] {
     height: 1em;
 }
 
-.tablePad {
-	padding-left: 1em;
+.tablePadR {
+    padding-right: 1vw;
 }
 
-.tablePadT {
-	padding-top: 2vh;
+.tablePadL {
+	padding-left: 1vw;
 }
 
 .mobOnly {

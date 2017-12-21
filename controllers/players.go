@@ -17,6 +17,7 @@ type GetPlaysResp struct {
 
 type InsPlayReq struct {
 	Player sockets.Player `json:"player"`
+	PlayTalents []sockets.PlayerTalent `json:"play_talents"`
 }
 
 type InsPlayResp struct{
@@ -45,8 +46,12 @@ func (this *PlayersController) Add() {
 	if err == nil {
 		p_id := sockets.AddPlayer(insReq.Player)
         if p_id > 0 {
-	        insReq.Player.Id = p_id
+			insReq.Player.Id = p_id
             resp.Player = insReq.Player
+			for i := 0; i < len(insReq.PlayTalents); i++ {
+				insReq.PlayTalents[i].Player = &insReq.Player
+				_ = sockets.AddPlayTalent(insReq.PlayTalents[i])
+			}
             resp.Occ.Success = true
         } else {
             resp.Occ.Error = "Failed to insert."

@@ -2,6 +2,7 @@ package sockets
 
 import (
     "github.com/astaxie/beego/orm"
+    "github.com/Penun/swutil/models"
 )
 
 type EventType int
@@ -71,11 +72,21 @@ type Player struct {
     Vigilance int `json:"vigilance"`
     Warfare int `json:"warfare"`
     Xenology int `json:"xenology"`
+    Notes string `json:"notes"`
+}
+
+type PlayerTalent struct {
+    Id int64 `orm:"pk" json:"id"`
+    Player *Player `orm:"rel(fk)" json:"player"`
+    Talent *models.Talent `orm:"rel(fk)" json:"talent"`
+    Rank int `json:"rank"`
 }
 
 type LivePlayer struct {
 	Player *Player `json:"player"`
 	Initiative float64 `json:"initiative"`
+    CurWound int `json:"cur_wound"`
+    CurStrain int `json:"cur_strain"`
 	Type string `json:"type"`
 }
 
@@ -85,5 +96,5 @@ type Sender struct {
 }
 
 func init() {
-	orm.RegisterModel(new(Player))
+	orm.RegisterModel(new(Player), new(PlayerTalent))
 }

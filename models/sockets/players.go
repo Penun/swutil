@@ -47,6 +47,16 @@ func AddPlayer(pla Player) int64 {
 	}
 }
 
+func AddPlayTalent(plaTal PlayerTalent) int64 {
+    o := orm.NewOrm()
+	id, err := o.Insert(&plaTal)
+	if err == nil {
+		return id
+	} else {
+		return 0
+	}
+}
+
 func GetAddPlayer(name string) (int64, Player) {
     o := orm.NewOrm()
     player := Player{Name: name}

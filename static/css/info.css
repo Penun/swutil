@@ -411,12 +411,20 @@ th:hover {
 	cursor: row-resize;
 }
 
-.tablePad {
-	padding-left: 2em;
-}
-
 .tablePadT {
 	padding-top: 2vh;
+}
+
+.tablePadR {
+	padding-right: 2vw;
+}
+
+.tablePadB {
+	padding-bottom: 2vh;
+}
+
+.tablePadL {
+	padding-left: 2vw;
 }
 
 .mobOnly {

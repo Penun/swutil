@@ -40,12 +40,13 @@
                     <th class="tablePadT" ng-click="mCont.SortList(curWeapSub.weapons, 'range', 'weRa')">Range</th>
                 </tr>
                 <tr ng-repeat="(ind, weap) in curWeapSub.weapons" ng-click="mCont.RevealWeapon(ind)" class="item">
-                    <td class="tablePad">{{"{{weap.name}}"}}</td>
+                    <td class="tablePadL">{{"{{weap.name}}"}}</td>
                     <td class="rang"><span style="float: none;" ng-if="weap.restricted">(R)</span> {{"{{weap.rarity}}"}}</td>
                     <td class="rang"><span style="float: none;" ng-if="weap.damage_add">+</span>{{"{{weap.damage}}"}}</td>
                     <td class="rang"><span style="float: none;" ng-if="weap.critical == 0">-</span><span style="float: none;" ng-if="weap.critical >= 1">{{"{{weap.critical}}"}}</span></td>
-                    <td class="rang">{{"{{weap.range}}"}}</td>
+                    <td class="rang tablePadR">{{"{{weap.range}}"}}</td>
                 </tr>
+                <tr><td colspan="5"  class="tablePadB"></td></tr>
             </table>
             <div class="sw_back_s talentPanelOut fade_in" ng-show="curWeap != null">
                 <button type="button" ng-click="mCont.CloseWeapon()" class="closeButton">X</button>

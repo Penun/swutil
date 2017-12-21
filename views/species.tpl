@@ -3,7 +3,7 @@
         <div class="tabPag_inner">
             <table class="headTable sw_back">
                 <tr class="head">
-                    <td colspan="10" class="table_name tablePad">Species</td>
+                    <td colspan="10" class="table_name tablePadL">Species</td>
                 </tr>
                 <tr class="head">
                     <th class="name rang" ng-click="mCont.SortList(species, 'name', 'spNa')">Name</th>

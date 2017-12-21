@@ -1,5 +1,5 @@
 (function(){
-	var app = angular.module('ddcharL', []);
+	var app = angular.module('swutil_edit', []);
 	app.controller('mainController', ['$window', '$scope', '$http', function($window, $scope, $http){
 		this.curTab = 1;
 		$scope.species = [];
@@ -14,6 +14,7 @@
 		$scope.moldDroid = {};
 		$scope.moldVehi = {};
 		$scope.moldStar = {};
+		$scope.moldPlay = {talents: []};
 		this.skillsCho = [];
 		this.talCho = null;
 		this.rotateDeg = 5;
@@ -321,8 +322,20 @@
 		};
 
 		this.AddPlay = function(){
+			var playTals = [];
+			if ($scope.moldPlay.talents.length > 0){
+				angular.copy($scope.moldPlay.talents, playTals);
+				delete $scope.moldPlay.talents;
+			}
+			for (var i = 0; i < playTals.length; i++){
+				playTals[i].talent = {id: playTals[i].id};
+				delete playTals[i].id;
+				delete playTals[i].name;
+				delete playTals[i].ranked;
+			}
 			var sendData = {
-				'player': $scope.moldPlay
+				'player': $scope.moldPlay,
+				'play_talents': playTals
 			};
 			$http.post("/players/add", sendData).then(function(ret){
 				if (ret.data.occ.success){
@@ -332,10 +345,30 @@
 					else {
 						$scope.players.push(ret.data.player);
 					}
-					$scope.moldPlay = {};
+					$scope.moldPlay = {talents: []};
 					document.getElementById("playName").focus();
 				}
 			});
+			$scope.moldPlay.talents = [];
+		};
+
+		this.AddPlayTal = function(){
+			if (this.curPlayTal == null){
+				return;
+			}
+			for (var i = 0; i < $scope.moldPlay.talents.length; i++){
+				if ($scope.moldPlay.talents[i].id == this.curPlayTal){
+					return;
+				}
+			}
+			for (var i = 0; i < $scope.talents.length; i++){
+				if ($scope.talents[i].id == this.curPlayTal){
+					var play_tal = {id: $scope.talents[i].id, name: $scope.talents[i].name, ranked: $scope.talents[i].ranked};
+					$scope.moldPlay.talents.push(play_tal);
+					this.curPlayTal = null;
+					break;
+				}
+			}
 		};
 
 		this.CheckSpecies = function(){
