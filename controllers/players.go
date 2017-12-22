@@ -18,6 +18,7 @@ type GetPlaysResp struct {
 type InsPlayReq struct {
 	Player sockets.Player `json:"player"`
 	PlayTalents []sockets.PlayerTalent `json:"play_talents"`
+	PlayForce []sockets.PlayerForce `json:"play_force"`
 }
 
 type InsPlayResp struct{
@@ -51,6 +52,10 @@ func (this *PlayersController) Add() {
 			for i := 0; i < len(insReq.PlayTalents); i++ {
 				insReq.PlayTalents[i].Player = &insReq.Player
 				_ = sockets.AddPlayTalent(insReq.PlayTalents[i])
+			}
+			for i := 0; i < len(insReq.PlayForce); i++ {
+				insReq.PlayForce[i].Player = &insReq.Player
+				_ = sockets.AddPlayForce(insReq.PlayForce[i])
 			}
             resp.Occ.Success = true
         } else {

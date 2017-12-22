@@ -82,6 +82,12 @@ type PlayerTalent struct {
     Rank int `json:"rank"`
 }
 
+type PlayerForce struct {
+    Id int64 `orm:"pk" json:"id"`
+    Player *Player `orm:"rel(fk)" json:"player"`
+    Force *models.Force `orm:"rel(fk)" json:"force"`
+}
+
 type LivePlayer struct {
 	Player *Player `json:"player"`
 	Initiative float64 `json:"initiative"`
@@ -96,5 +102,5 @@ type Sender struct {
 }
 
 func init() {
-	orm.RegisterModel(new(Player), new(PlayerTalent))
+	orm.RegisterModel(new(Player), new(PlayerTalent), new(PlayerForce))
 }

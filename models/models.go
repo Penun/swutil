@@ -236,9 +236,16 @@ type Starship struct {
     Book string `json:"book"`
 }
 
+type Force struct {
+    Id int64 `orm:"pk" json:"id"`
+    Name string `json:"name"`
+    Description string `json:"description"`
+    Base string `json:"base"`
+}
+
 func init() {
     orm.RegisterModel(new(Career), new(CareerSkill), new(CareerSpec), new(Skill), new(SpeAttribute),
         new(SpecSkill), new(SpecTalent), new(Specialization), new(Species), new(Talent), new(Weapon),
         new(Armor), new(Gear), new(Attachment), new(Droid), new(DroidSkill), new(DroidTalent), new(Vehicle),
-        new(Starship))
+        new(Starship), new(Force))
 }

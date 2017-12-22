@@ -66,7 +66,14 @@
                 <option value="">Select Talent</option>
             </select><button style="float:unset;" type="button" ng-click="mCont.AddPlayTal()" ng-show="mCont.curPlayTal != null">+</button></p>
             <ul>
-                <li ng-repeat="(ind, tale) in moldPlay.talents" style="padding: 1vh 0 1vh 0;">{{"{{tale.name}}"}}<span ng-show="tale.ranked" style="width: 50%;">-> Ranks:<input type="number" name="plaTalsR_{{"{{ind}}"}}" id="plaTalsR_{{"{{ind}}"}}" ng-model="moldPlay.talents[ind].rank" min="0" max="99" placeholder="0"/></span></li>
+                <li ng-repeat="(ind, tale) in moldPlay.talents" style="padding: 1vh 0 1vh 0;"><button style="float:unset;" type="button" ng-click="mCont.RemPlayTal(ind)">X</button>-> {{"{{tale.name}}"}}<span ng-show="tale.ranked" style="width: 50%;">-> Ranks:<input type="number" name="plaTalsR_{{"{{ind}}"}}" id="plaTalsR_{{"{{ind}}"}}" ng-model="moldPlay.talents[ind].rank" min="0" max="99" placeholder="0"/></span></li>
+            </ul>
+            <h2>Force Powers</h2>
+            <p style="margin-bottom: 3vh;"><select name="plForce" class="talent" ng-model="mCont.curPlayFor" ng-options="force.id as force.name for force in forceP">
+                <option value="">Select Force Power</option>
+            </select><button style="float:unset;" type="button" ng-click="mCont.AddPlayForce()" ng-show="mCont.curPlayFor != null">+</button></p>
+            <ul>
+                <li ng-repeat="(ind, for) in moldPlay.force" style="padding: 1vh 0 1vh 0;"><button style="float:unset;" type="button" ng-click="mCont.RemPlayFor(ind)">X</button>->  {{"{{for.name}}"}}</li>
             </ul>
             <div class="abilities"><label for="playNotes"><b>Notes:</b></label><textarea name="playNotes" ng-model="moldPlay.notes" rows="5"></textarea></div>
             <button ng-show="playAddForm.$valid" ng-click="mCont.AddPlay()" class="menu_p">Add</button>

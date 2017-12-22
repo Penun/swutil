@@ -14,7 +14,7 @@
 		$scope.moldDroid = {};
 		$scope.moldVehi = {};
 		$scope.moldStar = {};
-		$scope.moldPlay = {talents: []};
+		$scope.moldPlay = {talents: [], force: []};
 		this.skillsCho = [];
 		this.talCho = null;
 		this.rotateDeg = 5;
@@ -333,9 +333,20 @@
 				delete playTals[i].name;
 				delete playTals[i].ranked;
 			}
+			var playForce = [];
+			if ($scope.moldPlay.force.length > 0){
+				angular.copy($scope.moldPlay.force, playForce);
+				delete $scope.moldPlay.force;
+			}
+			for (var i = 0; i < playForce.length; i++){
+				playForce[i].force = {id: playForce[i].id};
+				delete playForce[i].id;
+				delete playForce[i].name;
+			}
 			var sendData = {
 				'player': $scope.moldPlay,
-				'play_talents': playTals
+				'play_talents': playTals,
+				'play_force': playForce
 			};
 			$http.post("/players/add", sendData).then(function(ret){
 				if (ret.data.occ.success){
@@ -369,6 +380,33 @@
 					break;
 				}
 			}
+		};
+
+		this.RemPlayTal = function(talInd){
+			$scope.moldPlay.talents.splice(talInd, 1);
+		};
+
+		this.AddPlayForce = function(){
+			if (this.curPlayFor == null){
+				return;
+			}
+			for (var i = 0; i < $scope.moldPlay.force.length; i++){
+				if ($scope.moldPlay.force[i].id == this.curPlayFor){
+					return;
+				}
+			}
+			for (var i = 0; i < $scope.forceP.length; i++){
+				if ($scope.forceP[i].id == this.curPlayFor){
+					var play_for = {id: $scope.forceP[i].id, name: $scope.forceP[i].name};
+					$scope.moldPlay.force.push(play_for);
+					this.curPlayFor = null;
+					break;
+				}
+			}
+		};
+
+		this.RemPlayFor = function(forInd){
+			$scope.moldPlay.force.splice(forInd, 1);
 		};
 
 		this.CheckSpecies = function(){
@@ -643,6 +681,15 @@
 				}
 				if (typeof $scope.talents === 'undefined'){
 					this.FetchTalents();
+				}
+				if (typeof $scope.forceP === 'undefined'){
+					$http.get("/force").then(function(ret){
+						if (ret.data.occ.success){
+							$scope.forceP = ret.data.forceP;
+						} else {
+							$scope.forceP = [];
+						}
+					});
 				}
 			}
 		};
