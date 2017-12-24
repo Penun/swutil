@@ -64,9 +64,18 @@
 				charName.focus();
 				return;
 			}
-			angular.copy($scope.char, $scope.curChar);
+			for (var i = 0; i < $scope.playSugs.length; i++){
+				if ($scope.char.name == $scope.playSugs[i].name){
+					angular.copy($scope.playSugs[i], $scope.curChar);
+				}
+			}
+			if (typeof $scope.curChar.wound === 'undefined'){
+				return;
+			}
+			$scope.curChar.curWound = $scope.curChar.wound;
+			$scope.curChar.curStrain = $scope.curChar.strain;
 			$scope.curChar.initiative = 0;
-			$scope.sock = new WebSocket('ws://' + window.location.host + '/track/join?type=play&uname=' + $scope.char.name);
+			$scope.sock = new WebSocket('ws://' + window.location.host + '/track/join?type=play&uname=' + $scope.curChar.name);
 			$timeout($scope.SetupSocket, 150);
 		};
 
@@ -78,7 +87,7 @@
 				$http.get("/track/subs?type=play").then(function(ret){
 					if (ret.data.success){
 						for (var i = 0; i < ret.data.result.length; i++){
-							if (ret.data.result[i].name == $scope.char.name){
+							if (ret.data.result[i].name == $scope.curChar.name){
 								ret.data.result.splice(i, 1);
 								break;
 							}
@@ -86,11 +95,11 @@
 						$scope.subs = ret.data.result;
 					}
 				});
-				$scope.SendWound($scope.char.wound);
-				$scope.SendStrain($scope.char.strain);
+				$scope.SendWound($scope.curChar.wound);
+				$scope.SendStrain($scope.curChar.strain);
 				$scope.SetStep(2, true);
 			} else if ($scope.sock.readyState == 3){
-				$scope.char = {};
+				$scope.curChar = {};
 				$scope.sock = null;
 				$scope.charNameSug = "Name Taken.";
 			}
@@ -100,7 +109,7 @@
 			var data = JSON.parse(event.data);
 			switch (data.type) {
 				case 0: // JOIN
-					if (data.player.type != "watch" && data.player.name != $scope.char.name){
+					if (data.player.type != "watch" && data.player.name != $scope.curChar.name){
 						$scope.subs.push(data.player);
 					}
 					break;
@@ -215,8 +224,10 @@
 		};
 
 		this.Wound = function(wnd){
-			$scope.curChar.wound += wnd;
-			$scope.SendWound(wnd);
+			if ($scope.curChar.curWound + wnd <= $scope.curChar.wound){
+				$scope.curChar.curWound += wnd;
+				$scope.SendWound(wnd);
+			}
 		};
 
 		$scope.SendWound = function(wound){
@@ -233,8 +244,10 @@
 		};
 
 		this.Strain = function(str){
-			$scope.curChar.strain += str;
-			$scope.SendStrain(str);
+			if ($scope.curChar.curStrain + str <= $scope.curChar.strain){
+				$scope.curChar.curStrain += str;
+				$scope.SendStrain(str);
+			}
 		};
 
 		$scope.SendStrain = function(strain){

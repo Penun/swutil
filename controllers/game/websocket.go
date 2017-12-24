@@ -65,7 +65,7 @@ func (this *WebSocketController) Join() {
 		return
 	}
 
-	this.TplName = "strain/end.html"
+	this.TplName = "game/end.html"
 
 	// Upgrade from http request to WebSocket.
 	ws, err := websocket.Upgrade(this.Ctx.ResponseWriter, this.Ctx.Request, nil, 1024, 1024)
@@ -134,7 +134,7 @@ func (this *WebSocketController) JoinM() {
 	uname := "DM"
 	ws_type := "master"
 
-	this.TplName = "strain/end.html"
+	this.TplName = "game/end.html"
 
 	// Upgrade from http request to WebSocket.
 	ws, err := websocket.Upgrade(this.Ctx.ResponseWriter, this.Ctx.Request, nil, 1024, 1024)
