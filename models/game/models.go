@@ -1,4 +1,4 @@
-package sockets
+package game
 
 import (
     "github.com/astaxie/beego/orm"
@@ -29,6 +29,7 @@ type Event struct {
 type Player struct {
 	Id int64 `orm:"pk" json:"id"`
     Name string `json:"name"`
+    Species *models.Species `orm:"rel(fk)" json:"species"`
 	Wound int `json:"wound"`
     Strain int `json:"strain"`
     Brawn int `json:"brawn"`

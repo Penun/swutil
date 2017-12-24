@@ -1,4 +1,4 @@
-package strain
+package game
 
 import (
 	"time"
@@ -7,28 +7,12 @@ import (
 	"net/http"
 	"github.com/astaxie/beego"
 	"github.com/gorilla/websocket"
-	"github.com/Penun/swutil/models/sockets"
+	"github.com/Penun/swutil/models/game"
 )
 
 // WebSocketController handles WebSocket requests.
 type WebSocketController struct {
 	beego.Controller
-}
-
-type GetSubsResp struct {
-	Success bool `json:"success"`
-    Result []*sockets.LivePlayer `json:"result"`
-}
-
-type GetStatusResp struct {
-	Success bool `json:"success"`
-	StartInit bool `json:"start_init"`
-	CurInitInd int `json:"cur_init_ind"`
-}
-
-type FindPlayerResp struct {
-	Success bool `json:"success"`
-	Players sockets.Player `json:"players"`
 }
 
 type ControllerReq struct {
@@ -42,82 +26,23 @@ type MultiMess struct {
 }
 
 type SocketMessage struct {
-	Type sockets.EventType `json:"type"`
-	Player sockets.Sender `json:"player"`
+	Type game.EventType `json:"type"`
+	Player game.Sender `json:"player"`
 	Data string `json:"data"`
 }
 
 type SocketWatchMessage struct {
-	Type sockets.EventType `json:"type"`
-	Player sockets.Sender `json:"player"`
+	Type game.EventType `json:"type"`
+	Player game.Sender `json:"player"`
 	Players []string `json:"players"`
 	Data string `json:"data"`
-}
-
-func (this *WebSocketController) Get() {
-	this.TplName = "strain/index.tpl"
-}
-
-func (this *WebSocketController) Watch() {
-	this.TplName = "strain/watch.tpl"
-}
-
-func (this *WebSocketController) Master() {
-	this.TplName = "strain/master.tpl"
-}
-
-var (
-	players = make([]*sockets.LivePlayer, 0)
-	master = false
-	curInitInd = 0
-	prevInitInd = 0
-	initStarted = false
-)
-
-func (this *WebSocketController) Subs() {
-	resp := GetSubsResp{Success: false}
-	typ := this.GetString("type")
-	if typ == "play" {
-		var playOnl []*sockets.LivePlayer
-		for i := 0; i < len(players); i++ {
-			if players[i].Type == "PC" {
-				playOnl = append(playOnl, players[i])
-			}
-		}
-		if master {
-			tempPlay := sockets.Player{Name: "DM"}
-			tempLPlay := sockets.LivePlayer{Player: &tempPlay}
-			playOnl = append(playOnl, &tempLPlay)
-		}
-		resp.Result = playOnl
-		resp.Success = true
-	} else {
-		if len(players) > 0 {
-			resp.Result = players
-			resp.Success = true
-		}
-	}
-	this.Data["json"] = resp
-	this.ServeJSON()
-}
-
-func (this *WebSocketController) GameStatus() {
-	resp := GetStatusResp{true, initStarted, curInitInd}
-	this.Data["json"] = resp
-	this.ServeJSON()
-}
-
-func (this *WebSocketController) FindPlayer() {
-	//resp := FindPlayerResp{true, curInitInd}
-	//this.Data["json"] = resp
-	//this.ServeJSON()
 }
 
 // Join method handles WebSocket requests for WebSocketController.
 func (this *WebSocketController) Join() {
 	uname := ""
 	ws_type := this.GetString("type")
-	var curPlay sockets.LivePlayer
+	var curPlay game.LivePlayer
 	if ws_type == "play" {
 		uname = this.GetString("uname")
 		if len(uname) == 0 {
@@ -130,8 +55,8 @@ func (this *WebSocketController) Join() {
 				return
 			}
 		}
-		newPlay := sockets.Player{Name: uname}
-		curPlay = sockets.LivePlayer{Player: &newPlay, Type: "PC"}
+		newPlay := game.Player{Name: uname}
+		curPlay = game.LivePlayer{Player: &newPlay, Type: "PC"}
 		players = append(players, &curPlay)
 	} else if ws_type == "watch" {
 		uname = "watch" + strconv.FormatInt(time.Now().Unix(), 10)
@@ -167,30 +92,30 @@ func (this *WebSocketController) Join() {
 		if err == nil {
 			switch conReq.Type {
 			case "note":
-				publish <- newEvent(sockets.EVENT_NOTE, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+				publish <- newEvent(game.EVENT_NOTE, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "wound":
 				wound, _ := strconv.Atoi(conReq.Data.Message)
 				curPlay.Player.Wound += wound
 				// this.SetSession("player", curPlay)
-				publish <- newEvent(sockets.EVENT_WOUND, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+				publish <- newEvent(game.EVENT_WOUND, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "strain":
 				strain, _ := strconv.Atoi(conReq.Data.Message)
 				curPlay.Player.Strain += strain
 				// this.SetSession("player", curPlay)
-				publish <- newEvent(sockets.EVENT_STRAIN, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+				publish <- newEvent(game.EVENT_STRAIN, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "initiative":
 				init, _ := strconv.ParseFloat(conReq.Data.Message, 64)
 				curPlay.Initiative = init
 				// this.SetSession("player", curPlay)
 				SortPlayerInit()
-				publish <- newEvent(sockets.EVENT_INIT, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+				publish <- newEvent(game.EVENT_INIT, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "initiative_t":
 				if curInitInd == len(players) - 1 {
 					curInitInd = 0
 				} else {
 					curInitInd++
 				}
-				publish <- newEvent(sockets.EVENT_INIT_T, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+				publish <- newEvent(game.EVENT_INIT_T, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			}
 		} else {
 			beego.Error(err.Error())
@@ -237,13 +162,13 @@ func (this *WebSocketController) JoinM() {
 		if err == nil {
 			switch conReq.Type {
 			case "note":
-				publish <- newEvent(sockets.EVENT_NOTE, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+				publish <- newEvent(game.EVENT_NOTE, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "wound":
-				publish <- newEvent(sockets.EVENT_WOUND, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+				publish <- newEvent(game.EVENT_WOUND, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "strain":
-				publish <- newEvent(sockets.EVENT_STRAIN, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+				publish <- newEvent(game.EVENT_STRAIN, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "initiative_d":
-				publish <- newEvent(sockets.EVENT_INIT_D, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+				publish <- newEvent(game.EVENT_INIT_D, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "initiative_s":
 				if initStarted {
 					initStarted = false
@@ -252,7 +177,7 @@ func (this *WebSocketController) JoinM() {
 					curInitInd = 0
 					SortPlayerInit()
 				}
-				publish <- newEvent(sockets.EVENT_INIT_S, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+				publish <- newEvent(game.EVENT_INIT_S, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "initiative_t":
 				prevInitInd = curInitInd
 				if conReq.Data.Message == "+" {
@@ -268,20 +193,20 @@ func (this *WebSocketController) JoinM() {
 						curInitInd--
 					}
 				}
-				publish <- newEvent(sockets.EVENT_INIT_T, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+				publish <- newEvent(game.EVENT_INIT_T, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "add":
-				var newPlay sockets.LivePlayer
+				var newPlay game.LivePlayer
 				err = json.Unmarshal([]byte(conReq.Data.Message), &newPlay)
 				if err == nil {
 					newPlay.Type = "NPC"
 					players = append(players, &newPlay)
 					SortPlayerInit()
-					publish <- newEvent(sockets.EVENT_JOIN, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+					publish <- newEvent(game.EVENT_JOIN, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 				} else {
 					beego.Error(err.Error())
 				}
 			case "delete":
-				var targs []sockets.Player
+				var targs []game.Player
 				err = json.Unmarshal([]byte(conReq.Data.Message), &targs)
 				if err == nil {
 					for i := 0; i < len(targs); i++ {
@@ -293,7 +218,7 @@ func (this *WebSocketController) JoinM() {
 						}
 					}
 					SortPlayerInit()
-					publish <- newEvent(sockets.EVENT_LEAVE, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+					publish <- newEvent(game.EVENT_LEAVE, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 				} else {
 					beego.Error(err.Error())
 				}
@@ -305,12 +230,12 @@ func (this *WebSocketController) JoinM() {
 }
 
 // broadcastWebSocket broadcasts messages to WebSocket users.
-func broadcastWebSocket(event sockets.Event) {
+func broadcastWebSocket(event game.Event) {
 	for i := 0; i < len(subscribers); i++ {
 		send := false
 		watch := subscribers[i].Type == "watch"
 		switch event.Type {
-		case sockets.EVENT_JOIN:
+		case game.EVENT_JOIN:
 			if event.Sender.Type == "master" {
 				if event.Data == "" {
 					send = true
@@ -320,7 +245,7 @@ func broadcastWebSocket(event sockets.Event) {
 			} else if event.Sender.Type == "play" {
 				send = true
 			}
-		case sockets.EVENT_LEAVE:
+		case game.EVENT_LEAVE:
 			if event.Sender.Type == "master" {
 				if event.Data == "" {
 					send = true
@@ -330,37 +255,37 @@ func broadcastWebSocket(event sockets.Event) {
 			} else {
 				send = true
 			}
-		case sockets.EVENT_NOTE:
+		case game.EVENT_NOTE:
 			send = FindInSlice(event.Targets, subscribers[i])
-		case sockets.EVENT_INIT_D:
+		case game.EVENT_INIT_D:
 			if watch {
 				send = true
 			} else {
 				send = FindInSlice(event.Targets, subscribers[i])
 			}
-		case sockets.EVENT_WOUND:
+		case game.EVENT_WOUND:
 			if watch {
 				send = true
 			} else {
 				send = FindInSlice(event.Targets, subscribers[i])
 			}
-		case sockets.EVENT_STRAIN:
+		case game.EVENT_STRAIN:
 			if watch {
 				send = true
 			} else {
 				send = FindInSlice(event.Targets, subscribers[i])
 			}
-		case sockets.EVENT_INIT:
+		case game.EVENT_INIT:
 			if watch {
 				send = true
 			}
-		case sockets.EVENT_INIT_S:
+		case game.EVENT_INIT_S:
 			if watch {
 				send = true
 			} else if len(players) > 0 && players[curInitInd].Player.Name == subscribers[i].Name {
 				send = true
 			}
-		case sockets.EVENT_INIT_T:
+		case game.EVENT_INIT_T:
 			if watch {
 				send = true
 			} else if len(players) > 0 && players[curInitInd].Player.Name == subscribers[i].Name {
@@ -389,76 +314,6 @@ func broadcastWebSocket(event sockets.Event) {
 					unsubscribe <- subscribers[i].Name
 				}
 			}
-		}
-	}
-}
-
-func SetupLeave(uname string, play sockets.LivePlayer) {
-	Leave(uname)
-	if play != (sockets.LivePlayer{}) {
-		for i := 0; i < len(players); i++ {
-			if players[i].Player.Name == play.Player.Name {
-				RemovePlayer(i)
-				break
-			}
-		}
-	}
-}
-
-func SetupLeaveM(uname string) {
-	Leave(uname)
-	master = false
-	initStarted = false
-	var tPlays []*sockets.LivePlayer
-	for i := 0; i < len(players); i++ {
-		if players[i].Type == "NPC" {
-			tPlays = append(tPlays, players[i])
-			RemovePlayer(i)
-			i--
-		}
-	}
-	resp, _ := json.Marshal(tPlays)
-	publish <- newEvent(sockets.EVENT_LEAVE, "DM", "master", nil, string(resp))
-	SortPlayerInit()
-}
-
-func FindInSlice(targets []string, sub Subscriber) bool {
-	for j := 0; j < len(targets); j++ {
-		if targets[j] == sub.Name {
-			return true
-		}
-	}
-	return false
-}
-
-func RemovePlayer(i int) {
-	playLen := len(players)
-	if i == playLen - 1 {
-		players = players[:playLen-1]
-	} else {
-		players = append(players[:i], players[i+1:]...)
-	}
-	if curInitInd == i {
-		if len(players) == 0 {
-			curInitInd = 0
-		} else if i == len(players) {
-			curInitInd--
-		}
-	}
-}
-
-func SortPlayerInit() {
-	for  i := 0; i < len(players); i++ {
-		minInd := i
-		for j := i + 1; j < len(players); j++ {
-			if players[j].Initiative > players[minInd].Initiative {
-				minInd = j;
-			}
-		}
-		if minInd != i {
-			swap := players[i]
-			players[i] = players[minInd]
-			players[minInd] = swap
 		}
 	}
 }

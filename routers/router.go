@@ -2,7 +2,7 @@ package routers
 
 import (
 	"github.com/Penun/swutil/controllers"
-	"github.com/Penun/swutil/controllers/strain"
+	"github.com/Penun/swutil/controllers/game"
 	"github.com/astaxie/beego"
 )
 
@@ -22,13 +22,15 @@ func init() {
 	beego.Router("/weapons/by_sub", &controllers.WeaponsController{}, "Post:BySub")
 	beego.Router("/armor", &controllers.ArmorController{})
 
-	beego.Router("/track", &strain.WebSocketController{})
-	beego.Router("/track/watch", &strain.WebSocketController{}, "get:Watch")
-	beego.Router("/track/master", &strain.WebSocketController{}, "get:Master")
-	beego.Router("/track/subs", &strain.WebSocketController{}, "get:Subs")
-	beego.Router("/track/status", &strain.WebSocketController{}, "get:GameStatus")
-	beego.Router("/track/join", &strain.WebSocketController{}, "get:Join")
-	beego.Router("/track/joinm", &strain.WebSocketController{}, "get:JoinM")
+	beego.Router("/track", &game.GameStatusController{})
+	beego.Router("/track/watch", &game.GameStatusController{}, "get:Watch")
+	beego.Router("/track/master", &game.GameStatusController{}, "get:Master")
+	beego.Router("/track/subs", &game.GameStatusController{}, "get:Subs")
+	beego.Router("/track/status", &game.GameStatusController{}, "get:GameStatus")
+	beego.Router("/track/find", &game.GameStatusController{}, "post:FindPlayer")
+
+	beego.Router("/track/join", &game.WebSocketController{}, "get:Join")
+	beego.Router("/track/joinm", &game.WebSocketController{}, "get:JoinM")
 
 	beego.Router("/weapons", &controllers.WeaponsController{})
 	beego.Router("/weapons/add", &controllers.WeaponsController{}, "post:Add")

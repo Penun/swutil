@@ -1,4 +1,4 @@
-{{template "includes/strain/header_d.tpl"}}
+{{template "includes/game/header_d.tpl"}}
 <body ng-controller="mainController as mCont" ng-cloak>
 	<div class="mainDiv" id="forwardMain">
 		<div class="page sw_back">

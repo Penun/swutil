@@ -13,60 +13,55 @@
 		this.formInput = "";
 		$scope.isTurn = false;
 		$scope.audObj = document.createElement("AUDIO");
+		$scope.playSugs = [];
+		this.lastPlayFind = "";
+
+		this.FindPlayer = function(){
+			var primed = false;
+			if ($scope.char.name.length < 3){
+				$scope.playSugs = [];
+				return;
+			} else if ($scope.char.name.length == 3){
+				if (this.lastPlayFind.length <= $scope.char.name.length){
+					primed = true;
+				}
+			} else if (this.lastPlayFind.length > $scope.char.name.length && $scope.playSugs.length > 0){
+				primed = true;
+			}
+			var newSugs = [];
+			for (var i = 0; i < $scope.playSugs.length; i++){
+				if ($scope.playSugs[i].name == $scope.char.name){
+					return;
+				}
+				if ($scope.playSugs[i].name.length > $scope.char.name.length){
+					var subN = $scope.playSugs[i].name.slice(0, $scope.char.name.length);
+					if (subN.localeCompare($scope.char.name) == 0){
+						newSugs.push($scope.playSugs[i]);
+					}
+				}
+			}
+			this.lastPlayFind = $scope.char.name;
+			if (newSugs.length > 0){
+				$scope.playSugs = newSugs;
+				return;
+			}
+			if (primed){
+				var sendData = {
+					name: $scope.char.name
+				};
+				$http.post("/track/find", sendData).then(function(ret){
+					if (ret.data.success){
+						$scope.playSugs = ret.data.players;
+					}
+				});
+			}
+		};
 
 		this.AddChar = function(){
 			$scope.char.name = $scope.char.name.trim();
 			if (typeof $scope.char.name === 'undefined' || $scope.char.name.length == 0){
 				var charName = document.getElementById("charName");
 				charName.focus();
-				return;
-			}
-			if (typeof $scope.char.wound === 'undefined' || $scope.char.wound <= 0){
-				$scope.char.wound = null;
-				var charWound = document.getElementById("charWound");
-				charWound.focus();
-				return;
-			}
-			if (typeof $scope.char.strain === 'undefined' || $scope.char.strain <= 0){
-				$scope.char.strain = null;
-				var charStrain = document.getElementById("charStrain");
-				charStrain.focus();
-				return;
-			}
-			if (typeof $scope.char.brawn === 'undefined' || $scope.char.brawn <= 0){
-				$scope.char.brawn = null;
-				var charBrawn = document.getElementById("charBrawn");
-				charBrawn.focus();
-				return;
-			}
-			if (typeof $scope.char.agility === 'undefined' || $scope.char.agility <= 0){
-				$scope.char.agility = null;
-				var charAgility = document.getElementById("charAgility");
-				charAgility.focus();
-				return;
-			}
-			if (typeof $scope.char.intellect === 'undefined' || $scope.char.intellect <= 0){
-				$scope.char.intellect = null;
-				var charIntellect = document.getElementById("charIntellect");
-				charIntellect.focus();
-				return;
-			}
-			if (typeof $scope.char.cunning === 'undefined' || $scope.char.cunning <= 0){
-				$scope.char.cunning = null;
-				var charCunning = document.getElementById("charCunning");
-				charCunning.focus();
-				return;
-			}
-			if (typeof $scope.char.willpower === 'undefined' || $scope.char.willpower <= 0){
-				$scope.char.willpower = null;
-				var charWillpower = document.getElementById("charWillpower");
-				charWillpower.focus();
-				return;
-			}
-			if (typeof $scope.char.presence === 'undefined' || $scope.char.presence <= 0){
-				$scope.char.presence = null;
-				var charPresence = document.getElementById("charPresence");
-				charPresence.focus();
 				return;
 			}
 			angular.copy($scope.char, $scope.curChar);

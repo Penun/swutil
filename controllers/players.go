@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"github.com/Penun/swutil/models/sockets"
+	"github.com/Penun/swutil/models/game"
 	"github.com/astaxie/beego"
     "encoding/json"
 )
@@ -12,24 +12,24 @@ type PlayersController struct {
 
 type GetPlaysResp struct {
     Occ BaseResp `json:"occ"`
-    Players []sockets.Player `json:"players"`
+    Players []game.Player `json:"players"`
 }
 
 type InsPlayReq struct {
-	Player sockets.Player `json:"player"`
-	PlayTalents []sockets.PlayerTalent `json:"play_talents"`
-	PlayForce []sockets.PlayerForce `json:"play_force"`
+	Player game.Player `json:"player"`
+	PlayTalents []game.PlayerTalent `json:"play_talents"`
+	PlayForce []game.PlayerForce `json:"play_force"`
 }
 
 type InsPlayResp struct{
 	Occ BaseResp `json:"occ"`
-    Player sockets.Player `json:"player"`
+    Player game.Player `json:"player"`
 }
 
 func (this *PlayersController) Get() {
     resp := GetPlaysResp{Occ: BaseResp{Success: false, Error: ""}}
-	var plays []sockets.Player
-    plays = sockets.GetPlayers()
+	var plays []game.Player
+    plays = game.GetPlayers()
 	if len(plays) > 0{
 		resp.Occ.Success = true
 		resp.Players = plays
@@ -45,17 +45,17 @@ func (this *PlayersController) Add() {
 	err := json.Unmarshal(this.Ctx.Input.RequestBody, &insReq)
 	resp := InsPlayResp{Occ: BaseResp{Success: false, Error: ""}}
 	if err == nil {
-		p_id := sockets.AddPlayer(insReq.Player)
+		p_id := game.AddPlayer(insReq.Player)
         if p_id > 0 {
 			insReq.Player.Id = p_id
             resp.Player = insReq.Player
 			for i := 0; i < len(insReq.PlayTalents); i++ {
 				insReq.PlayTalents[i].Player = &insReq.Player
-				_ = sockets.AddPlayTalent(insReq.PlayTalents[i])
+				_ = game.AddPlayTalent(insReq.PlayTalents[i])
 			}
 			for i := 0; i < len(insReq.PlayForce); i++ {
 				insReq.PlayForce[i].Player = &insReq.Player
-				_ = sockets.AddPlayForce(insReq.PlayForce[i])
+				_ = game.AddPlayForce(insReq.PlayForce[i])
 			}
             resp.Occ.Success = true
         } else {

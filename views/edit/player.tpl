@@ -18,6 +18,10 @@
             <p><label for="playName">Name:</label><input type="text" name="playName" id="playName" ng-model="moldPlay.name" ng-change="mCont.CheckPlay()" placeholder="Name" tabindex="1" autofocus required/></p>
             <p><label for="playWound">Wound Threshold:</label><input type="number" name="playWound" id="playWound" ng-model="moldPlay.wound" min="0" tabindex="2" required placeholder="0"/></p>
             <p><label for="playStrain">Strain Threshold:</label><input type="number" name="playStrain" id="playStrain" ng-model="moldPlay.strain" min="0" tabindex="3" required placeholder="0"/></p>
+            <h2>Species</h2>
+            <p style="margin-bottom: 3vh;"><select name="playSpecies" class="talent" ng-model="moldPlay.species.id" ng-options="spec.id as spec.name for spec in species">
+                <option value="">Select Species</option>
+            </select></p>
             <h2>Characteristics</h2>
             <p><label for="playBrawn">Brawn:</label><input type="number" name="playBrawn" id="playBrawn" ng-model="moldPlay.brawn" min="1" max="6" tabindex="4" required placeholder="0"/></p>
             <p><label for="playAgility">Agility:</label><input type="number" name="playAgility" id="playAgility" ng-model="moldPlay.agility" min="1" max="6" tabindex="5" required placeholder="0"/></p>

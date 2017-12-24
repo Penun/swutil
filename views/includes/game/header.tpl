@@ -5,7 +5,7 @@
 <meta name="Viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no" />
 
 <title>SWUTIL Track</title>
-{{template "includes/strain/styles.html"}}
+{{template "includes/game/styles.html"}}
 <link rel="stylesheet" type="text/css" href="/static/css/mob.css" media="screen and (max-width: 45em)" />
-{{template "includes/strain/js.html"}}
+{{template "includes/game/js.html"}}
 </head>

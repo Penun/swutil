@@ -2,7 +2,6 @@
 	var app = angular.module('swutil_edit', []);
 	app.controller('mainController', ['$window', '$scope', '$http', function($window, $scope, $http){
 		this.curTab = 1;
-		$scope.species = [];
 		$scope.curSpec = {};
 		$scope.moldSpecies = {};
 		$scope.moldTalent = {type: "Passive"};
@@ -14,18 +13,10 @@
 		$scope.moldDroid = {};
 		$scope.moldVehi = {};
 		$scope.moldStar = {};
-		$scope.moldPlay = {talents: [], force: []};
+		$scope.moldPlay = {species: {}, talents: [], force: []};
 		this.skillsCho = [];
 		this.talCho = null;
 		this.rotateDeg = 5;
-
-		angular.element(document).ready(function(){
-			$http.get("/species").then(function(ret){
-				if (ret.data.occ.success){
-					$scope.species = ret.data.result;
-				}
-			});
-		});
 
 		this.AddAbility = function(){
 			var abilTxt = document.getElementById("abilAdd");
@@ -356,11 +347,10 @@
 					else {
 						$scope.players.push(ret.data.player);
 					}
-					$scope.moldPlay = {talents: []};
 					document.getElementById("playName").focus();
 				}
 			});
-			$scope.moldPlay.talents = [];
+			$scope.moldPlay = {species: {}, talents: [], force: []};
 		};
 
 		this.AddPlayTal = function(){
@@ -682,6 +672,9 @@
 				if (typeof $scope.talents === 'undefined'){
 					this.FetchTalents();
 				}
+				if (typeof $scope.species === 'undefined'){
+					this.FetchSpecies();
+				}
 				if (typeof $scope.forceP === 'undefined'){
 					$http.get("/force").then(function(ret){
 						if (ret.data.occ.success){
@@ -696,6 +689,14 @@
 
 		this.ShowTab = function(tab_id){
 			return this.curTab === tab_id;
+		};
+
+		this.FetchSpecies = function(){
+			$http.get("/species").then(function(ret){
+				if (ret.data.occ.success){
+					$scope.species = ret.data.result;
+				}
+			});
 		};
 
 		this.FetchTalents = function(){

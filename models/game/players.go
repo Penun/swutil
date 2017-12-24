@@ -1,4 +1,4 @@
-package sockets
+package game
 
 import (
     "github.com/astaxie/beego/orm"
@@ -18,7 +18,7 @@ func GetPlayer(p_id int64) Player {
 func GetPlayerLike(name string) []Player {
     o := orm.NewOrm()
     var players []Player
-    _, err := o.Raw("SELECT * FROM `player` WHERE `name` LIKE '?%''", name).QueryRows(&players)
+    _, err := o.Raw("SELECT * FROM `player` WHERE `name` LIKE CONCAT(?, '%')", name).QueryRows(&players)
     if len(players) > 0 && err == nil {
         return players
     } else {
