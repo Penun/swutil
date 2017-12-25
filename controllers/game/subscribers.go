@@ -57,7 +57,6 @@ func tracker() {
 						ws.Close()
 						beego.Error("WebSocket closed:", unsub)
 					}
-					publish <- newEvent(game.EVENT_LEAVE, unsub, "", nil, "") // Publish a LEAVE event.
 					break
 				}
 			}

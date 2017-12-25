@@ -45,7 +45,16 @@
 			switch (data.type) {
 			case 0: // JOIN
 				if (data.player.type == "play" && data.player.name != $scope.char.name){
-					$scope.subs.push(data.player);
+					var isFound = false;
+					for (var i = 0; i < $scope.subs.length; i++){
+						if ($scope.subs[i].player.name == data.player.name){
+							isFound = true;
+							break;
+						}
+					}
+					if (!isFound){
+						$scope.subs.push({player: data.player});
+					}
 				}
 				break;
 			case 1: // LEAVE

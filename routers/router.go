@@ -28,6 +28,8 @@ func init() {
 	beego.Router("/track/subs", &game.GameStatusController{}, "get:Subs")
 	beego.Router("/track/status", &game.GameStatusController{}, "get:GameStatus")
 	beego.Router("/track/find", &game.GameStatusController{}, "post:FindPlayer")
+	beego.Router("/track/player", &game.GameStatusController{}, "post:GetPlayer")
+	beego.Router("/track/check", &game.GameStatusController{}, "get:Check")
 
 	beego.Router("/track/join", &game.WebSocketController{}, "get:Join")
 	beego.Router("/track/joinm", &game.WebSocketController{}, "get:JoinM")

@@ -42,7 +42,7 @@ type SocketWatchMessage struct {
 func (this *WebSocketController) Join() {
 	uname := ""
 	ws_type := this.GetString("type")
-	var curPlay game.LivePlayer
+	var curPlay *game.LivePlayer
 	if ws_type == "play" {
 		uname = this.GetString("uname")
 		if len(uname) == 0 {
@@ -55,9 +55,21 @@ func (this *WebSocketController) Join() {
 				return
 			}
 		}
-		newPlay := game.Player{Name: uname}
-		curPlay = game.LivePlayer{Player: &newPlay, Type: "PC"}
-		players = append(players, &curPlay)
+		if findPlay := this.GetSession("player"); findPlay != nil {
+			curPlay = GetPlayerName(findPlay.(*game.LivePlayer).Player.Name)
+		} else {
+			if newPlay := game.GetPlayerName(uname); (newPlay != game.Player{}) {
+				tempPlay := game.LivePlayer{Player: &newPlay, Type: "PC"}
+				tempPlay.CurWound = newPlay.Wound
+				tempPlay.CurStrain = newPlay.Strain
+				players = append(players, tempPlay)
+				curPlay = &players[len(players) - 1]
+			} else {
+				this.Redirect("/", 302)
+				return
+			}
+		}
+		this.SetSession("player", curPlay)
 	} else if ws_type == "watch" {
 		uname = "watch" + strconv.FormatInt(time.Now().Unix(), 10)
 	} else {
@@ -79,7 +91,7 @@ func (this *WebSocketController) Join() {
 
 	// Join chat room.
 	Join(uname, ws_type, ws)
-	defer SetupLeave(uname, curPlay)
+	defer Leave(uname)
 
 	// Message receive loop.
 	for {
@@ -95,19 +107,18 @@ func (this *WebSocketController) Join() {
 				publish <- newEvent(game.EVENT_NOTE, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "wound":
 				wound, _ := strconv.Atoi(conReq.Data.Message)
-				curPlay.Player.Wound += wound
-				// this.SetSession("player", curPlay)
+				curPlay.CurWound += wound
+				//this.SetSession("player", curPlay)
 				publish <- newEvent(game.EVENT_WOUND, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "strain":
 				strain, _ := strconv.Atoi(conReq.Data.Message)
-				curPlay.Player.Strain += strain
-				// this.SetSession("player", curPlay)
+				curPlay.CurStrain += strain
+				//this.SetSession("player", curPlay)
 				publish <- newEvent(game.EVENT_STRAIN, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "initiative":
 				init, _ := strconv.ParseFloat(conReq.Data.Message, 64)
 				curPlay.Initiative = init
-				// this.SetSession("player", curPlay)
-				SortPlayerInit()
+				//this.SetSession("player", curPlay)
 				publish <- newEvent(game.EVENT_INIT, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "initiative_t":
 				if curInitInd == len(players) - 1 {
@@ -168,6 +179,14 @@ func (this *WebSocketController) JoinM() {
 			case "strain":
 				publish <- newEvent(game.EVENT_STRAIN, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "initiative_d":
+				for i := 0; i < len(conReq.Data.Players); i++ {
+					for j := 0; j < len(players); j++ {
+						if players[j].Player.Name == conReq.Data.Players[i] {
+							players[j].Initiative = 0
+							break
+						}
+					}
+				}
 				publish <- newEvent(game.EVENT_INIT_D, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "initiative_s":
 				if initStarted {
@@ -175,7 +194,6 @@ func (this *WebSocketController) JoinM() {
 				} else {
 					initStarted = true
 					curInitInd = 0
-					SortPlayerInit()
 				}
 				publish <- newEvent(game.EVENT_INIT_S, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "initiative_t":
@@ -199,8 +217,7 @@ func (this *WebSocketController) JoinM() {
 				err = json.Unmarshal([]byte(conReq.Data.Message), &newPlay)
 				if err == nil {
 					newPlay.Type = "NPC"
-					players = append(players, &newPlay)
-					SortPlayerInit()
+					players = append(players, newPlay)
 					publish <- newEvent(game.EVENT_JOIN, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 				} else {
 					beego.Error(err.Error())
@@ -217,7 +234,6 @@ func (this *WebSocketController) JoinM() {
 							}
 						}
 					}
-					SortPlayerInit()
 					publish <- newEvent(game.EVENT_LEAVE, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 				} else {
 					beego.Error(err.Error())

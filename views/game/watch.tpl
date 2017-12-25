@@ -14,9 +14,9 @@
 	                    <th>Initiative</th>
 	                </tr>
 	                <tr ng-repeat="(ind, play) in players" ng-show="players.length > 0" ng-class="{activePlayer: startInit && play.isTurn, player: !play.isTurn || !startInit }">
-	                    <td>{{"{{play.name}}"}}</td>
-	                    <td class="rang"><span ng-show="play.wound > 0">{{"{{play.wound}}"}}</span></td>
-	                    <td class="rang"><span ng-show="play.strain > 0">{{"{{play.strain}}"}}</span></td>
+	                    <td>{{"{{play.player.name}}"}}</td>
+	                    <td class="rang"><span>{{"{{play.cur_wound}}"}}/{{"{{play.player.wound}}"}}</span></td>
+	                    <td class="rang"><span>{{"{{play.cur_strain}}"}}/{{"{{play.player.strain}}"}}</span></td>
 	                    <td class="rang"><span ng-show="play.initiative > 0">{{"{{play.initiative}}"}}</span></td>
 	                </tr>
 	            </table>

@@ -16,7 +16,7 @@
 				<button class="menu_p" ng-click="mCont.ClearForm(2, true)">Menu</button>
 				<form name="inTextForm" id="inTextForm" novalidate>
 					<p class="s_ws_p_inline"><label for="subSelInText"><b>Players:</b></label></p>
-					<select name="subSelInText" id="subSelInText" ng-show="subs.length > 0" ng-model="mCont.inText.players" ng-options="sub.name as sub.name for sub in subs" multiple required></select>
+					<select name="subSelInText" id="subSelInText" ng-show="subs.length > 0" ng-model="mCont.inText.players" ng-options="sub.player.name as sub.player.name for sub in subs" multiple required></select>
 					<p class="s_ws_p_inline"><label for="inTextMessage"><b>{{"{{mCont.inTextText}}"}}:</b></label></p>
 					<textarea name="inTextMessage" id="inTextMessage" ng-model="mCont.inText.message" ng-required="mCont.textareaReq"></textarea>
 					<button ng-show="inTextForm.$valid" ng-click="mCont.InText()">Send</button>
@@ -26,7 +26,7 @@
 				<button class="menu_p" ng-click="mCont.ClearForm(3, true)">Menu</button>
 				<form name="actForm" id="actForm" ng-show="!mCont.startInit" novalidate>
 					<p class="s_ws_p_inline"><label for="subSelAct"><b>Players:</b></label></p>
-					<select name="subSelAct" id="subSelAct" ng-model="mCont.action.players" ng-options="sub.name as sub.name for sub in subs" multiple required></select>
+					<select name="subSelAct" id="subSelAct" ng-model="mCont.action.players" ng-options="sub.player.name as sub.player.name for sub in subs" multiple required></select>
 					<button ng-show="actForm.$valid" ng-click="mCont.Action()">{{"{{mCont.actionText}}"}}</button>
 				</form>
 				<p class="act_p" ng-show="mCont.actionText == 'Initiative' && !mCont.startInit">
@@ -80,7 +80,7 @@
 				<p><button class="menu_p" ng-click="mCont.ClearForm(4, true)">Menu</button></p>
 				<form name="inpForm" id="inpForm" novalidate>
 					<p class="s_ws_p_inline"><label for="subSelInp"><b>Players:</b></label></p>
-					<select name="subSelInp" id="subSelInp" ng-show="subs.length > 0" ng-model="mCont.inpForm.players" ng-options="sub.name as sub.name for sub in subs" multiple required></select>
+					<select name="subSelInp" id="subSelInp" ng-show="subs.length > 0" ng-model="mCont.inpForm.players" ng-options="sub.player.name as sub.player.name for sub in subs" multiple required></select>
 					<p class="s_ws_p_inline"><label for="inpIn"><b>{{"{{mCont.inputText}}"}}:</b></label> <input type="number" name="inpIn" id="inpIn" ng-model="mCont.inpForm.input" placeholder="0" required/></p>
 					<button ng-show="inpForm.$valid" ng-click="mCont.Input()">{{"{{mCont.inputText}}"}}</button>
 				</form>

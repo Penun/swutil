@@ -40,7 +40,23 @@
 			case 0: // JOIN
 				if (data.player.type == "play"){
 					data.player.initiative = 0;
-					$scope.players.push(data.player);
+					var isFound = false;
+					for (var i = 0; i < $scope.players.length; i++){
+						if ($scope.players[i].player.name == data.player.name){
+							isFound = true;
+							break;
+						}
+					}
+					if (!isFound){
+						sendData = {
+							name: data.player.name
+						}
+						$http.post("/track/player", sendData).then(function(ret){
+							if (ret.data.success){
+								$scope.players.push(ret.data.live_player);
+							}
+						});
+					}
 				} else if (data.player.type == "master") {
 					if (data.data !== ""){
 						var tPlay = JSON.parse(data.data);
@@ -80,11 +96,11 @@
 			case 3: // WOUND
 				if (data.player.type != "master"){
 					for (var i = 0; i < $scope.players.length; i++){
-						if ($scope.players[i].name == data.player.name){
-							if (typeof $scope.players[i].wound === 'undefined'){
-								$scope.players[i].wound = Number(data.data);
+						if ($scope.players[i].player.name == data.player.name){
+							if (typeof $scope.players[i].cur_wound === 'undefined'){
+								$scope.players[i].cur_wound = Number(data.data);
 							} else {
-								$scope.players[i].wound += Number(data.data);
+								$scope.players[i].cur_wound += Number(data.data);
 							}
 							break;
 						}
@@ -92,8 +108,8 @@
 				} else {
 					for (var i = 0; i < data.players.length; i++){
 						for (var j = 0; j < $scope.players.length; j++){
-							if ($scope.players[j].name == data.players[i]){
-								$scope.players[j].wound += Number(data.data);
+							if ($scope.players[j].player.name == data.players[i]){
+								$scope.players[j].cur_wound += Number(data.data);
 								break;
 							}
 						}
@@ -103,11 +119,11 @@
 			case 4: // STRAIN
 				if (data.player.type != "master"){
 					for (var i = 0; i < $scope.players.length; i++){
-						if ($scope.players[i].name == data.player.name){
-							if (typeof $scope.players[i].strain === 'undefined'){
-								$scope.players[i].strain = Number(data.data);
+						if ($scope.players[i].player.name == data.player.name){
+							if (typeof $scope.players[i].cur_strain === 'undefined'){
+								$scope.players[i].cur_strain = Number(data.data);
 							} else {
-								$scope.players[i].strain += Number(data.data);
+								$scope.players[i].cur_strain += Number(data.data);
 							}
 							break;
 						}
@@ -115,8 +131,8 @@
 				} else {
 					for (var i = 0; i < data.players.length; i++){
 						for (var j = 0; j < $scope.players.length; j++){
-							if ($scope.players[j].name == data.players[i]){
-								$scope.players[j].strain += Number(data.data);
+							if ($scope.players[j].player.name == data.players[i]){
+								$scope.players[j].cur_strain += Number(data.data);
 								break;
 							}
 						}
@@ -125,7 +141,7 @@
 				break;
 			case 5: // INITIATIVE
 				for (var i = 0; i < $scope.players.length; i++){
-					if ($scope.players[i].name == data.player.name){
+					if ($scope.players[i].player.name == data.player.name){
 						$scope.players[i].initiative = Number(data.data);
 						break;
 					}
@@ -136,7 +152,7 @@
 			case 6: // INITIATIVE DM RESET
 				for (var i = 0; i < data.players.length; i++){
 					for (var j = 0; j < $scope.players.length; j++){
-						if ($scope.players[j].name == data.players[i]){
+						if ($scope.players[j].player.name == data.players[i]){
 							$scope.players[j].initiative = 0;
 							break;
 						}

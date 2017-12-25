@@ -24,7 +24,7 @@
             </div>
             <div ng-show="mCont.ShowStep(2)" class="sixty_he">
 				<p class="menu_p"><button ng-click="SetStep(0, false)">Menu</button></p>
-                <p class="s_ws_p_inline"><label><b>{{"{{char.name}}"}}</b></label></p>
+                <p class="s_ws_p_inline"><label><b>{{"{{curChar.name}}"}}</b></label></p>
                 <p class="s_ws_p_inline"><label><b>W:</b></label> {{"{{curChar.curWound}}"}}/{{"{{curChar.wound}}"}}</p>
 				<p class="s_ws_p_inline"><button ng-click="mCont.Wound(1)" class="inline_butt">+</button> <button ng-click="mCont.Wound(-1)" class="inline_butt">-</button></p>
                 <p class="s_ws_p_inline"><label><b>S:</b></label> {{"{{curChar.curStrain}}"}}/{{"{{curChar.strain}}"}}</p>
@@ -36,7 +36,7 @@
 				<p class="menu_p"><button ng-click="SetStep(0, false)">Menu</button></p>
 				<form name="noteForm" id="noteForm" novalidate>
 					<p class="s_ws_p_inline"><label for="subSel"><b>Players:</b></label></p>
-					<select name="subSel" id="subSel" ng-show="subs.length > 0" ng-model="note.players" ng-options="sub.name as sub.name for sub in subs" multiple required></select>
+					<select name="subSel" id="subSel" ng-show="subs.length > 0" ng-model="note.players" ng-options="sub.player.name as sub.player.name for sub in subs" multiple required></select>
 					<p class="s_ws_p_inline"><label for="noteMessage"><b>Note:</b></label></p>
 					<textarea name="noteMessage" id="noteMessage" ng-model="note.message" ng-required="textareaReq"></textarea>
 					<button ng-show="noteForm.$valid" ng-click="mCont.SendNote()">Send</button>

@@ -16,6 +16,19 @@
 		$scope.playSugs = [];
 		this.lastPlayFind = "";
 
+		angular.element(document).ready(function(){
+			$http.get("/track/check").then(function(ret){
+				if (ret.data.success){
+					$scope.curChar = ret.data.live_player.player;
+					$scope.curChar.curWound = ret.data.live_player.cur_wound;
+					$scope.curChar.curStrain = ret.data.live_player.cur_strain;
+					$scope.curChar.initiative = ret.data.live_player.initiative;
+					$scope.sock = new WebSocket('ws://' + window.location.host + '/track/join?type=play&uname=' + $scope.curChar.name);
+					$timeout($scope.SetupSocket, 500);
+				}
+			});
+		});
+
 		this.FindPlayer = function(){
 			var primed = false;
 			if ($scope.char.name.length < 3){
@@ -76,7 +89,7 @@
 			$scope.curChar.curStrain = $scope.curChar.strain;
 			$scope.curChar.initiative = 0;
 			$scope.sock = new WebSocket('ws://' + window.location.host + '/track/join?type=play&uname=' + $scope.curChar.name);
-			$timeout($scope.SetupSocket, 150);
+			$timeout($scope.SetupSocket, 500);
 		};
 
 		$scope.SetupSocket = function(){
@@ -87,7 +100,7 @@
 				$http.get("/track/subs?type=play").then(function(ret){
 					if (ret.data.success){
 						for (var i = 0; i < ret.data.result.length; i++){
-							if (ret.data.result[i].name == $scope.curChar.name){
+							if (ret.data.result[i].player.name == $scope.curChar.name){
 								ret.data.result.splice(i, 1);
 								break;
 							}
@@ -95,8 +108,6 @@
 						$scope.subs = ret.data.result;
 					}
 				});
-				$scope.SendWound($scope.curChar.wound);
-				$scope.SendStrain($scope.curChar.strain);
 				$scope.SetStep(2, true);
 			} else if ($scope.sock.readyState == 3){
 				$scope.curChar = {};
@@ -110,7 +121,16 @@
 			switch (data.type) {
 				case 0: // JOIN
 					if (data.player.type != "watch" && data.player.name != $scope.curChar.name){
-						$scope.subs.push(data.player);
+						var isFound = false;
+						for (var i = 0; i < $scope.subs.length; i++){
+							if ($scope.subs[i].player.name == data.player.name){
+								isFound = true;
+								break;
+							}
+						}
+						if (!isFound){
+							$scope.subs.push({player: data.player});
+						}
 					}
 					break;
 				case 1: // LEAVE

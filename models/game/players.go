@@ -15,6 +15,17 @@ func GetPlayer(p_id int64) Player {
     }
 }
 
+func GetPlayerName(name string) Player {
+    o := orm.NewOrm()
+    var player Player
+    err := o.QueryTable("player").Filter("name", name).One(&player)
+    if err == nil {
+        return player
+    } else {
+        return Player{}
+    }
+}
+
 func GetPlayerLike(name string) []Player {
     o := orm.NewOrm()
     var players []Player
