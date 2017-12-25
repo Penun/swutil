@@ -83,14 +83,30 @@
 				}
 			}
 			if (typeof $scope.curChar.wound === 'undefined'){
-				return;
+				var sendData = {
+					name: $scope.char.name
+				};
+				$http.post("/track/verify", sendData).then(function(ret){
+					if (ret.data.success){
+						$scope.curChar = ret.data.player;
+						$scope.BridgeToSetup();
+					} else {
+						$scope.char.name = "";
+						$scope.charNameSug = "Name Not Found";
+					}
+				});
+			} else {
+				$scope.BridgeToSetup();
 			}
+		};
+
+		$scope.BridgeToSetup = function(){
 			$scope.curChar.curWound = $scope.curChar.wound;
 			$scope.curChar.curStrain = $scope.curChar.strain;
 			$scope.curChar.initiative = 0;
 			$scope.sock = new WebSocket('ws://' + window.location.host + '/track/join?type=play&uname=' + $scope.curChar.name);
 			$timeout($scope.SetupSocket, 500);
-		};
+		}
 
 		$scope.SetupSocket = function(){
 			if ($scope.sock.readyState === 1){
@@ -112,7 +128,7 @@
 			} else if ($scope.sock.readyState == 3){
 				$scope.curChar = {};
 				$scope.sock = null;
-				$scope.charNameSug = "Name Taken.";
+				$scope.charNameSug = "Error/Refresh";
 			}
 		};
 

@@ -35,6 +35,11 @@ type GetPlayerResp struct {
 	LivePlayer *game.LivePlayer `json:"live_player"`
 }
 
+type VerifyNameResp struct {
+	Success bool `json:"success"`
+	Player game.Player `json:"player"`
+}
+
 type CheckPlayerResp struct {
 	Success bool `json:"success"`
 	LivePlayer *game.LivePlayer `json:"live_player"`
@@ -114,6 +119,21 @@ func (this *GameStatusController) FindPlayer() {
 		playSugs := game.GetPlayerLike(findReq.Name)
         if len(playSugs) > 0 {
             resp.Players = playSugs
+            resp.Success = true
+        }
+	}
+	this.Data["json"] = resp
+	this.ServeJSON()
+}
+
+func (this *GameStatusController) VerifyName() {
+	var findReq FindPlayerReq
+	err := json.Unmarshal(this.Ctx.Input.RequestBody, &findReq)
+	resp := VerifyNameResp{Success: false}
+	if err == nil {
+		player := game.GetPlayerName(findReq.Name)
+        if (player != game.Player{}) {
+            resp.Player = player
             resp.Success = true
         }
 	}
