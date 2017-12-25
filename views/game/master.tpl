@@ -24,27 +24,28 @@
 			</div>
 			<div ng-show="mCont.ShowStep(3)" class="sixty_he">
 				<button class="menu_p" ng-click="mCont.ClearForm(3, true)">Menu</button>
-				<form name="actForm" id="actForm" ng-show="!mCont.startInit" novalidate>
+				<form name="actForm" id="actForm" ng-show="!startInit" novalidate>
 					<p class="s_ws_p_inline"><label for="subSelAct"><b>Players:</b></label></p>
 					<select name="subSelAct" id="subSelAct" ng-model="mCont.action.players" ng-options="sub.player.name as sub.player.name for sub in subs" multiple required></select>
 					<button ng-show="actForm.$valid" ng-click="mCont.Action()">{{"{{mCont.actionText}}"}}</button>
 				</form>
-				<p class="act_p" ng-show="mCont.actionText == 'Initiative' && !mCont.startInit">
+				<p class="act_p" ng-show="mCont.actionText == 'Initiative' && !startInit">
 					<button ng-click="mCont.AddEnemy(true)">Add Enemy</button>
 					<button ng-click="mCont.DelEnemy(true)">Delete Enemy</button>
 				</p>
-				<p class="s_ws_p_inline" ng-show="mCont.startInit">Initiative Tracker Running...</p>
-				<p class="act_p" ng-show="mCont.actionText == 'Initiative'"><button ng-click="mCont.StartInit()">{{"{{mCont.startInit ? \"End\" : \"Start\"}}"}} Initiative</button></p>
-				<p class="act_p" ng-show="mCont.actionText == 'Initiative' && mCont.startInit">
+				<p class="s_ws_p_inline" ng-show="startInit">Initiative Tracker Running...</p>
+				<p class="act_p" ng-show="mCont.actionText == 'Initiative' && !startInit"><button ng-click="mCont.StartInit()">Start Initiative</button></p>
+				<p class="act_p" ng-show="mCont.actionText == 'Initiative' && startInit">
 					<button ng-click="mCont.NextTurn()">Next Turn</button>
 					<button ng-click="mCont.PrevTurn()">Prev Turn</button>
+					<button ng-click="mCont.EndInit()">End Initiative</button>
 				</p>
 				<p class="s_ws_p_inline" ng-show="enems.length > 0"><label><b>Enemies:</b></label>
 					<ul>
 						<li ng-repeat="(ind, enem) in enems">{{"{{enem.name}}"}} `~` Wo:{{"{{enem.wound}}"}} `~` St:{{"{{enem.strain}}"}}</li>
 					</ul>
 				</p>
-				<p class="act_p" ng-show="mCont.actionText == 'Initiative' && mCont.startInit && enems.length > 0"><button ng-click="mCont.DamageEnemy(true, false)">Adjust Enemy</button></p>
+				<p class="act_p" ng-show="mCont.actionText == 'Initiative' && startInit && enems.length > 0"><button ng-click="mCont.DamageEnemy(true, false)">Adjust Enemy</button></p>
 			</div>
 			<div ng-show="mCont.ShowStep(5)" class="sixty_he">
 				<button class="menu_p" ng-click="mCont.ClearForm(5, true)">Cancel</button>

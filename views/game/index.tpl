@@ -30,7 +30,7 @@
                 <p class="s_ws_p_inline"><label><b>S:</b></label> {{"{{curChar.curStrain}}"}}/{{"{{curChar.strain}}"}}</p>
 				<p class="s_ws_p_inline"><button ng-click="mCont.Strain(1)" class="inline_butt">+</button> <button ng-click="mCont.Strain(-1)" class="inline_butt">-</button></p>
 				<p class="s_ws_p_inline"><label><b>Initiative:</b></label> <span ng-show="curChar.initiative > 0" class="inline_span">{{"{{curChar.initiative}}"}}</span><button ng-show="curChar.initiative == 0" ng-click="mCont.InputSet('Initiative')" class="inline_butt">Set</button></p>
-                <p class="s_ws_p_inline"><button ng-click="mCont.EndTurn()" ng-show="isTurn">End Turn</button></p>
+                <p class="s_ws_p_inline"><button ng-click="mCont.EndTurn()" ng-show="curChar.isTurn">End Turn</button></p>
             </div>
 			<div ng-show="mCont.ShowStep(3)" class="sixty_he">
 				<p class="menu_p"><button ng-click="SetStep(0, false)">Menu</button></p>

@@ -16,9 +16,14 @@
 		this.actionText = "";
 		this.inTextText = "";
 		this.inputText = "";
-		this.startInit = false;
+		$scope.startInit = false;
 
 		angular.element(document).ready(function(){
+			$http.get("/track/status").then(function(ret){
+				if (ret.data.success){
+					$scope.startInit = ret.data.start_init;
+				}
+			});
 			$scope.sock = new WebSocket('ws://' + window.location.host + '/track/joinm');
 			$timeout($scope.SetupSocket, 30);
 		});
@@ -333,11 +338,7 @@
 		};
 
 		this.StartInit = function(){
-			if (this.startInit){
-				this.startInit = false;
-			} else {
-				this.startInit = true;
-			}
+			$scope.startInit = true;
 			var sendData = {
 				type: "initiative_s",
 				data: {}
@@ -346,8 +347,18 @@
 			$scope.sock.send(sendData);
 		};
 
+		this.EndInit = function(){
+			$scope.startInit = false;
+			var sendData = {
+				type: "initiative_e",
+				data: {}
+			};
+			sendData = JSON.stringify(sendData);
+			$scope.sock.send(sendData);
+		};
+
 		this.NextTurn = function(){
-			if (!this.startInit){
+			if (!$scope.startInit){
 				return;
 			}
 			var sendData = {
@@ -361,7 +372,7 @@
 		};
 
 		this.PrevTurn = function(){
-			if (!this.startInit){
+			if (!$scope.startInit){
 				return;
 			}
 			var sendData = {

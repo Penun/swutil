@@ -162,13 +162,8 @@
 				$scope.ApplyInit();
 				break;
 			case 7: // Init StartInit
-				if ($scope.startInit){
-					$scope.startInit = false;
-					$scope.players[$scope.curInitInd].isTurn = false;
-				} else {
-					$scope.startInit = true;
-					$scope.players[0].isTurn = true;
-				}
+				$scope.startInit = true;
+				$scope.players[0].isTurn = true;
 				$scope.curInitInd = 0;
 				break;
 			case 8: // Turn initiative
@@ -188,6 +183,13 @@
 						}
 					}
 					$scope.players[$scope.curInitInd].isTurn = true;
+				}
+				break;
+			case 9: // End initiative
+				$scope.startInit = false;
+				$scope.curInitInd = 0;
+				for (var i = 0; i < $scope.players.length; i++){
+					$scope.players[i].isTurn = false;
 				}
 				break;
 			}

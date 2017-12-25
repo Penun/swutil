@@ -47,6 +47,7 @@ type CheckPlayerResp struct {
 
 var (
 	players = make([]game.LivePlayer, 0)
+	initOrder = make([]*game.LivePlayer, 0)
 	master = false
 	curInitInd = 0
 	prevInitInd = 0
@@ -69,8 +70,7 @@ func (this *GameStatusController) Check() {
 	var resp CheckPlayerResp
 	if findPlay := this.GetSession("player"); findPlay != nil {
 		resp.Success = true
-		beego.Info("Shit", findPlay.(*game.LivePlayer).Player.Name)
-		resp.LivePlayer = GetPlayerName(findPlay.(*game.LivePlayer).Player.Name)
+		resp.LivePlayer = findPlay.(*game.LivePlayer)
 	} else {
 		resp.Success = false
 	}
@@ -162,7 +162,6 @@ func GetPlayerName(playName string) *game.LivePlayer {
 	if playName != "" {
 		for i := 0; i < len(players); i++ {
 			if players[i].Player.Name == playName {
-				beego.Info("Here", playName)
 				return &players[i]
 			}
 		}
@@ -195,7 +194,6 @@ func DeletePlayerName(playName string) {
 func SetupLeaveM(uname string) {
 	Leave(uname)
 	master = false
-	initStarted = false
 	var tPlays []game.LivePlayer
 	for i := 0; i < len(players); i++ {
 		if players[i].Type == "NPC" {
@@ -234,17 +232,17 @@ func RemovePlayer(i int) {
 }
 
 func SortPlayerInit() {
-	for  i := 0; i < len(players); i++ {
+	for  i := 0; i < len(initOrder); i++ {
 		minInd := i
-		for j := i + 1; j < len(players); j++ {
-			if players[j].Initiative > players[minInd].Initiative {
+		for j := i + 1; j < len(initOrder); j++ {
+			if initOrder[j].Initiative > initOrder[minInd].Initiative {
 				minInd = j;
 			}
 		}
 		if minInd != i {
-			swap := players[i]
-			players[i] = players[minInd]
-			players[minInd] = swap
+			swap := initOrder[i]
+			initOrder[i] = initOrder[minInd]
+			initOrder[minInd] = swap
 		}
 	}
 }

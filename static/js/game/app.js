@@ -11,7 +11,6 @@
 		this.lastNote = 0;
 		$scope.charNameSug = "Name";
 		this.formInput = "";
-		$scope.isTurn = false;
 		$scope.audObj = document.createElement("AUDIO");
 		$scope.playSugs = [];
 		this.lastPlayFind = "";
@@ -23,6 +22,7 @@
 					$scope.curChar.curWound = ret.data.live_player.cur_wound;
 					$scope.curChar.curStrain = ret.data.live_player.cur_strain;
 					$scope.curChar.initiative = ret.data.live_player.initiative;
+					$scope.curChar.isTurn = ret.data.live_player.isTurn;
 					$scope.sock = new WebSocket('ws://' + window.location.host + '/track/join?type=play&uname=' + $scope.curChar.name);
 					$timeout($scope.SetupSocket, 500);
 				}
@@ -172,11 +172,14 @@
 					break;
 				case 7:
 				case 8:
-					$scope.isTurn = $scope.isTurn ? false : true;
-					if ($scope.isTurn && $scope.audObj.paused){
+					$scope.curChar.isTurn = $scope.curChar.isTurn ? false : true;
+					if ($scope.curChar.isTurn && $scope.audObj.paused){
 						$scope.audObj.src = "static/snd/alarm.mp3";
 						$scope.audObj.play();
 					}
+					break;
+				case 9:
+					$scope.curChar.isTurn = false;
 					break;
 				default:
 					return;
@@ -319,10 +322,10 @@
 		};
 
 		this.EndTurn = function(){
-			if (!$scope.isTurn){
+			if (!$scope.curChar.isTurn){
 				return;
 			}
-			$scope.isTurn = false;
+			$scope.curChar.isTurn = false;
 			var sendData = {
 				type: "initiative_t",
 				data: {
