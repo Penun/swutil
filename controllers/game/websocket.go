@@ -42,30 +42,27 @@ type SocketWatchMessage struct {
 func (this *WebSocketController) Join() {
 	uname := ""
 	ws_type := this.GetString("type")
-	var curPlay *game.LivePlayer
 	if ws_type == "play" {
-		uname = this.GetString("uname")
-		if len(uname) == 0 {
-			this.Redirect("/", 302)
-			return
-		}
-		for _, sub := range subscribers {
-			if sub.Name == uname {
+		if findPlay := this.GetSession("player"); findPlay != nil {
+			uname = findPlay.(string)
+		} else {
+			uname = this.GetString("uname")
+			if len(uname) == 0 {
 				this.Redirect("/", 302)
 				return
 			}
-		}
-		if findPlay := this.GetSession("player"); findPlay != nil {
-			curPlay = GetPlayerName(findPlay.(*game.LivePlayer).Player.Name)
-		} else {
+			for _, sub := range subscribers {
+				if sub.Name == uname {
+					this.Redirect("/", 302)
+					return
+				}
+			}
 			if newPlay := game.GetPlayerName(uname); (newPlay != game.Player{}) {
 				tempPlay := game.LivePlayer{Player: &newPlay, IsTurn: false, Type: "PC"}
 				tempPlay.CurWound = newPlay.Wound
 				tempPlay.CurStrain = newPlay.Strain
 				players = append(players, tempPlay)
-				initOrder = append(initOrder, &players[len(players) - 1])
-				curPlay = &players[len(players) - 1]
-				this.SetSession("player", curPlay)
+				this.SetSession("player", uname)
 			} else {
 				this.Redirect("/", 302)
 				return
@@ -108,25 +105,25 @@ func (this *WebSocketController) Join() {
 				publish <- newEvent(game.EVENT_NOTE, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "wound":
 				wound, _ := strconv.Atoi(conReq.Data.Message)
-				curPlay.CurWound += wound
+				WoundPlayer(uname, wound)
 				publish <- newEvent(game.EVENT_WOUND, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "strain":
 				strain, _ := strconv.Atoi(conReq.Data.Message)
-				curPlay.CurStrain += strain
+				StrainPlayer(uname, strain)
 				publish <- newEvent(game.EVENT_STRAIN, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "initiative":
 				init, _ := strconv.ParseFloat(conReq.Data.Message, 64)
-				curPlay.Initiative = init
+				InitPlayer(uname, init)
 				SortPlayerInit()
 				publish <- newEvent(game.EVENT_INIT, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "initiative_t":
-				if curInitInd == len(initOrder) - 1 {
+				players[curInitInd].IsTurn = false
+				if curInitInd == len(players) - 1 {
 					curInitInd = 0
 				} else {
 					curInitInd++
 				}
-				curPlay.IsTurn = false
-				initOrder[curInitInd].IsTurn = true
+				players[curInitInd].IsTurn = true
 				publish <- newEvent(game.EVENT_INIT_T, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			}
 		} else {
@@ -160,7 +157,7 @@ func (this *WebSocketController) JoinM() {
 
 	// Join update channel.
 	Join(uname, ws_type, ws)
-	defer SetupLeaveM(uname)
+	defer Leave(uname)
 
 	// Message receive loop.
 	for {
@@ -181,51 +178,46 @@ func (this *WebSocketController) JoinM() {
 				publish <- newEvent(game.EVENT_STRAIN, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "initiative_d":
 				for i := 0; i < len(conReq.Data.Players); i++ {
-					for j := 0; j < len(initOrder); j++ {
-						if initOrder[j].Player.Name == conReq.Data.Players[i] {
-							initOrder[j].Initiative = 0
-							break
-						}
-					}
+					InitPlayer(conReq.Data.Players[i], 0)
 				}
 				SortPlayerInit()
 				publish <- newEvent(game.EVENT_INIT_D, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "initiative_s":
 				initStarted = true
 				curInitInd = 0
-				initOrder[curInitInd].IsTurn = true
+				players[curInitInd].IsTurn = true
 				publish <- newEvent(game.EVENT_INIT_S, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "initiative_e":
 				initStarted = false
 				curInitInd = 0
-				for i := 0; i < len(initOrder); i++ {
-					initOrder[i].IsTurn = false
+				for i := 0; i < len(players); i++ {
+					players[i].IsTurn = false
 				}
 				publish <- newEvent(game.EVENT_INIT_E, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "initiative_t":
 				prevInitInd = curInitInd
 				if conReq.Data.Message == "+" {
-					if curInitInd == len(initOrder) - 1 {
+					if curInitInd == len(players) - 1 {
 						curInitInd = 0
 					} else {
 						curInitInd++
 					}
 				} else {
 					if curInitInd == 0 {
-						curInitInd = len(initOrder) - 1
+						curInitInd = len(players) - 1
 					} else {
 						curInitInd--
 					}
 				}
-				initOrder[prevInitInd].IsTurn = false
-				initOrder[curInitInd].IsTurn = true
+				players[prevInitInd].IsTurn = false
+				players[curInitInd].IsTurn = true
 				publish <- newEvent(game.EVENT_INIT_T, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "add":
 				var newPlay game.LivePlayer
 				err = json.Unmarshal([]byte(conReq.Data.Message), &newPlay)
 				if err == nil {
-					newPlay.Type = "NPC"
 					players = append(players, newPlay)
+					SortPlayerInit()
 					publish <- newEvent(game.EVENT_JOIN, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 				} else {
 					beego.Error(err.Error())
@@ -238,6 +230,7 @@ func (this *WebSocketController) JoinM() {
 						for j := 0; j < len(players); j++ {
 							if players[j].Player.Name == targs[i].Name {
 								RemovePlayer(j)
+								SortPlayerInit()
 								j--
 							}
 						}
@@ -255,6 +248,8 @@ func (this *WebSocketController) JoinM() {
 
 // broadcastWebSocket broadcasts messages to WebSocket users.
 func broadcastWebSocket(event game.Event) {
+	beego.Info("Players", players)
+	beego.Info("Current Init", curInitInd)
 	for i := 0; i < len(subscribers); i++ {
 		send := false
 		watch := subscribers[i].Type == "watch"
@@ -306,15 +301,15 @@ func broadcastWebSocket(event game.Event) {
 		case game.EVENT_INIT_S:
 			if watch {
 				send = true
-			} else if len(initOrder) > 0 && initOrder[curInitInd].Player.Name == subscribers[i].Name {
+			} else if len(players) > 0 && players[curInitInd].Player.Name == subscribers[i].Name {
 				send = true
 			}
 		case game.EVENT_INIT_T:
 			if watch {
 				send = true
-			} else if len(initOrder) > 0 && initOrder[curInitInd].Player.Name == subscribers[i].Name {
+			} else if len(players) > 0 && players[curInitInd].Player.Name == subscribers[i].Name {
 				send = true
-			} else if event.Sender.Type == "master" && initOrder[prevInitInd].Player.Name == subscribers[i].Name {
+			} else if event.Sender.Type == "master" && (players[curInitInd].Player.Name == subscribers[i].Name || players[prevInitInd].Player.Name == subscribers[i].Name) {
 				send = true
 			}
 		case game.EVENT_INIT_E:

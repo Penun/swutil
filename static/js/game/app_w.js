@@ -73,7 +73,7 @@
 						var tPlay = JSON.parse(data.data);
 						for (var i = 0; i < tPlay.length; i++){
 							for (var j = 0; j < $scope.players.length; j++){
-								if ($scope.players[j].name == tPlay[i].name){
+								if ($scope.players[j].player.name == tPlay[i].name){
 									$scope.players.splice(j, 1);
 									j--;
 								}

@@ -42,7 +42,7 @@
 				</p>
 				<p class="s_ws_p_inline" ng-show="enems.length > 0"><label><b>Enemies:</b></label>
 					<ul>
-						<li ng-repeat="(ind, enem) in enems">{{"{{enem.name}}"}} `~` Wo:{{"{{enem.wound}}"}} `~` St:{{"{{enem.strain}}"}}</li>
+						<li ng-repeat="(ind, enem) in enems">{{"{{enem.player.name}}"}} `~` Wo:{{"{{enem.curWound}}"}}/{{"{{enem.player.wound}}"}} `~` St:{{"{{enem.curStrain}}"}}/{{"{{enem.player.strain}}"}}</li>
 					</ul>
 				</p>
 				<p class="act_p" ng-show="mCont.actionText == 'Initiative' && startInit && enems.length > 0"><button ng-click="mCont.DamageEnemy(true, false)">Adjust Enemy</button></p>
@@ -61,7 +61,7 @@
 				<p><button class="menu_p" ng-click="mCont.ClearForm(6, true)">Cancel</button></p>
 				<form name="delEnForm" id="delEnForm" novalidate>
 					<p class="s_ws_p_inline"><label for="enemSel"><b>Enemies:</b></label></p>
-					<select name="enemSel" id="enemSel" ng-show="enems.length > 0" ng-model="mCont.delEnem.enems" ng-options="enem.name as enem.name for enem in enems" multiple required></select>
+					<select name="enemSel" id="enemSel" ng-show="enems.length > 0" ng-model="mCont.delEnem.enems" ng-options="enem.player.name as enem.player.name for enem in enems" multiple required></select>
 					<button ng-show="delEnForm.$valid" ng-click="mCont.DelEnemy(false)">Delete</button>
 				</form>
 			</div>
@@ -69,7 +69,7 @@
 				<p><button class="menu_p" ng-click="mCont.ClearForm(7, true)">Cancel</button></p>
 				<form name="damEnForm" id="damEnForm" novalidate>
 					<p class="s_ws_p_inline"><label for="enemDamSel"><b>Enemies:</b></label></p>
-					<select name="enemDamSel" id="enemDamSel" ng-show="enems.length > 0" ng-model="mCont.damEnem.enems" ng-options="enem.name as enem.name for enem in enems" multiple required></select>
+					<select name="enemDamSel" id="enemDamSel" ng-show="enems.length > 0" ng-model="mCont.damEnem.enems" ng-options="enem.player.name as enem.player.name for enem in enems" multiple required></select>
 					<p class="s_ws_p_inline"><label for="damEnemIn"><b>Wound:</b></label> <input type="radio" name="damEnemType" ng-model="mCont.damEnem.type" value="wound" required/>
 					<label for="damEnemIn"><b>Strain:</b></label> <input type="radio" name="damEnemType" ng-model="mCont.damEnem.type" value="strain" required/></p>
 					<p class="s_ws_p_inline"><label for="damEnemIn"><b>Amount:</b></label> <input type="number" name="damEnemIn" id="damEnemIn" ng-model="mCont.damEnem.damage" placeholder="0" required/></p>

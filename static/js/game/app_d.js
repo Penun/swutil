@@ -202,21 +202,22 @@
 					addWound.focus();
 					return;
 				}
-				var enim = {
-					name: this.addForm.name,
-					initiative: this.addForm.initiative
+				var enem = {
+					player: {name: this.addForm.name},
+					initiative: this.addForm.initiative,
+					type: "NPCE"
 				};
 				sendData = {
 					type: "add",
 					data: {
-						message: JSON.stringify(enim)
+						message: JSON.stringify(enem)
 					}
 				};
 				sendData = JSON.stringify(sendData);
 				$scope.sock.send(sendData);
-				enim.wound = this.addForm.wound;
-				enim.strain = this.addForm.strain;
-				$scope.enems.push(enim);
+				enem.player.wound = enem.curWound = this.addForm.wound;
+				enem.player.strain = enem.curStrain = this.addForm.strain;
+				$scope.enems.push(enem);
 				this.ClearForm(5, true);
 			}
 		};
@@ -238,18 +239,18 @@
 				}
 				for (var i = 0; i < this.damEnem.enems.length; i++){
 					for (var j = 0; j < $scope.enems.length; j++){
-						if ($scope.enems[j].name == this.damEnem.enems[i]){
-							if (this.damEnem.type == "wound"){
+						if ($scope.enems[j].player.name == this.damEnem.enems[i]){
+							if (this.damEnem.type == "wound" || typeof $scope.enems[j].player.strain === 'undefined'){
 								if (takeDam){
-									$scope.enems[j].wound -= this.damEnem.damage;
+									$scope.enems[j].curWound -= this.damEnem.damage;
 								} else {
-									$scope.enems[j].wound += this.damEnem.damage;
+									$scope.enems[j].curWound += this.damEnem.damage;
 								}
-							} else if (typeof $scope.enems[j].strain !== 'undefined') {
+							} else {
 								if (takeDam){
-									$scope.enems[j].strain -= this.damEnem.damage;
+									$scope.enems[j].curStrain -= this.damEnem.damage;
 								} else {
-									$scope.enems[j].strain += this.damEnem.damage;
+									$scope.enems[j].curStrain += this.damEnem.damage;
 								}
 							}
 							break;
@@ -281,7 +282,7 @@
 				$scope.sock.send(sendData);
 				for (var i = 0; i < this.delEnem.enems.length; i++){
 					for (var j = 0; j < $scope.enems.length; j++){
-						if ($scope.enems[j].name == this.delEnem.enems[i]){
+						if ($scope.enems[j].player.name == this.delEnem.enems[i]){
 							$scope.enems.splice(j, 1);
 							j--;
 						}

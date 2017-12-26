@@ -42,12 +42,11 @@ type VerifyNameResp struct {
 
 type CheckPlayerResp struct {
 	Success bool `json:"success"`
-	LivePlayer *game.LivePlayer `json:"live_player"`
+	LivePlayer game.LivePlayer `json:"live_player"`
 }
 
 var (
 	players = make([]game.LivePlayer, 0)
-	initOrder = make([]*game.LivePlayer, 0)
 	master = false
 	curInitInd = 0
 	prevInitInd = 0
@@ -70,7 +69,7 @@ func (this *GameStatusController) Check() {
 	var resp CheckPlayerResp
 	if findPlay := this.GetSession("player"); findPlay != nil {
 		resp.Success = true
-		resp.LivePlayer = findPlay.(*game.LivePlayer)
+		resp.LivePlayer = GetPlayerName(findPlay.(string))
 	} else {
 		resp.Success = false
 	}
@@ -158,15 +157,48 @@ func (this *GameStatusController) GetPlayer() {
 	this.ServeJSON()
 }
 
-func GetPlayerName(playName string) *game.LivePlayer {
+func GetPlayerName(playName string) game.LivePlayer {
 	if playName != "" {
 		for i := 0; i < len(players); i++ {
 			if players[i].Player.Name == playName {
-				return &players[i]
+				return players[i]
 			}
 		}
 	}
-	return &game.LivePlayer{}
+	return game.LivePlayer{}
+}
+
+func WoundPlayer(playName string, wound int) {
+	if playName != "" {
+		for i := 0; i < len(players); i++ {
+			if players[i].Player.Name == playName {
+				players[i].CurWound += wound;
+				break
+			}
+		}
+	}
+}
+
+func StrainPlayer(playName string, strain int) {
+	if playName != "" {
+		for i := 0; i < len(players); i++ {
+			if players[i].Player.Name == playName {
+				players[i].CurStrain += strain;
+				break
+			}
+		}
+	}
+}
+
+func InitPlayer(playName string, init float64) {
+	if playName != "" {
+		for i := 0; i < len(players); i++ {
+			if players[i].Player.Name == playName {
+				players[i].Initiative = init;
+				break
+			}
+		}
+	}
 }
 
 func DeletePlayer(play game.LivePlayer) {
@@ -191,21 +223,6 @@ func DeletePlayerName(playName string) {
 	}
 }
 
-func SetupLeaveM(uname string) {
-	Leave(uname)
-	master = false
-	var tPlays []game.LivePlayer
-	for i := 0; i < len(players); i++ {
-		if players[i].Type == "NPC" {
-			tPlays = append(tPlays, players[i])
-			RemovePlayer(i)
-			i--
-		}
-	}
-	resp, _ := json.Marshal(tPlays)
-	publish <- newEvent(game.EVENT_LEAVE, "DM", "master", nil, string(resp))
-}
-
 func FindInSlice(targets []string, sub Subscriber) bool {
 	for j := 0; j < len(targets); j++ {
 		if targets[j] == sub.Name {
@@ -222,27 +239,28 @@ func RemovePlayer(i int) {
 	} else {
 		players = append(players[:i], players[i+1:]...)
 	}
+	playLen--
 	if curInitInd == i {
-		if len(players) == 0 {
+		if playLen == 0 {
 			curInitInd = 0
-		} else if i == len(players) {
+		} else if i == playLen {
 			curInitInd--
 		}
 	}
 }
 
 func SortPlayerInit() {
-	for  i := 0; i < len(initOrder); i++ {
+	for  i := 0; i < len(players); i++ {
 		minInd := i
-		for j := i + 1; j < len(initOrder); j++ {
-			if initOrder[j].Initiative > initOrder[minInd].Initiative {
+		for j := i + 1; j < len(players); j++ {
+			if players[j].Initiative > players[minInd].Initiative {
 				minInd = j;
 			}
 		}
 		if minInd != i {
-			swap := initOrder[i]
-			initOrder[i] = initOrder[minInd]
-			initOrder[minInd] = swap
+			swap := players[i]
+			players[i] = players[minInd]
+			players[minInd] = swap
 		}
 	}
 }
