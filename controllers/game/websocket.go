@@ -183,10 +183,12 @@ func (this *WebSocketController) JoinM() {
 				SortPlayerInit()
 				publish <- newEvent(game.EVENT_INIT_D, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "initiative_s":
-				initStarted = true
-				curInitInd = 0
-				players[curInitInd].IsTurn = true
-				publish <- newEvent(game.EVENT_INIT_S, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+				if len(players) > 0 {
+					initStarted = true
+					curInitInd = 0
+					players[curInitInd].IsTurn = true
+					publish <- newEvent(game.EVENT_INIT_S, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+				}
 			case "initiative_e":
 				initStarted = false
 				curInitInd = 0

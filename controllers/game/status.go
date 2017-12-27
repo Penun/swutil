@@ -66,12 +66,14 @@ func (this *GameStatusController) Master() {
 }
 
 func (this *GameStatusController) Check() {
-	var resp CheckPlayerResp
+	resp := CheckPlayerResp{Success: false}
 	if findPlay := this.GetSession("player"); findPlay != nil {
-		resp.Success = true
 		resp.LivePlayer = GetPlayerName(findPlay.(string))
-	} else {
-		resp.Success = false
+		if (resp.LivePlayer != game.LivePlayer{}){
+			resp.Success = true
+		} else {
+			this.DelSession("player")
+		}
 	}
 	this.Data["json"] = resp
 	this.ServeJSON()

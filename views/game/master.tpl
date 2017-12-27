@@ -9,7 +9,7 @@
             <div ng-show="mCont.ShowStep(1)" class="sixty_he">
 				<ul>
 					<li class="clickable" ng-click="mCont.InTextSet('Note')">Note</li>
-					<li class="clickable" ng-click="mCont.ActionSet('Initiative')">Initiative</li>
+					<li class="clickable" ng-click="SetStep(3, true)">Initiative</li>
 				</ul>
             </div>
 			<div ng-show="mCont.ShowStep(2)" class="sixty_he">
@@ -27,25 +27,26 @@
 				<form name="actForm" id="actForm" ng-show="!startInit" novalidate>
 					<p class="s_ws_p_inline"><label for="subSelAct"><b>Players:</b></label></p>
 					<select name="subSelAct" id="subSelAct" ng-model="mCont.action.players" ng-options="sub.player.name as sub.player.name for sub in subs" multiple required></select>
-					<button ng-show="actForm.$valid" ng-click="mCont.Action()">{{"{{mCont.actionText}}"}}</button>
+					<button ng-show="actForm.$valid" ng-click="mCont.Initiative()">Initiative</button>
+					<button ng-show="actForm.$valid" ng-click="mCont.DelPlayer()">Delete</button>
 				</form>
-				<p class="act_p" ng-show="mCont.actionText == 'Initiative' && !startInit">
+				<p class="act_p" ng-show="!startInit">
 					<button ng-click="mCont.AddEnemy(true)">Add Enemy</button>
 					<button ng-click="mCont.DelEnemy(true)">Delete Enemy</button>
 				</p>
 				<p class="s_ws_p_inline" ng-show="startInit">Initiative Tracker Running...</p>
-				<p class="act_p" ng-show="mCont.actionText == 'Initiative' && !startInit"><button ng-click="mCont.StartInit()">Start Initiative</button></p>
-				<p class="act_p" ng-show="mCont.actionText == 'Initiative' && startInit">
+				<p class="act_p" ng-show="!startInit"><button ng-click="mCont.StartInit()">Start Initiative</button></p>
+				<p class="act_p" ng-show="startInit">
 					<button ng-click="mCont.NextTurn()">Next Turn</button>
 					<button ng-click="mCont.PrevTurn()">Prev Turn</button>
 					<button ng-click="mCont.EndInit()">End Initiative</button>
 				</p>
 				<p class="s_ws_p_inline" ng-show="enems.length > 0"><label><b>Enemies:</b></label>
 					<ul>
-						<li ng-repeat="(ind, enem) in enems">{{"{{enem.player.name}}"}} `~` Wo:{{"{{enem.curWound}}"}}/{{"{{enem.player.wound}}"}} `~` St:{{"{{enem.curStrain}}"}}/{{"{{enem.player.strain}}"}}</li>
+						<li ng-repeat="(ind, enem) in enems">{{"{{enem.player.name}}"}} `~` Wo:{{"{{enem.curWound}}"}}/{{"{{enem.player.wound}}"}}<div ng-show="enem.player.strain != null">, St:{{"{{enem.curStrain}}"}}/{{"{{enem.player.strain}}"}}</div></li>
 					</ul>
 				</p>
-				<p class="act_p" ng-show="mCont.actionText == 'Initiative' && startInit && enems.length > 0"><button ng-click="mCont.DamageEnemy(true, false)">Adjust Enemy</button></p>
+				<p class="act_p" ng-show="startInit && enems.length > 0"><button ng-click="mCont.DamageEnemy(true, false)">Adjust Enemy</button></p>
 			</div>
 			<div ng-show="mCont.ShowStep(5)" class="sixty_he">
 				<button class="menu_p" ng-click="mCont.ClearForm(5, true)">Cancel</button>
@@ -70,22 +71,13 @@
 				<form name="damEnForm" id="damEnForm" novalidate>
 					<p class="s_ws_p_inline"><label for="enemDamSel"><b>Enemies:</b></label></p>
 					<select name="enemDamSel" id="enemDamSel" ng-show="enems.length > 0" ng-model="mCont.damEnem.enems" ng-options="enem.player.name as enem.player.name for enem in enems" multiple required></select>
-					<p class="s_ws_p_inline"><label for="damEnemIn"><b>Wound:</b></label> <input type="radio" name="damEnemType" ng-model="mCont.damEnem.type" value="wound" required/>
-					<label for="damEnemIn"><b>Strain:</b></label> <input type="radio" name="damEnemType" ng-model="mCont.damEnem.type" value="strain" required/></p>
+					<p class="s_ws_p_inline"><label for="damEnemType"><b>Wound:</b></label> <input type="radio" name="damEnemType" ng-model="mCont.damEnem.type" value="wound" required/>
+					<label for="damEnemType"><b>Strain:</b></label> <input type="radio" name="damEnemType" ng-model="mCont.damEnem.type" value="strain" required/></p>
 					<p class="s_ws_p_inline"><label for="damEnemIn"><b>Amount:</b></label> <input type="number" name="damEnemIn" id="damEnemIn" ng-model="mCont.damEnem.damage" placeholder="0" required/></p>
 					<p class="act_p"><button ng-show="damEnForm.$valid" ng-click="mCont.DamageEnemy(false, true)">Damage</button>
 					<button ng-show="damEnForm.$valid" ng-click="mCont.DamageEnemy(false, false)">Heal</button></p>
 				</form>
 			</div>
-			<div ng-show="mCont.ShowStep(4)" class="sixty_he">
-				<p><button class="menu_p" ng-click="mCont.ClearForm(4, true)">Menu</button></p>
-				<form name="inpForm" id="inpForm" novalidate>
-					<p class="s_ws_p_inline"><label for="subSelInp"><b>Players:</b></label></p>
-					<select name="subSelInp" id="subSelInp" ng-show="subs.length > 0" ng-model="mCont.inpForm.players" ng-options="sub.player.name as sub.player.name for sub in subs" multiple required></select>
-					<p class="s_ws_p_inline"><label for="inpIn"><b>{{"{{mCont.inputText}}"}}:</b></label> <input type="number" name="inpIn" id="inpIn" ng-model="mCont.inpForm.input" placeholder="0" required/></p>
-					<button ng-show="inpForm.$valid" ng-click="mCont.Input()">{{"{{mCont.inputText}}"}}</button>
-				</form>
-            </div>
 		</div>
 	</div>
 </body>
