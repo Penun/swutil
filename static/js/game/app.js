@@ -31,6 +31,9 @@
 
 		this.FindPlayer = function(){
 			var primed = false;
+			if (typeof $scope.char.name === 'undefined'){
+				return;
+			}
 			if ($scope.char.name.length < 3){
 				$scope.playSugs = [];
 				return;

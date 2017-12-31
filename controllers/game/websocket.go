@@ -173,8 +173,16 @@ func (this *WebSocketController) JoinM() {
 			case "note":
 				publish <- newEvent(game.EVENT_NOTE, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "wound":
+				wound, _ := strconv.Atoi(conReq.Data.Message)
+				for _, play := range conReq.Data.Players {
+					WoundPlayer(play, wound)
+				}
 				publish <- newEvent(game.EVENT_WOUND, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "strain":
+				strain, _ := strconv.Atoi(conReq.Data.Message)
+				for _, play := range conReq.Data.Players {
+					StrainPlayer(play, strain)
+				}
 				publish <- newEvent(game.EVENT_STRAIN, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "initiative_d":
 				for i := 0; i < len(conReq.Data.Players); i++ {

@@ -7,9 +7,12 @@
 		this.action = {};
 		this.inpForm = {};
 		this.addForm = {};
+		this.addAction = "";
 		$scope.enems = [];
-		this.delEnem = {};
-		this.damEnem = {type: "wound"};
+		$scope.friends = [];
+		this.delForm = {};
+		this.delAction = "";
+		this.damForm = {type: "wound"};
 		$scope.backStep = $scope.curStep = 1;
 		this.textareaReq = true;
 		$scope.activeNote = "";
@@ -165,7 +168,12 @@
 			this.ClearForm(3, false);
 		};
 
-		this.AddEnemy = function(setup){
+		this.SetupAdd = function(addAction){
+			this.addAction = addAction;
+			this.AddForm(true);
+		};
+
+		this.AddForm = function(setup){
 			if (setup){
 				$scope.SetStep(5, false);
 			} else {
@@ -184,75 +192,137 @@
 					addWound.focus();
 					return;
 				}
-				var enem = {
+				var char = {
 					player: {name: this.addForm.name},
 					initiative: this.addForm.initiative,
-					type: "NPCE"
 				};
+				char.player.wound = char.cur_wound = this.addForm.wound;
+				if (typeof this.addForm.strain !== 'undefined' || this.addForm.strain > 0){
+					char.player.strain = char.cur_strain = this.addForm.strain;
+				}
+				char.type = this.addAction;
+				switch (this.addAction) {
+					case "NPCE":
+						$scope.enems.push(char);
+						break;
+					case "NPC":
+						$scope.friends.push(char);
+						break;
+					default:
+						break;
+				}
 				sendData = {
 					type: "add",
 					data: {
-						message: JSON.stringify(enem)
+						message: JSON.stringify(char)
 					}
 				};
 				sendData = JSON.stringify(sendData);
 				$scope.sock.send(sendData);
-				enem.player.wound = enem.curWound = this.addForm.wound;
-				enem.player.strain = enem.curStrain = this.addForm.strain;
-				$scope.enems.push(enem);
 				this.ClearForm(5, true);
 			}
 		};
 
-		this.DamageEnemy = function(setup, takeDam){
+		this.SetupDam = function(damAction){
+			this.damAction = damAction;
+			switch (this.damAction){
+				case "NPCE":
+					this.damChars = $scope.enems;
+					break;
+				case "NPC":
+					this.damChars = $scope.friends;
+					break;
+			}
+			this.DamForm(true, false);
+		};
+
+		this.DamForm = function(setup, takeDam){
 			if (setup){
 				$scope.SetStep(7, false);
 			} else {
-				if (this.damEnem.enems.length <= 0){
+				if (this.damForm.chars.length <= 0){
 					return;
 				}
-				if (typeof this.damEnem.type === 'undefined'){
+				if (typeof this.damForm.type === 'undefined'){
 					return;
 				}
-				if (typeof this.damEnem.damage === 'undefined' || this.damEnem.damage <= 0){
+				if (typeof this.damForm.damage === 'undefined' || this.damForm.damage <= 0){
 					var damEnemIn = document.getElementById("damEnemIn");
 					damEnemIn.focus();
 					return;
 				}
-				for (var i = 0; i < this.damEnem.enems.length; i++){
-					for (var j = 0; j < $scope.enems.length; j++){
-						if ($scope.enems[j].player.name == this.damEnem.enems[i]){
-							if (this.damEnem.type == "wound" || typeof $scope.enems[j].player.strain === 'undefined'){
+				var damChars = [];
+				switch (this.damAction){
+					case "NPCE":
+						damChars = $scope.enems;
+						break;
+					case "NPC":
+						damChars = $scope.friends;
+						break;
+				}
+				var sendData = {
+					type: "",
+					data: {
+						players: [],
+						message: takeDam ? -this.damForm.damage : this.damForm.damage
+					}
+				};
+				for (var i = 0; i < this.damForm.chars.length; i++){
+					for (var j = 0; j < damChars.length; j++){
+						if (damChars[j].player.name == this.damForm.chars[i]){
+							if (this.damForm.type == "wound"){
+								sendData.type = "wound";
 								if (takeDam){
-									$scope.enems[j].curWound -= this.damEnem.damage;
-								} else {
-									$scope.enems[j].curWound += this.damEnem.damage;
+									damChars[j].cur_wound -= this.damForm.damage;
+									sendData.data.players.push(this.damForm.chars[i]);
+								} else if (damChars[j].cur_wound + this.damForm.damage <= damChars[j].player.wound){
+									damChars[j].cur_wound += this.damForm.damage;
+									sendData.data.players.push(this.damForm.chars[i]);
 								}
-							} else {
+							} else if (typeof damChars[j].player.strain !== 'undefined'){
+								sendData.type = "strain";
 								if (takeDam){
-									$scope.enems[j].curStrain -= this.damEnem.damage;
-								} else {
-									$scope.enems[j].curStrain += this.damEnem.damage;
+									damChars[j].cur_strain -= this.damForm.damage;
+									sendData.data.players.push(this.damForm.chars[i]);
+								} else if (damChars[j].cur_strain + this.damForm.damage <= damChars[j].player.strain){
+									damChars[j].cur_strain += this.damForm.damage;
+									sendData.data.players.push(this.damForm.chars[i]);
 								}
 							}
 							break;
 						}
 					}
 				}
+				sendData.data.message = String(sendData.data.message);
+				sendData = JSON.stringify(sendData);
+				$scope.sock.send(sendData);
 				this.ClearForm(7, true);
 			}
 		};
 
-		this.DelEnemy = function(setup){
+		this.SetupDel = function(delAction){
+			this.delAction = delAction;
+			switch (this.delAction){
+				case "NPCE":
+					this.delChars = $scope.enems;
+					break;
+				case "NPC":
+					this.delChars = $scope.friends;
+					break;
+			}
+			this.DelForm(true);
+		};
+
+		this.DelForm = function(setup){
 			if (setup){
 				$scope.SetStep(6, false);
 			} else {
-				if (this.delEnem.enems.length <= 0){
+				if (this.delForm.chars.length <= 0){
 					return;
 				}
 				var enemPlays = [];
-				for (var i = 0; i < this.delEnem.enems.length; i++){
-					enemPlays.push({name: this.delEnem.enems[i]});
+				for (var i = 0; i < this.delForm.chars.length; i++){
+					enemPlays.push({name: this.delForm.chars[i]});
 				}
 				sendData = {
 					type: "delete",
@@ -262,10 +332,10 @@
 				};
 				sendData = JSON.stringify(sendData);
 				$scope.sock.send(sendData);
-				for (var i = 0; i < this.delEnem.enems.length; i++){
-					for (var j = 0; j < $scope.enems.length; j++){
-						if ($scope.enems[j].player.name == this.delEnem.enems[i]){
-							$scope.enems.splice(j, 1);
+				for (var i = 0; i < this.delForm.chars.length; i++){
+					for (var j = 0; j < this.delChars.length; j++){
+						if (this.delChars[j].player.name == this.delForm.chars[i]){
+							this.delChars.splice(j, 1);
 							j--;
 						}
 					}
@@ -298,18 +368,20 @@
 					break;
 				case 5:
 					this.addForm = {};
+					this.addAction = "";
 					if (move){
 						$scope.SetStep($scope.backStep, false);
 					}
 					break;
 				case 6:
-					this.delEnem = {};
+					this.delForm = {};
 					if (move){
 						$scope.SetStep($scope.backStep, false);
 					}
 					break;
 				case 7:
-					this.damEnem = {type: "wound"};
+					this.damForm = {type: "wound"};
+					this.damAction = "";
 					if (move){
 						$scope.SetStep($scope.backStep, false);
 					}
