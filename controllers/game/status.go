@@ -235,6 +235,7 @@ func FindInSlice(targets []string, sub Subscriber) bool {
 }
 
 func RemovePlayer(i int) {
+	setTurn := players[i].IsTurn
 	playLen := len(players)
 	if i == playLen - 1 {
 		players = players[:playLen-1]
@@ -248,6 +249,9 @@ func RemovePlayer(i int) {
 		} else if i == playLen {
 			curInitInd--
 		}
+	}
+	if setTurn && playLen > 0 {
+		players[curInitInd].IsTurn = true
 	}
 }
 
@@ -263,6 +267,14 @@ func SortPlayerInit() {
 			swap := players[i]
 			players[i] = players[minInd]
 			players[minInd] = swap
+		}
+	}
+	if initStarted {
+		for ind, play := range players {
+			if play.IsTurn {
+				curInitInd = ind
+				break
+			}
 		}
 	}
 }

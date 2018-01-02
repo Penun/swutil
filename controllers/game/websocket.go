@@ -62,6 +62,9 @@ func (this *WebSocketController) Join() {
 				tempPlay.CurWound = newPlay.Wound
 				tempPlay.CurStrain = newPlay.Strain
 				players = append(players, tempPlay)
+				if initStarted {
+					SortPlayerInit()
+				}
 				this.SetSession("player", uname)
 			} else {
 				this.Redirect("/", 302)

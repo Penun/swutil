@@ -392,7 +392,7 @@
 		};
 
 		this.StartInit = function(){
-			if ($scope.subs.length > 0 || $scope.enems.length > 0){
+			if ($scope.subs.length > 0 || $scope.enems.length > 0 || $scope.friends.length > 0){
 				$scope.startInit = true;
 				var sendData = {
 					type: "initiative_s",

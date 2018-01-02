@@ -24,17 +24,17 @@
 			</div>
 			<div ng-show="mCont.ShowStep(3)" class="sixty_he">
 				<button class="menu_p" ng-click="mCont.ClearForm(3, true)">Menu</button>
-				<form name="actForm" id="actForm" ng-show="!startInit" novalidate>
+				<form name="actForm" id="actForm" novalidate>
 					<p class="s_ws_p_inline"><label for="subSelAct"><b>Players:</b></label></p>
 					<select name="subSelAct" id="subSelAct" ng-model="mCont.action.players" ng-options="sub.player.name as sub.player.name for sub in subs" multiple required></select>
-					<button ng-show="actForm.$valid" ng-click="mCont.Initiative()">Initiative</button>
-					<button ng-show="actForm.$valid" ng-click="mCont.DelPlayer()">Delete</button>
+					<button ng-show="actForm.$valid && !startInit" ng-click="mCont.Initiative()">Initiative</button>
+					<button ng-show="actForm.$valid && !startInit" ng-click="mCont.DelPlayer()">Delete</button>
 				</form>
-				<p class="act_p" ng-show="!startInit">
+				<p class="act_p">
 					<button ng-click="mCont.SetupAdd('NPCE')">Add Enemy</button>
 					<button ng-click="mCont.SetupDel('NPCE')">Delete Enemy</button>
 				</p>
-				<p class="act_p" ng-show="!startInit">
+				<p class="act_p">
 					<button ng-click="mCont.SetupAdd('NPC')">Add Friendly</button>
 					<button ng-click="mCont.SetupDel('NPC')">Delete Friendly</button>
 				</p>

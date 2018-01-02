@@ -74,8 +74,16 @@
 						for (var i = 0; i < tPlay.length; i++){
 							for (var j = 0; j < $scope.players.length; j++){
 								if ($scope.players[j].player.name == tPlay[i].name){
+									var setTurn = $scope.players[j].isTurn;
 									$scope.players.splice(j, 1);
-									j--;
+									if ($scope.players.length == j){
+										j--;
+									}
+									if (setTurn && $scope.players.length > 0) {
+										$scope.players[j].isTurn = true;
+										$scope.curInitInd = j;
+									}
+									break;
 								}
 							}
 						}
@@ -86,7 +94,15 @@
 				} else {
 					for (var i = 0; i < $scope.players.length; i++){
 						if ($scope.players[i].name == data.player.name){
+							var setTurn = $scope.players[i].isTurn;
 							$scope.players.splice(i, 1);
+							if ($scope.players.length == i){
+								i--;
+							}
+							if (setTurn && $scope.players.length > 0) {
+								$scope.players[i].isTurn = true;
+								$scope.curInitInd = i;
+							}
 							break;
 						}
 					}
