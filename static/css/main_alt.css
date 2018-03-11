@@ -1,0 +1,188 @@
+body {
+    display: grid;
+    grid-template-columns: 10vw 80vw 10vw;
+    grid-template-rows: 5vh 90vh 5vh;
+    background-image: url("/static/img/starscape.png");
+	background-size: 100% 100%;
+	background-repeat: round;
+	color: #a4dde5;
+	font-family: 'Share Tech Mono', monospace;
+    perspective: 1000px;
+	-moz-perspective: 1000px;
+	-webkit-perspective: 1000px;
+    height: 100%;
+    margin: 0;
+}
+
+.mainDiv {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    height: 90vh;
+}
+
+.sw_back {
+	background-image: url("/static/img/sw_back.png");
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+}
+
+.page {
+	z-index: 0;
+	display: grid;
+    grid-template-columns: 2vw auto 2vw;
+    grid-template-rows: 3vh auto;
+    height: 90vh;
+}
+
+.sixty_he{
+    grid-column: 2;
+    grid-row: 2;
+	height: 84vh;
+}
+
+.th_table_name {
+	font-size: 3vmin;
+    color: #293c56;
+    z-index: 1;
+}
+
+button {
+	float: right;
+	background-color: rgba(84, 123, 168, 0.35);
+	color: #a4dde5;
+	display: inline-block;
+  	padding: 1vh 1vw;
+  	font-size: 1.5vmin;
+  	cursor: pointer;
+  	text-align: center;
+  	text-decoration: none;
+	border-width: 0.4vh;
+	border-color: #c0eaf1;
+	border-style: double;
+	outline: none;
+  	border-radius: 2vw;
+  	box-shadow: 0px 0px 10px 5px #547ba8;
+	margin-top: 5px;
+	z-index: 450;
+}
+
+button:hover {
+    box-shadow: 0 0 0.5vh 0.5vw #547ba8;
+	background-color: rgba(84, 123, 168, 0.65);
+}
+
+button:active {
+	background-color: rgba(192, 234, 241, 0.5);
+    box-shadow: 0 0 0.5vh 0.5vw rgba(192, 234, 241, 0.75);
+	color: #83d9e6;
+	transform: scale(0.9, 0.9);
+}
+
+ul {
+	list-style: none;
+	width: 100%;
+	height: auto;
+	padding: 0;
+	margin: 0;
+}
+
+li {
+	width: 100%;
+    position: relative;
+    display: inline-flex;
+}
+
+.clickable {
+	background-image: url("/static/img/light_underline.png");
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	background-size: 100% 10%;
+	cursor: pointer;
+	text-align: center;
+	font-size: 2.5vmin;
+}
+
+.clickable:hover {
+	background-image: url("/static/img/light_underline_high.png");
+	background-size: 100% 100%;
+	color: #293c56;
+	font-weight: 200;
+}
+
+.right_col {
+	font-size: 2vmin;
+	overflow-y: auto;
+    padding-left: 5vw;
+}
+
+.h2 {
+    font-size: 3vmin;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@keyframes fade_in {
+	0% { opacity: 0; }
+	100% { opacity: 1; }
+}
+
+@-webkit-keyframes fade_in {
+	0% { opacity: 0; }
+	100% { opacity: 1; }
+}
+
+@-moz-keyframes fade_in {
+	0% { opacity: 0; }
+	100% { opacity: 1; }
+}
+
+@keyframes fade_out {
+	0% {opacity: 1}
+	100% {opacity: 0}
+}
+
+@-webkit-keyframes fade_out {
+	0% {opacity: 1}
+	100% {opacity: 0}
+}
+
+@-moz-keyframes fade_out {
+	0% {opacity: 1}
+	100% {opacity: 0}
+}
+
+.fade_in {
+	animation-name: fade_in;
+	animation-duration: 750ms;
+	-webkit-animation-name: fade_in;
+	-webkit-animation-duration: 750ms;
+	-moz-animation-name: fade_in;
+	-moz-animation-duration: 750ms;
+}
+
+.fade_out {
+	animation-name: fade_out;
+	animation-duration: 350ms;
+	-webkit-animation-name: fade_out;
+	-webkit-animation-duration: 350ms;
+	-moz-animation-name: fade_out;
+	-moz-animation-duration: 350ms;
+	opacity: 0;
+}
+
+.fade_nu {
+	display: none;
+}

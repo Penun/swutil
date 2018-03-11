@@ -368,12 +368,12 @@ div.vConn {
 
 .headTable {
 	position: absolute;
-	height: 7vh;
+	height: 12vh;
 }
 
 .follTable {
-	 margin-top: 7vh;
-	 height: 75vh;
+	 margin-top: 12vh;
+	 height: 58vh;
 	 overflow-y: auto;
 }
 
