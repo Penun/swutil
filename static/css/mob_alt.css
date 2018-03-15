@@ -1,0 +1,64 @@
+.s_ws_p_inline {
+    font-size: 1.1em;
+}
+
+span.full_width {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.tab_header {
+    font-size: 1.1em;
+}
+
+input[type="number"] {
+    max-width: 25vw;
+}
+
+.login {
+    width: 84vw;
+    padding: 1vw;
+}
+
+.characterBlock {
+    font-size: 1em;
+    padding-top: 0.5em;
+	padding-bottom: 0.5em;
+}
+
+.innerCharBlock > span {
+    height: 1em;
+}
+
+.tablePadR {
+    padding-right: 1vw;
+}
+
+.tablePadL {
+	padding-left: 1vw;
+}
+
+.mobOnly {
+    width: 75vw;
+    position: relative;
+    display: inline-block;
+    height: 10%;
+    padding-left: 2em;
+    z-index: 130;
+}
+
+.mobCol {
+    width: 100%;
+}
+
+.right_col {
+    font-size: 1em;
+}
+
+.mid_col {
+    left: 0;
+}
+
+.unexposed {
+    display: none;
+}
