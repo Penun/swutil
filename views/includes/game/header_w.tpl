@@ -6,5 +6,6 @@
 
 <title>SWUTIL Track</title>
 {{template "includes/game/styles.html"}}
+<link rel="stylesheet" href="/static/css/game/watch.css" type="text/css" media="screen" />
 {{template "includes/game/js_w.html"}}
 </head>

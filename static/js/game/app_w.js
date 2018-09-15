@@ -2,6 +2,8 @@
 	var app = angular.module('ddcharL', []);
 	app.controller('mainController', ['$window', '$scope', '$http', '$timeout', function($window, $scope, $http, $timeout){
 		$scope.players = [];
+		$scope.enems = [];
+		$scope.initOrd = [];
 		$scope.startInit = false;
 		$scope.curInitInd = 0;
 
@@ -15,10 +17,27 @@
 				$scope.sock.onmessage = $scope.HandleMessage;
 				$http.get("/track/subs?type=watch").then(function(ret){
 					if (ret.data.success){
-						if ($scope.players.length == 0){
-							$scope.players = ret.data.result;
-						} else {
-							$scope.players.push(ret.data.result);
+						for (var i = 0; i < ret.data.result.length; i++){
+							switch (ret.data.result[i].type){
+								case 'PC':
+									$scope.players.push(ret.data.result[i]);
+									break;
+								case 'NPC':
+									$scope.players.push(ret.data.result[i]);
+									break;
+								case 'NPCE':
+									$scope.enems.push(ret.data.result[i]);
+									break;
+							}
+							if (ret.data.result[i].initiative > 0){
+								var tInit = {initiative: ret.data.result[i].initiative}
+								if (ret.data.result[i].type == 'NPCE'){
+									tInit.display = "NPC (E)";
+								} else {
+									tInit.display = "PC (A)";
+								}
+								$scope.initOrd.push(tInit);
+							}
 						}
 						$http.get("/track/status").then(function(ret){
 							if (ret.data.success){

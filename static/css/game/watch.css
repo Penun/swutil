@@ -1,0 +1,78 @@
+.watchTable {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 1vw;
+    grid-row-gap: 1vh;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.watchTable > div {
+    display: grid;
+    grid-template-rows: 1fr;
+}
+
+.waColR {
+    grid-column: 2;
+}
+
+.rowSp_1_3 {
+    grid-row: 1 / 3;
+}
+
+.playInner {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.enemInner {
+    grid-template-columns: 1fr 1fr;
+}
+
+span {
+    align-self: center;
+    justify-self: stretch;
+    font-size: calc(12px + 2vmin);
+    text-align: center;
+}
+
+.dispPan {
+    display: grid;
+    grid-template-rows: 5vh 1fr;
+    height: 100%;
+}
+
+.colHead {
+    background-image: url("/static/img/light_underline_high.png");
+	background-size: 100% 100%;
+	align-self: stretch;
+    display: grid;
+}
+
+.colHead > span {
+    font-size: calc(12px + 1vmin);
+    font-weight: bold;
+    color: #293c56;
+    z-index: 1;
+}
+
+.colBod {
+    border-color: #111144;
+    border-style: inset;
+    border-width: 2px;
+    box-shadow: 3px 3px 20px #111144 inset;
+    background-color: rgba(0, 0, 25, 0.5);
+    padding-bottom: 0.5vh;
+    padding-left: 0.5vw;
+    padding-right: 0.5vw;
+    align-self: stretch;
+}
+
+.listItem {
+    background-image: url("/static/img/light_underline.png");
+	background-size: 105% 20%;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    padding-top: 0.5vh;
+    display: grid;
+}

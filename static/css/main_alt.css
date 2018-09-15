@@ -1,7 +1,5 @@
 body {
     display: grid;
-    grid-template-columns: 10vw 80vw 10vw;
-    grid-template-rows: 5vh 90vh 5vh;
     background-image: url("/static/img/starscape.png");
 	background-size: 100% 100%;
 	background-repeat: round;
@@ -14,13 +12,7 @@ body {
     margin: 0;
 }
 
-.mainDiv {
-    grid-column-start: 2;
-    grid-column-end: 3;
-    grid-row-start: 2;
-    grid-row-end: 3;
-    height: 90vh;
-}
+.mainDiv {}
 
 .sw_back {
 	background-image: url("/static/img/sw_back.png");
@@ -33,13 +25,13 @@ body {
 	display: grid;
     grid-template-columns: 2vw auto 2vw;
     grid-template-rows: 3vh auto;
-    height: 90vh;
+    height: 100vh;
 }
 
 .sixty_he{
     grid-column: 2;
     grid-row: 2;
-	height: 84vh;
+	height: 94vh;
 }
 
 .th_table_name {
