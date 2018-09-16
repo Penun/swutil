@@ -22,7 +22,6 @@
 					$scope.curChar.curWound = ret.data.live_player.cur_wound;
 					$scope.curChar.curStrain = ret.data.live_player.cur_strain;
 					$scope.curChar.initiative = ret.data.live_player.initiative;
-					$scope.curChar.isTurn = ret.data.live_player.isTurn;
 					$scope.sock = new WebSocket('ws://' + window.location.host + '/track/join?type=play&uname=' + $scope.curChar.name);
 					$timeout($scope.SetupSocket, 500);
 				}
@@ -164,26 +163,18 @@
 					$scope.activeNote += data.player.name + ' says: "' + data.data + '"\n';
 					$scope.SetStep(10, false);
 					break;
-				case 4:
+				case 3: //Wound
 					$scope.curChar.wound += Number(data.data);
 					break;
-				case 5:
+				case 4: //strain
 					$scope.curChar.strain += Number(data.data);
 					break;
-				case 6:
+				case 5: // Reset Init
 					$scope.curChar.initiative = 0;
 					break;
 				case 7:
 				case 8:
-					$scope.curChar.isTurn = $scope.curChar.isTurn ? false : true;
-					if ($scope.curChar.isTurn && $scope.audObj.paused){
-						$scope.audObj.src = "static/snd/alarm.mp3";
-						$scope.audObj.play();
-					}
-					break;
 				case 9:
-					$scope.curChar.isTurn = false;
-					break;
 				default:
 					return;
 			}
@@ -261,60 +252,48 @@
 				return;
 			}
 			$scope.curChar.initiative = this.inpForm.input;
-			$scope.SendInit(this.inpForm.input);
+			var sendData = {
+				type: "initiative",
+				data: {
+					message: String(this.inpForm.input)
+				}
+			};
+			sendData = JSON.stringify(sendData);
+			if ($scope.sock.readyState == 1){
+				$scope.sock.send(sendData);
+			}
 			this.ClearForm();
 		};
 
 		this.Wound = function(wnd){
 			if ($scope.curChar.curWound + wnd <= $scope.curChar.wound){
 				$scope.curChar.curWound += wnd;
-				$scope.SendWound(wnd);
-			}
-		};
-
-		$scope.SendWound = function(wound){
-			var sendData = {
-				type: "wound",
-				data: {
-					message: String(wound)
+				var sendData = {
+					type: "wound",
+					data: {
+						message: String(wnd)
+					}
+				};
+				sendData = JSON.stringify(sendData);
+				if ($scope.sock.readyState == 1){
+					$scope.sock.send(sendData);
 				}
-			};
-			sendData = JSON.stringify(sendData);
-			if ($scope.sock.readyState == 1){
-				$scope.sock.send(sendData);
 			}
 		};
 
 		this.Strain = function(str){
 			if ($scope.curChar.curStrain + str <= $scope.curChar.strain){
 				$scope.curChar.curStrain += str;
-				$scope.SendStrain(str);
-			}
-		};
-
-		$scope.SendStrain = function(strain){
-			var sendData = {
-				type: "strain",
-				data: {
-					message: String(strain)
+				var sendData = {
+					type: "strain",
+					data: {
+						message: String(str)
+					}
+				};
+				sendData = JSON.stringify(sendData);
+				if ($scope.sock.readyState == 1){
+					$scope.sock.send(sendData);
 				}
-			};
-			sendData = JSON.stringify(sendData);
-			if ($scope.sock.readyState == 1){
-				$scope.sock.send(sendData);
-			}
-		};
-
-		$scope.SendInit = function(init){
-			var sendData = {
-				type: "initiative",
-				data: {
-					message: String(init)
-				}
-			};
-			sendData = JSON.stringify(sendData);
-			if ($scope.sock.readyState == 1){
-				$scope.sock.send(sendData);
 			}
 		};
 
@@ -322,58 +301,6 @@
 			$scope.SetStep($scope.backStep, false);
 			this.formInput = "";
 			this.inpForm = {};
-		};
-
-		this.EndTurn = function(){
-			if (!$scope.curChar.isTurn){
-				return;
-			}
-			$scope.curChar.isTurn = false;
-			var sendData = {
-				type: "initiative_t",
-				data: {
-					message: "+"
-				}
-			};
-			sendData = JSON.stringify(sendData);
-			if ($scope.sock.readyState == 1){
-				$scope.sock.send(sendData);
-			}
-
-			if ($scope.audObj.paused){
-				var file = Math.floor(Math.random() * 9);
-				switch (file){
-					case 0:
-						$scope.audObj.src = "static/snd/buildingFreakOut.mp3"
-						break;
-					case 1:
-						$scope.audObj.src = "static/snd/curtReply.mp3"
-						break;
-					case 2:
-						$scope.audObj.src = "static/snd/happyThreeChirp.mp3"
-						break;
-					case 3:
-						$scope.audObj.src = "static/snd/pullingTogether.mp3"
-						break;
-					case 4:
-						$scope.audObj.src = "static/snd/shortRaspberry.mp3"
-						break;
-					case 5:
-						$scope.audObj.src = "static/snd/singSongResponse.mp3"
-						break;
-					case 6:
-						$scope.audObj.src = "static/snd/startledWhoop.mp3"
-						break;
-					case 7:
-						$scope.audObj.src = "static/snd/testyBlowup.mp3"
-						break;
-					case 8:
-						$scope.audObj.src = "static/snd/upsetTwoTone.mp3"
-						break;
-				}
-
-				$scope.audObj.play();
-			}
 		};
 
 		this.ShowStep = function(step){
