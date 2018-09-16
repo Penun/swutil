@@ -1,9 +1,7 @@
 (function(){
 	var app = angular.module('ddcharL', []);
 	app.controller('mainController', ['$window', '$scope', '$http', '$timeout', function($window, $scope, $http, $timeout){
-		$scope.players = [];
-		$scope.enems = [];
-		$scope.initOrd = [];
+		$scope.gameChars = [];
 		$scope.startInit = false;
 		$scope.curInitInd = 0;
 
@@ -18,33 +16,19 @@
 				$http.get("/track/subs?type=watch").then(function(ret){
 					if (ret.data.success){
 						for (var i = 0; i < ret.data.result.length; i++){
-							switch (ret.data.result[i].type){
-								case 'PC':
-									$scope.players.push(ret.data.result[i]);
-									break;
-								case 'NPC':
-									$scope.players.push(ret.data.result[i]);
-									break;
-								case 'NPCE':
-									$scope.enems.push(ret.data.result[i]);
-									break;
+							if (ret.data.result[i].type == 'NPCE'){
+								ret.data.result[i].initDisplay = "NPC";
+							} else {
+								ret.data.result[i].initDisplay = "PC";
 							}
-							if (ret.data.result[i].initiative > 0){
-								var tInit = {initiative: ret.data.result[i].initiative}
-								if (ret.data.result[i].type == 'NPCE'){
-									tInit.display = "NPC (E)";
-								} else {
-									tInit.display = "PC (A)";
-								}
-								$scope.initOrd.push(tInit);
-							}
+							$scope.gameChars.push(ret.data.result[i]);
 						}
 						$http.get("/track/status").then(function(ret){
 							if (ret.data.success){
 								$scope.startInit = ret.data.start_init;
 								if ($scope.startInit){
 									$scope.curInitInd = ret.data.cur_init_ind;
-									$scope.players[$scope.curInitInd].isTurn = true;
+									$scope.gameChars[$scope.curInitInd].isTurn = true;
 								}
 							}
 						});
@@ -60,8 +44,8 @@
 				if (data.player.type == "play"){
 					data.player.initiative = 0;
 					var isFound = false;
-					for (var i = 0; i < $scope.players.length; i++){
-						if ($scope.players[i].player.name == data.player.name){
+					for (var i = 0; i < $scope.gameChars.length; i++){
+						if ($scope.gameChars[i].player.name == data.player.name){
 							isFound = true;
 							break;
 						}
@@ -72,34 +56,38 @@
 						}
 						$http.post("/track/player", sendData).then(function(ret){
 							if (ret.data.success){
-								$scope.players.push(ret.data.live_player);
+								ret.data.live_player.initDisplay = "PC";
+								$scope.gameChars.push(ret.data.live_player);
 							}
 						});
 					}
 				} else if (data.player.type == "master") {
 					if (data.data !== ""){
 						var tPlay = JSON.parse(data.data);
-						tPlay.wound = 0;
-						tPlay.strain = 0;
-						$scope.players.push(tPlay);
-						$scope.SortList($scope.players, "initiative");
+						if (tPlay.type == 'NPC'){
+							tPlay.initDisplay = "PC";
+						} else {
+							tPlay.initDisplay = "NPC";
+						}
+						$scope.gameChars.push(tPlay);
+						$scope.SortList($scope.gameChars, "initiative");
 					}
 				}
 				break;
 			case 1: // LEAVE
 				if (data.player.type == "master") {
 					if (data.data !== ""){
-						var tPlay = JSON.parse(data.data);
-						for (var i = 0; i < tPlay.length; i++){
-							for (var j = 0; j < $scope.players.length; j++){
-								if ($scope.players[j].player.name == tPlay[i].name){
-									var setTurn = $scope.players[j].isTurn;
-									$scope.players.splice(j, 1);
-									if ($scope.players.length == j){
+						var tPlays = JSON.parse(data.data);
+						for (var i = 0; i < tPlays.length; i++){
+							for (var j = 0; j < $scope.gameChars.length; j++){
+								var setTurn = $scope.gameChars[j].isTurn;
+								if ($scope.gameChars[j].player.name == tPlays[i].player.name){
+									$scope.gameChars.splice(j, 1);
+									if ($scope.gameChars.length == j){
 										j--;
 									}
-									if (setTurn && $scope.players.length > 0) {
-										$scope.players[j].isTurn = true;
+									if (setTurn && $scope.gameChars.length > 0) {
+										$scope.gameChars[j].isTurn = true;
 										$scope.curInitInd = j;
 									}
 									break;
@@ -111,40 +99,40 @@
 						$scope.curInitInd = 0;
 					}
 				} else {
-					for (var i = 0; i < $scope.players.length; i++){
-						if ($scope.players[i].name == data.player.name){
-							var setTurn = $scope.players[i].isTurn;
-							$scope.players.splice(i, 1);
-							if ($scope.players.length == i){
+					for (var i = 0; i < $scope.gameChars.length; i++){
+						if ($scope.gameChars[i].name == data.player.name){
+							var setTurn = $scope.gameChars[i].isTurn;
+							$scope.gameChars.splice(i, 1);
+							if ($scope.gameChars.length == i){
 								i--;
 							}
-							if (setTurn && $scope.players.length > 0) {
-								$scope.players[i].isTurn = true;
+							if (setTurn && $scope.gameChars.length > 0) {
+								$scope.gameChars[i].isTurn = true;
 								$scope.curInitInd = i;
 							}
 							break;
 						}
 					}
 				}
-				$scope.SortList($scope.players, "initiative");
+				$scope.SortList($scope.gameChars, "initiative");
 				break;
 			case 3: // WOUND
 				if (data.player.type != "master"){
-					for (var i = 0; i < $scope.players.length; i++){
-						if ($scope.players[i].player.name == data.player.name){
-							if (typeof $scope.players[i].cur_wound === 'undefined'){
-								$scope.players[i].cur_wound = Number(data.data);
+					for (var i = 0; i < $scope.gameChars.length; i++){
+						if ($scope.gameChars[i].player.name == data.player.name){
+							if (typeof $scope.gameChars[i].cur_wound === 'undefined'){
+								$scope.gameChars[i].cur_wound = Number(data.data);
 							} else {
-								$scope.players[i].cur_wound += Number(data.data);
+								$scope.gameChars[i].cur_wound += Number(data.data);
 							}
 							break;
 						}
 					}
 				} else {
 					for (var i = 0; i < data.players.length; i++){
-						for (var j = 0; j < $scope.players.length; j++){
-							if ($scope.players[j].player.name == data.players[i]){
-								$scope.players[j].cur_wound += Number(data.data);
+						for (var j = 0; j < $scope.gameChars.length; j++){
+							if ($scope.gameChars[j].player.name == data.players[i]){
+								$scope.gameChars[j].cur_wound += Number(data.data);
 								break;
 							}
 						}
@@ -153,21 +141,21 @@
 				break;
 			case 4: // STRAIN
 				if (data.player.type != "master"){
-					for (var i = 0; i < $scope.players.length; i++){
-						if ($scope.players[i].player.name == data.player.name){
-							if (typeof $scope.players[i].cur_strain === 'undefined'){
-								$scope.players[i].cur_strain = Number(data.data);
+					for (var i = 0; i < $scope.gameChars.length; i++){
+						if ($scope.gameChars[i].player.name == data.player.name){
+							if (typeof $scope.gameChars[i].cur_strain === 'undefined'){
+								$scope.gameChars[i].cur_strain = Number(data.data);
 							} else {
-								$scope.players[i].cur_strain += Number(data.data);
+								$scope.gameChars[i].cur_strain += Number(data.data);
 							}
 							break;
 						}
 					}
 				} else {
 					for (var i = 0; i < data.players.length; i++){
-						for (var j = 0; j < $scope.players.length; j++){
-							if ($scope.players[j].player.name == data.players[i]){
-								$scope.players[j].cur_strain += Number(data.data);
+						for (var j = 0; j < $scope.gameChars.length; j++){
+							if ($scope.gameChars[j].player.name == data.players[i]){
+								$scope.gameChars[j].cur_strain += Number(data.data);
 								break;
 							}
 						}
@@ -175,61 +163,77 @@
 				}
 				break;
 			case 5: // INITIATIVE
-				for (var i = 0; i < $scope.players.length; i++){
-					if ($scope.players[i].player.name == data.player.name){
-						$scope.players[i].initiative = Number(data.data);
+				for (var i = 0; i < $scope.gameChars.length; i++){
+					if ($scope.gameChars[i].player.name == data.player.name){
+						$scope.gameChars[i].initiative = Number(data.data);
 						break;
 					}
 				}
-				$scope.SortList($scope.players, "initiative");
+				$scope.SortList($scope.gameChars, "initiative");
 				$scope.ApplyInit();
 				break;
 			case 6: // INITIATIVE DM RESET
 				for (var i = 0; i < data.players.length; i++){
-					for (var j = 0; j < $scope.players.length; j++){
-						if ($scope.players[j].player.name == data.players[i]){
-							$scope.players[j].initiative = 0;
+					for (var j = 0; j < $scope.gameChars.length; j++){
+						if ($scope.gameChars[j].player.name == data.players[i]){
+							$scope.gameChars[j].initiative = 0;
 							break;
 						}
 					}
 				}
-				$scope.SortList($scope.players, "initiative");
+				$scope.SortList($scope.gameChars, "initiative");
 				$scope.ApplyInit();
 				break;
 			case 7: // Init StartInit
 				$scope.startInit = true;
-				$scope.players[0].isTurn = true;
+				$scope.gameChars[0].isTurn = true;
 				$scope.curInitInd = 0;
 				break;
 			case 8: // Turn initiative
 				if ($scope.startInit){
-					$scope.players[$scope.curInitInd].isTurn = false;
+					$scope.gameChars[$scope.curInitInd].isTurn = false;
 					if (data.data === "+"){
-						if ($scope.curInitInd == $scope.players.length - 1){
+						if ($scope.curInitInd == $scope.gameChars.length - 1){
 							$scope.curInitInd = 0;
 						} else {
 							$scope.curInitInd++;
 						}
 					} else {
 						if ($scope.curInitInd == 0){
-							$scope.curInitInd = $scope.players.length - 1;
+							$scope.curInitInd = $scope.gameChars.length - 1;
 						} else {
 							$scope.curInitInd--;
 						}
 					}
-					$scope.players[$scope.curInitInd].isTurn = true;
+					$scope.gameChars[$scope.curInitInd].isTurn = true;
 				}
 				break;
 			case 9: // End initiative
 				$scope.startInit = false;
 				$scope.curInitInd = 0;
-				for (var i = 0; i < $scope.players.length; i++){
-					$scope.players[i].isTurn = false;
+				for (var i = 0; i < $scope.gameChars.length; i++){
+					$scope.gameChars[i].isTurn = false;
 				}
 				break;
 			}
 			$scope.$apply();
 		};
+
+		$scope.PCDisplayList = function(gameChar){
+			if (gameChar.type == 'NPC' || gameChar.type == 'PC'){
+				return true;
+			} else {
+				return false;
+			}
+		};
+
+		$scope.InitDisplayList = function(gameChar){
+			if (gameChar.initiative > 0){
+				return true;
+			} else {
+				return false;
+			}
+		}
 
 		$scope.SortList = function(list, varName){
 			for (var i = 0; i < list.length; i++){
@@ -247,11 +251,11 @@
 
 		$scope.ApplyInit = function(){
 			if ($scope.startInit){
-				for (var i = 0; i < $scope.players.length; i++){
+				for (var i = 0; i < $scope.gameChars.length; i++){
 					if ($scope.curInitInd == i){
-						$scope.players[i].isTurn = true;
+						$scope.gameChars[i].isTurn = true;
 					} else {
-						$scope.players[i].isTurn = false;
+						$scope.gameChars[i].isTurn = false;
 					}
 				}
 			}

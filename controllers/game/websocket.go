@@ -236,12 +236,12 @@ func (this *WebSocketController) JoinM() {
 					beego.Error(err.Error())
 				}
 			case "delete":
-				var targs []game.Player
+				var targs []game.LivePlayer
 				err = json.Unmarshal([]byte(conReq.Data.Message), &targs)
 				if err == nil {
 					for i := 0; i < len(targs); i++ {
 						for j := 0; j < len(players); j++ {
-							if players[j].Player.Name == targs[i].Name {
+							if players[j].Player.Name == targs[i].Player.Name {
 								RemovePlayer(j)
 								SortPlayerInit()
 								j--

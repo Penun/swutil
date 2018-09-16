@@ -36,19 +36,6 @@ td.rang {
     text-align: center;
 }
 
-.activePlayer {
-	background-image: url("/static/img/light_underline_high.png");
-	background-size: 100% 100%;
-	font-size: 1.65em;
-	margin: 5px auto;
-	height: 25px;
-	color: #293c56;
-    text-shadow: -1px -1px 0 #83d9e6,
-        1px -1px 0 #83d9e6,
-        -1px 1px 0 #83d9e6,
-        1px 1px 0 #83d9e6;
-}
-
 .watchSpan {
 	font-size: 1.25em;
 }

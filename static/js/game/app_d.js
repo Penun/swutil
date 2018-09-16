@@ -147,7 +147,7 @@
 			}
 			var delPlayers = [];
 			for (var i = 0; i < this.action.players.length; i++){
-				delPlayers.push({name: this.action.players[i]});
+				delPlayers.push({player: {name: this.action.players[i]}, type: "PC"});
 			}
 			var sendData = {
 				type: "delete",
@@ -322,7 +322,7 @@
 				}
 				var enemPlays = [];
 				for (var i = 0; i < this.delForm.chars.length; i++){
-					enemPlays.push({name: this.delForm.chars[i]});
+					enemPlays.push({player: {name: this.delForm.chars[i]}, type: this.delAction});
 				}
 				sendData = {
 					type: "delete",

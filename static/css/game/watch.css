@@ -25,8 +25,8 @@
     grid-template-columns: repeat(4, 1fr);
 }
 
-.enemInner {
-    grid-template-columns: 1fr 1fr;
+.dualInner {
+    grid-template-columns: 60% 40%;
 }
 
 span {
@@ -75,4 +75,17 @@ span {
     background-repeat: no-repeat;
     padding-top: 0.5vh;
     display: grid;
+}
+
+.activePlayer {
+    background-image: url("/static/img/light_underline_high.png");
+    background-size: 100% 100%;
+    color: #293c56;
+    text-shadow:
+        -1px -1px 0 #DFDFFF,
+        /* 1px -1px 0 #83d9e6, */
+        1px -1px 0 #DFDFFF,
+        -1px 1px 0 #DFDFFF,
+        /* 1px 1px 0 #83d9e6; */
+        1px 1px 0 #DFDFFF;
 }
