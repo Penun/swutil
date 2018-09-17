@@ -9,7 +9,7 @@
 		this.addForm = {};
 		this.addAction = "";
 		$scope.enems = [];
-		$scope.friends = [];
+		$scope.allies = [];
 		this.delForm = {};
 		this.delAction = "";
 		this.damForm = {type: "wound"};
@@ -206,7 +206,7 @@
 						$scope.enems.push(char);
 						break;
 					case "NPC":
-						$scope.friends.push(char);
+						$scope.allies.push(char);
 						break;
 					default:
 						break;
@@ -230,7 +230,7 @@
 					this.damChars = $scope.enems;
 					break;
 				case "NPC":
-					this.damChars = $scope.friends;
+					this.damChars = $scope.allies;
 					break;
 			}
 			this.DamForm(true, false);
@@ -257,7 +257,7 @@
 						damChars = $scope.enems;
 						break;
 					case "NPC":
-						damChars = $scope.friends;
+						damChars = $scope.allies;
 						break;
 				}
 				var sendData = {
@@ -307,7 +307,7 @@
 					this.delChars = $scope.enems;
 					break;
 				case "NPC":
-					this.delChars = $scope.friends;
+					this.delChars = $scope.allies;
 					break;
 			}
 			this.DelForm(true);
@@ -391,26 +391,26 @@
 			}
 		};
 
-		this.StartInit = function(){
-			if ($scope.subs.length > 0 || $scope.enems.length > 0 || $scope.friends.length > 0){
-				$scope.startInit = true;
+		this.ToggleInit = function(){
+			if (!$scope.startInit){
+				if ($scope.subs.length > 0 || $scope.enems.length > 0 || $scope.allies.length > 0){
+					$scope.startInit = true;
+					var sendData = {
+						type: "initiative_s",
+						data: {}
+					};
+					sendData = JSON.stringify(sendData);
+					$scope.sock.send(sendData);
+				}
+			} else {
+				$scope.startInit = false;
 				var sendData = {
-					type: "initiative_s",
+					type: "initiative_e",
 					data: {}
 				};
 				sendData = JSON.stringify(sendData);
 				$scope.sock.send(sendData);
 			}
-		};
-
-		this.EndInit = function(){
-			$scope.startInit = false;
-			var sendData = {
-				type: "initiative_e",
-				data: {}
-			};
-			sendData = JSON.stringify(sendData);
-			$scope.sock.send(sendData);
 		};
 
 		this.NextTurn = function(){

@@ -1,7 +1,126 @@
-.masterGrid {
+span {
     display: grid;
-    grid-template-rows: 6% 47% 6% 41%;
+    overflow: auto;
+}
+
+#masterGrid {
+    grid-template-rows: 6% 45% 10% 39%;
     grid-template-columns: 1fr 15%;
     overflow-y: auto;
     height: 100%;
+    border-color: #111144;
+    border-style: inset;
+    border-width: 2px;
+}
+
+#characterDisp {
+    grid-row: 1 / 3;
+    grid-column: 1 / 2;
+}
+
+#characterMenu {
+    grid-row: 2 / 3;
+    grid-column: 2;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(7, 1fr);
+}
+
+#initiativeDisp {
+    grid-row: 3 / 4;
+    grid-column: 1 / 2;
+}
+
+#initiativeMenu {
+    grid-row: 3 / 4;
+    grid-column: 2;
+}
+
+#vehicleDisp {
+    grid-row: 4;
+    grid-column: 1 / 2;
+}
+
+#vehicleMenu {
+    grid-row: 4;
+    grid-column: 2;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(3, 16.5%);
+}
+
+.mainMenuButton {
+    grid-row: 1 / 2;
+    grid-column: 2;
+}
+
+.menu {
+    background-image: url(/static/img/light_underline_high_dark.png);
+    background-size: 100% 100%;
+    cursor: pointer;
+    font-size: calc(12px + 1vmin);
+    border-color: #111144;
+    border-style: inset;
+    border-width: 0 0 1px 1px;
+}
+
+.menu:hover {
+    background-image: url(/static/img/light_underline_high.png);
+}
+
+.menu:active {
+    background-image: url(/static/img/light_underline_high_dark.png);
+}
+
+.menuInner {
+    background-image: url("/static/img/light_underline.png");
+	background-size: 33% 33%;
+    background-repeat: repeat-y;
+	background-position: top;
+    height: 100%;
+}
+
+.menuInner:hover {
+    background-image: url(/static/img/light_underline_dark.png);
+}
+
+.menuInner:active {
+    background-image: url(/static/img/light_underline.png);
+}
+
+.menuHead {
+    background-image: url(/static/img/light_underline_high_dark.png);
+    background-size: 100% 100%;
+    font-size: calc(12px + 1vmin);
+    border-color: #111144;
+    border-style: inset;
+    border-width: 0 0 1px 1px;
+}
+
+#characterMenu span {
+    align-content: center;
+    justify-content: center;
+}
+
+#initiativeMenu span {
+    align-content: center;
+    justify-content: center;
+}
+
+#vehicleMenu span {
+    align-content: center;
+    justify-content: center;
+}
+
+.menuText:hover {
+    color: #293c56;
+    font-weight: bold;
+}
+
+.menuColSpan {
+    grid-column: 1 / 3;
+}
+
+.menuTitledBlock {
+    display: grid;
+    grid-template-columns: 1fr 1fr;;
+    grid-template-rows: 1fr 1fr;
 }

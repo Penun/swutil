@@ -23,16 +23,74 @@
 				</form>
 			</div>
 			<div ng-show="mCont.ShowStep(3)" class="sixty_he">
-				<span class="masterGrid">
-					<span class="menu">
+				<span id="masterGrid">
+					<span class="menu mainMenuButton">
+						<span class="menuInner" ng-click="mCont.ClearForm(3, true)"></span>
 					</span>
-					<span class="characterDisplay">
+					<span id="characterDisp">
+						<span>Players</span>
+						<span>Allies</span>
+						<span>Enemies</span>
+						<span></span>
+						<span></span>
+						<span></span>
 					</span>
-					<span class="characterMenu">
+					<span id="characterMenu">
+						<span class="menu menuText" ng-click="mCont.SetupAdd('NPC')">+ A</span>
+						<span class="menu menuText" ng-click="mCont.SetupAdd('NPCE')">+ E</span>
+						<span class="menuColSpan menuTitledBlock">
+							<span class="menuHead menuColSpan">Wound</span>
+							<span class="menu menuText">-</span>
+							<span class="menu menuText">+</span>
+						</span>
+						<span class="menuColSpan menuTitledBlock">
+							<span class="menuHead menuColSpan">Strain</span>
+							<span class="menu menuText">-</span>
+							<span class="menu menuText">+</span>
+						</span>
+						<span class="menuColSpan menuTitledBlock">
+							<span class="menuHead menuColSpan">Boost</span>
+							<span class="menu menuText">-</span>
+							<span class="menu menuText">+</span>
+						</span>
+						<span class="menuColSpan menuTitledBlock">
+							<span class="menuHead menuColSpan">Setback</span>
+							<span class="menu menuText">-</span>
+							<span class="menu menuText">+</span>
+						</span>
+						<span class="menuColSpan menuTitledBlock">
+							<span class="menuHead menuColSpan">Upgrade</span>
+							<span class="menu menuText">-</span>
+							<span class="menu menuText">+</span>
+						</span>
+						<span class="menuColSpan menuTitledBlock">
+							<span class="menuHead menuColSpan">Up Diff</span>
+							<span class="menu menuText">-</span>
+							<span class="menu menuText">+</span>
+						</span>
 					</span>
-					<span class="initiativeBlock">
+					<span id="initiativeDisp">
 					</span>
-					<span class="vehicle">
+					<span id="initiativeMenu" class="menuTitledBlock">
+						<span class="menu menuText menuColSpan" ng-click="mCont.ToggleInit()">Start</span>
+						<span class="menu menuText" ng-show="startInit" ng-click="mCont.PrevTurn()"><</span>
+						<span class="menu menuText" ng-show="startInit" ng-click="mCont.NextTurn()">></span>
+					</span>
+					<span id="vehicleDisp">
+					</span>
+					<span id="vehicleMenu">
+						<span class="menu menuText">+ AV</span>
+						<span class="menu menuText">+ EV</span>
+						<span class="menuColSpan menuTitledBlock">
+							<span class="menuHead menuColSpan">Hull</span>
+							<span class="menu menuText">-</span>
+							<span class="menu menuText">+</span>
+						</span>
+						<span class="menuColSpan menuTitledBlock">
+							<span class="menuHead menuColSpan">System</span>
+							<span class="menu menuText">-</span>
+							<span class="menu menuText">+</span>
+						</span>
 					</span>
 				</span>
 			</div>

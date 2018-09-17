@@ -198,7 +198,7 @@ input.found {
 	background-image: url("/static/img/light_underline_high.png");
 	background-size: 100% 100%;
 	color: #293c56;
-	font-weight: 200;
+	font-weight: bold;
 }
 
 button {
