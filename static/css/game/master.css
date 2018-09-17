@@ -1,0 +1,7 @@
+.masterGrid {
+    display: grid;
+    grid-template-rows: 6% 47% 6% 41%;
+    grid-template-columns: 1fr 15%;
+    overflow-y: auto;
+    height: 100%;
+}

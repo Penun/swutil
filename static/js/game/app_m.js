@@ -13,7 +13,7 @@
 		this.delForm = {};
 		this.delAction = "";
 		this.damForm = {type: "wound"};
-		$scope.backStep = $scope.curStep = 1;
+		$scope.backStep = $scope.curStep = 3;
 		this.textareaReq = true;
 		$scope.activeNote = "";
 		this.inTextText = "";

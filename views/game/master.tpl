@@ -1,4 +1,4 @@
-{{template "includes/game/header_d.tpl"}}
+{{template "includes/game/header_m.tpl"}}
 <body ng-controller="mainController as mCont" ng-cloak>
 	<div class="mainDiv" id="forwardMain">
 		<div class="page sw_back">
@@ -23,6 +23,20 @@
 				</form>
 			</div>
 			<div ng-show="mCont.ShowStep(3)" class="sixty_he">
+				<span class="masterGrid">
+					<span class="menu">
+					</span>
+					<span class="characterDisplay">
+					</span>
+					<span class="characterMenu">
+					</span>
+					<span class="initiativeBlock">
+					</span>
+					<span class="vehicle">
+					</span>
+				</span>
+			</div>
+			<!-- <div ng-show="mCont.ShowStep(3)" class="sixty_he">
 				<button class="menu_p" ng-click="mCont.ClearForm(3, true)">Menu</button>
 				<form name="actForm" id="actForm" novalidate>
 					<p class="s_ws_p_inline"><label for="subSelAct"><b>Players:</b></label></p>
@@ -52,7 +66,7 @@
 				</p>
 				<p class="act_p" ng-show="startInit && enems.length > 0"><button ng-click="mCont.SetupDam('NPCE')">Adjust Enemy</button></p>
 				<p class="act_p" ng-show="startInit && friends.length > 0"><button ng-click="mCont.SetupDam('NPC')">Adjust Friend</button></p>
-			</div>
+			</div> -->
 			<div ng-show="mCont.ShowStep(5)" class="sixty_he">
 				<button class="menu_p" ng-click="mCont.ClearForm(5, true)">Cancel</button>
 				<form name="addForm" id="addForm" novalidate>
