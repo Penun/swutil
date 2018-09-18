@@ -3,13 +3,15 @@
 	app.controller('mainController', ['$window', '$scope', '$http', '$timeout', function($window, $scope, $http, $timeout){
 		$scope.char = {};
 		$scope.players = [];
+		$scope.allies = [];
+		$scope.allyVs = [];
+		$scope.enems = [];
+		$scope.enemVs = [];
 		this.inText = {};
 		this.action = {};
 		this.inpForm = {};
 		this.addForm = {};
 		this.addAction = "";
-		$scope.enems = [];
-		$scope.allies = [];
 		this.delForm = {};
 		this.delAction = "";
 		this.damForm = {type: "wound"};

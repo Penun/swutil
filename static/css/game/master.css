@@ -6,8 +6,9 @@ span {
 }
 
 #masterGrid {
-    grid-template-rows: 6% 45% 10% 39%;
+    grid-template-rows: 6% 44% 9% 38%;
     grid-template-columns: 1fr 15%;
+    grid-row-gap: 1%;
     overflow-y: auto;
     height: 100%;
     border-color: #111144;
@@ -33,6 +34,7 @@ span {
 #initiativeDisp {
     grid-row: 3 / 4;
     grid-column: 1 / 2;
+    align-content: center;
 }
 
 #initiativeMenu {
@@ -43,6 +45,9 @@ span {
 #vehicleDisp {
     grid-row: 4;
     grid-column: 1 / 2;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 16% 1fr;
+    grid-column-gap: 1vw;
 }
 
 #vehicleMenu {
@@ -76,10 +81,6 @@ span {
 
 .menu:active {
     background-image: url(/static/img/light_underline_high_dark.png);
-}
-
-.menuBordL {
-    border-width: 0 0 0 1px;
 }
 
 .menuBordT {
@@ -153,4 +154,10 @@ span {
     padding-top: 0.5vh;
     font-size: calc(12px + 2vmin);
     text-align: center;
+}
+
+#vehicleDisp > .menuColSpan {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-column-gap: 1vw;
 }

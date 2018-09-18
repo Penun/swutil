@@ -54,8 +54,8 @@
 						</span>
 					</span>
 					<span id="characterMenu">
-						<span class="menu menuText" ng-click="mCont.SetupAdd('NPC')">+ A</span>
-						<span class="menu menuText" ng-click="mCont.SetupAdd('NPCE')">+ E</span>
+						<span class="menu menuBordT menuText" ng-click="mCont.SetupAdd('NPC')">+ A</span>
+						<span class="menu menuBordT menuText" ng-click="mCont.SetupAdd('NPCE')">+ E</span>
 						<span class="menuColSpan menuTitledBlock">
 							<span class="sw_back menuColSpan">
 								<span>Wound</span>
@@ -99,14 +99,31 @@
 							<span class="menu menuText">+</span>
 						</span>
 					</span>
-					<span id="initiativeDisp">
+					<span id="initiativeDisp" class="charDispBod">
+						<span ng-show="!startInit && (players.length > 0 || allies.length > 0 || enems.length > 0)">There</span>
+						<span ng-show="startInit">Initiative running....</span>
 					</span>
 					<span id="initiativeMenu" class="menuTitledBlock">
-						<span class="menu menuText menuColSpan" ng-show="players.length > 0 || allies.length > 0 || enemies.length > 0" ng-click="mCont.ToggleInit()">{{"{{startInit ? \"End\" : \"Start\"}}"}}</span>
-						<span class="menu menuBordL menuText" ng-show="startInit" ng-click="mCont.PrevTurn()"><</span>
-						<span class="menu menuBordL menuText" ng-show="startInit" ng-click="mCont.NextTurn()">></span>
+						<span class="menu menuBordT menuText menuColSpan" ng-show="players.length > 0 || allies.length > 0 || enems.length > 0" ng-click="mCont.ToggleInit()">{{"{{startInit ? \"End\" : \"Start\"}}"}}</span>
+						<span class="menu menuText" ng-show="startInit" ng-click="mCont.PrevTurn()"><</span>
+						<span class="menu menuText" ng-show="startInit" ng-click="mCont.NextTurn()">></span>
 					</span>
 					<span id="vehicleDisp">
+						<span class="menuColSpan sw_back">
+							<span class="menuColSpan">Vehicles</span>
+							<span>Allies</span>
+							<span>Enemies</span>
+						</span>
+						<span class="charDispBod">
+							<span ng-repeat="(ind, allyV) in allyVs" class="dispItem">
+								<span>{{"{{allyV.name}}"}}</span>
+							</span>
+						</span>
+						<span class="charDispBod">
+							<span ng-repeat="(ind, enemV) in enemVs" class="dispItem">
+								<span>{{"{{enemV.name}}"}}</span>
+							</span>
+						</span>
 					</span>
 					<span id="vehicleMenu">
 						<span class="menu menuText menuBordT">+ AV</span>
