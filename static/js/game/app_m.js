@@ -2,7 +2,7 @@
 	var app = angular.module('ddcharL', []);
 	app.controller('mainController', ['$window', '$scope', '$http', '$timeout', function($window, $scope, $http, $timeout){
 		$scope.char = {};
-		$scope.subs = [];
+		$scope.players = [];
 		this.inText = {};
 		this.action = {};
 		this.inpForm = {};
@@ -37,7 +37,7 @@
 					if (ret.data.success){
 						for (var i = 0; i < ret.data.result.length; i++){
 							if (ret.data.result[i].type == "PC"){
-								$scope.subs.push(ret.data.result[i]);
+								$scope.players.push(ret.data.result[i]);
 							} else if ("NPCE") {
 								$scope.enems.push(ret.data.result[i]);
 							}
@@ -53,21 +53,21 @@
 			case 0: // JOIN
 				if (data.player.type == "play" && data.player.name != $scope.char.name){
 					var isFound = false;
-					for (var i = 0; i < $scope.subs.length; i++){
-						if ($scope.subs[i].player.name == data.player.name){
+					for (var i = 0; i < $scope.players.length; i++){
+						if ($scope.players[i].player.name == data.player.name){
 							isFound = true;
 							break;
 						}
 					}
 					if (!isFound){
-						$scope.subs.push({player: data.player});
+						$scope.players.push({player: data.player});
 					}
 				}
 				break;
 			case 1: // LEAVE
-				for (var i = 0; i < $scope.subs.length; i++){
-					if ($scope.subs[i].name == data.player.name){
-						$scope.subs.splice(i, 1);
+				for (var i = 0; i < $scope.players.length; i++){
+					if ($scope.players[i].name == data.player.name){
+						$scope.players.splice(i, 1);
 						break;
 					}
 				}
@@ -158,9 +158,9 @@
 			sendData = JSON.stringify(sendData);
 			$scope.sock.send(sendData);
 			for (var i = 0; i < this.action.players.length; i++){
-				for (var j = 0; j < $scope.subs.length; j++){
-					if ($scope.subs[j].player.name == this.action.players[i]){
-						$scope.subs.splice(j, 1);
+				for (var j = 0; j < $scope.players.length; j++){
+					if ($scope.players[j].player.name == this.action.players[i]){
+						$scope.players.splice(j, 1);
 						j--;
 					}
 				}
@@ -393,7 +393,7 @@
 
 		this.ToggleInit = function(){
 			if (!$scope.startInit){
-				if ($scope.subs.length > 0 || $scope.enems.length > 0 || $scope.allies.length > 0){
+				if ($scope.players.length > 0 || $scope.enems.length > 0 || $scope.allies.length > 0){
 					$scope.startInit = true;
 					var sendData = {
 						type: "initiative_s",

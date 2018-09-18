@@ -28,43 +28,73 @@
 						<span class="menuInner" ng-click="mCont.ClearForm(3, true)"></span>
 					</span>
 					<span id="characterDisp">
-						<span>Players</span>
-						<span>Allies</span>
-						<span>Enemies</span>
-						<span></span>
-						<span></span>
-						<span></span>
+						<span class="sw_back">
+							<span>Players</span>
+						</span>
+						<span class="sw_back">
+							<span>Allies</span>
+						</span>
+						<span class="sw_back">
+							<span>Enemies</span>
+						</span>
+						<span class="charDispBod">
+							<span ng-repeat="(ind, play) in players" class="dispItem">
+								<span>{{"{{play.player.name}}"}}</span>
+							</span>
+						</span>
+						<span class="charDispBod">
+							<span ng-repeat="(ind, ally) in allies" class="dispItem">
+								<span>{{"{{ally.player.name}}"}}</span>
+							</span>
+						</span>
+						<span class="charDispBod">
+							<span ng-repeat="(ind, enem) in enems" class="dispItem">
+								<span>{{"{{enem.player.name}}"}}</span>
+							</span>
+						</span>
 					</span>
 					<span id="characterMenu">
 						<span class="menu menuText" ng-click="mCont.SetupAdd('NPC')">+ A</span>
 						<span class="menu menuText" ng-click="mCont.SetupAdd('NPCE')">+ E</span>
 						<span class="menuColSpan menuTitledBlock">
-							<span class="menuHead menuColSpan">Wound</span>
+							<span class="sw_back menuColSpan">
+								<span>Wound</span>
+							</span>
 							<span class="menu menuText">-</span>
 							<span class="menu menuText">+</span>
 						</span>
 						<span class="menuColSpan menuTitledBlock">
-							<span class="menuHead menuColSpan">Strain</span>
+							<span class="sw_back menuColSpan">
+								<span>Strain</span>
+							</span>
 							<span class="menu menuText">-</span>
 							<span class="menu menuText">+</span>
 						</span>
 						<span class="menuColSpan menuTitledBlock">
-							<span class="menuHead menuColSpan">Boost</span>
+							<span class="sw_back menuColSpan">
+								<span>Boost</span>
+							</span>
 							<span class="menu menuText">-</span>
 							<span class="menu menuText">+</span>
 						</span>
 						<span class="menuColSpan menuTitledBlock">
-							<span class="menuHead menuColSpan">Setback</span>
+							<span class="sw_back menuColSpan">
+								<span>Setback</span>
+							</span>
 							<span class="menu menuText">-</span>
 							<span class="menu menuText">+</span>
 						</span>
 						<span class="menuColSpan menuTitledBlock">
-							<span class="menuHead menuColSpan">Upgrade</span>
+							<span class="sw_back menuColSpan">
+								<span>Upgrade</span>
+							</span>
 							<span class="menu menuText">-</span>
 							<span class="menu menuText">+</span>
 						</span>
 						<span class="menuColSpan menuTitledBlock">
-							<span class="menuHead menuColSpan">Up Diff</span>
+							<span class="sw_back menuColSpan">
+								<span>Up Diff</span>
+							</span>
 							<span class="menu menuText">-</span>
 							<span class="menu menuText">+</span>
 						</span>
@@ -72,22 +102,26 @@
 					<span id="initiativeDisp">
 					</span>
 					<span id="initiativeMenu" class="menuTitledBlock">
-						<span class="menu menuText menuColSpan" ng-click="mCont.ToggleInit()">Start</span>
-						<span class="menu menuText" ng-show="startInit" ng-click="mCont.PrevTurn()"><</span>
-						<span class="menu menuText" ng-show="startInit" ng-click="mCont.NextTurn()">></span>
+						<span class="menu menuText menuColSpan" ng-show="players.length > 0 || allies.length > 0 || enemies.length > 0" ng-click="mCont.ToggleInit()">{{"{{startInit ? \"End\" : \"Start\"}}"}}</span>
+						<span class="menu menuBordL menuText" ng-show="startInit" ng-click="mCont.PrevTurn()"><</span>
+						<span class="menu menuBordL menuText" ng-show="startInit" ng-click="mCont.NextTurn()">></span>
 					</span>
 					<span id="vehicleDisp">
 					</span>
 					<span id="vehicleMenu">
-						<span class="menu menuText">+ AV</span>
-						<span class="menu menuText">+ EV</span>
+						<span class="menu menuText menuBordT">+ AV</span>
+						<span class="menu menuText menuBordT">+ EV</span>
 						<span class="menuColSpan menuTitledBlock">
-							<span class="menuHead menuColSpan">Hull</span>
+							<span class="sw_back menuColSpan">
+								<span>Hull</span>
+							</span>
 							<span class="menu menuText">-</span>
 							<span class="menu menuText">+</span>
 						</span>
 						<span class="menuColSpan menuTitledBlock">
-							<span class="menuHead menuColSpan">System</span>
+							<span class="sw_back menuColSpan">
+								<span>System</span>
+							</span>
 							<span class="menu menuText">-</span>
 							<span class="menu menuText">+</span>
 						</span>
