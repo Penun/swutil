@@ -87,6 +87,10 @@ span {
     border-top-width: 1px;
 }
 
+.menuBordR {
+    border-right-width: 1px;
+}
+
 .menuInner {
     background-image: url("/static/img/light_underline.png");
 	background-size: 33% 33%;
@@ -154,6 +158,7 @@ span {
     padding-top: 0.5vh;
     font-size: calc(12px + 2vmin);
     text-align: center;
+    grid-template-columns: 1fr 10%;
 }
 
 #vehicleDisp > .menuColSpan {

@@ -52,32 +52,34 @@
 		$scope.HandleMessage = function(event){
 			var data = JSON.parse(event.data);
 			switch (data.type) {
-			case 0: // JOIN
-				if (data.player.type == "play" && data.player.name != $scope.char.name){
-					var isFound = false;
+				case 0: // JOIN
+					if (data.player.type == "play" && data.player.name != $scope.char.name){
+						var isFound = false;
+						for (var i = 0; i < $scope.players.length; i++){
+							if ($scope.players[i].player.name == data.player.name){
+								isFound = true;
+								break;
+							}
+						}
+						if (!isFound){
+							$scope.players.push({player: data.player});
+						}
+					}
+					break;
+				case 1: // LEAVE
 					for (var i = 0; i < $scope.players.length; i++){
-						if ($scope.players[i].player.name == data.player.name){
-							isFound = true;
+						if ($scope.players[i].name == data.player.name){
+							$scope.players.splice(i, 1);
 							break;
 						}
 					}
-					if (!isFound){
-						$scope.players.push({player: data.player});
-					}
-				}
-				break;
-			case 1: // LEAVE
-				for (var i = 0; i < $scope.players.length; i++){
-					if ($scope.players[i].name == data.player.name){
-						$scope.players.splice(i, 1);
-						break;
-					}
-				}
-				break;
-			case 2: // NOTE
-				$scope.activeNote += data.player.name + ' says: "' + data.data + '"\n';
-				$scope.SetStep(10, false);
-				break;
+					break;
+				case 2: // NOTE
+					$scope.activeNote += data.player.name + ' says: "' + data.data + '"\n';
+					$scope.SetStep(10, false);
+					break;
+				default:
+					return;
 			}
 			$scope.$apply();
 		};

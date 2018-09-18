@@ -40,16 +40,19 @@
 						<span class="charDispBod">
 							<span ng-repeat="(ind, play) in players" class="dispItem">
 								<span>{{"{{play.player.name}}"}}</span>
+								<span class="menu menuText menuBordT menuBordR">X</span>
 							</span>
 						</span>
 						<span class="charDispBod">
 							<span ng-repeat="(ind, ally) in allies" class="dispItem">
 								<span>{{"{{ally.player.name}}"}}</span>
+								<span class="menu menuText menuBordT menuBordR">X</span>
 							</span>
 						</span>
 						<span class="charDispBod">
 							<span ng-repeat="(ind, enem) in enems" class="dispItem">
 								<span>{{"{{enem.player.name}}"}}</span>
+								<span class="menu menuText menuBordT menuBordR">X</span>
 							</span>
 						</span>
 					</span>
@@ -117,11 +120,13 @@
 						<span class="charDispBod">
 							<span ng-repeat="(ind, allyV) in allyVs" class="dispItem">
 								<span>{{"{{allyV.name}}"}}</span>
+								<span class="menu menuText menuBordT menuBordR">X</span>
 							</span>
 						</span>
 						<span class="charDispBod">
 							<span ng-repeat="(ind, enemV) in enemVs" class="dispItem">
 								<span>{{"{{enemV.name}}"}}</span>
+								<span class="menu menuText menuBordT menuBordR">X</span>
 							</span>
 						</span>
 					</span>
