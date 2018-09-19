@@ -1,0 +1,177 @@
+span {
+    display: grid;
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-content: center;
+    justify-content: center;
+}
+
+#playerGrid {
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr;
+    align-content: start;
+    height: 100%;
+}
+
+ #playerGridInner {
+    grid-template-rows: repeat(4, 1fr);
+    grid-row-gap: 1vh;
+    grid-template-columns: 1fr 15%;
+    height: 100%;
+    max-height: 400px;
+    width: 100%;
+    max-width: 600px;
+    border-color: #111144;
+    border-style: inset;
+    border-width: 1px;
+    justify-self: center;
+}
+
+.sw_back {
+    align-content: stretch;
+    justify-content: stretch;
+}
+
+.sw_back > span {
+    background-image: url("/static/img/light_underline_high.png");
+	background-size: 100% 100%;
+	align-self: stretch;
+    font-size: calc(12px + 1vmin);
+    font-weight: bold;
+    color: #293c56;
+    z-index: 1;
+    height: 100%;
+}
+
+.adjustBlock {
+    grid-template-columns: 75% 1fr;
+    align-content: stretch;
+    justify-content: stretch;
+}
+
+.dualBlock {
+    grid-template-columns: 1fr 1fr;
+    align-content: stretch;
+    justify-content: stretch;
+}
+
+.menuColSpan {
+    grid-column: 1 / 3;
+}
+
+.mainMenuButton {
+    grid-row: 1 / 2;
+    grid-column: 2;
+    align-content: stretch;
+    justify-content: stretch;
+}
+
+.menu {
+    background-image: url(/static/img/light_underline_high_dark.png);
+    background-size: 100% 100%;
+    cursor: pointer;
+    font-size: calc(12px + 1vmin);
+    border-color: #111144;
+    border-style: inset;
+    border-width: 0 0 1px 1px;
+}
+
+.menu:hover {
+    background-image: url(/static/img/light_underline_high.png);
+}
+
+.menu:active {
+    background-image: url(/static/img/light_underline_high_dark.png);
+}
+
+.menuInner {
+    background-image: url("/static/img/light_underline.png");
+	background-size: 66% 33%;
+    background-repeat: repeat-y;
+	background-position: top;
+    align-self: stretch;
+    justify-self: stretch;
+}
+
+.menuInner:hover {
+    background-image: url(/static/img/light_underline_dark.png);
+}
+
+.menuInner:active {
+    background-image: url(/static/img/light_underline.png);
+}
+
+.menuText:hover {
+    color: #293c56;
+    font-weight: bold;
+}
+
+.menuBordT {
+    border-top-width: 1px;
+}
+
+.menuBordR {
+    border-right-width: 1px;
+}
+
+.charDispBod {
+    border-color: #111144;
+    border-style: inset;
+    border-width: 2px;
+    box-shadow: 3px 3px 20px #111144 inset;
+    background-color: rgba(0, 0, 25, 0.5);
+    padding-bottom: 0.5vh;
+    padding-left: 0.5vw;
+    padding-right: 0.5vw;
+    align-content: stretch;
+    justify-content: stretch;
+}
+
+.dispItem {
+    background-image: url("/static/img/light_underline.png");
+	background-size: 105% 20%;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    padding-top: 0.5vh;
+    font-size: calc(12px + 2vmin);
+    text-align: center;
+}
+
+#innerIniForm {
+    height: 100%;
+}
+
+.inputBod {
+    border-color: #111144;
+    border-style: inset;
+    border-width: 2px;
+    box-shadow: 3px 3px 20px #111144 inset;
+    background-color: rgba(0, 0, 25, 0.5);
+}
+
+.inputInit {
+    color: #a4dde5;
+    padding: 5px;
+    margin: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    font-size: calc(12px + 2vmin);
+    text-align: center;
+    border: none;
+}
+
+input[type="number"] {
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}

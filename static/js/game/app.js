@@ -233,13 +233,13 @@
 			}, 50);
 		};
 
-		this.Input = function(){
+		this.Input = function(command){
 			if (typeof this.inpForm.input === 'undefined'){
 				var inpIn = document.getElementById("inpIn");
 				inpIn.focus();
 				return;
 			}
-			switch(this.formInput){
+			switch(command){
 				case "Initiative":
 					this.Initiative();
 					break;
