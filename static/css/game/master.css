@@ -28,7 +28,7 @@ span {
     grid-row: 2 / 3;
     grid-column: 2;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(7, 1fr);
+    grid-template-rows: repeat(6, 1fr);
 }
 
 #initiativeDisp {
@@ -129,12 +129,15 @@ span {
 .sw_back > span {
     background-image: url("/static/img/light_underline_high.png");
 	background-size: 100% 100%;
-	align-self: stretch;
     font-size: calc(12px + 1vmin);
     font-weight: bold;
     color: #293c56;
     z-index: 1;
-    height: 100%;
+}
+
+.charAltHead {
+    grid-template-columns: 1fr 10%;
+    align-content: stretch;
 }
 
 .charDispBod {

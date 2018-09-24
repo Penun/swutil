@@ -32,10 +32,16 @@
 							<span>Players</span>
 						</span>
 						<span class="sw_back">
-							<span>Allies</span>
+							<span class="charAltHead">
+								<span>Allies</span>
+								<span class="menu menuText" ng-click="mCont.SetupAdd('NPC')">+</span>
+							</span>
 						</span>
 						<span class="sw_back">
-							<span>Enemies</span>
+							<span class="charAltHead">
+								<span>Enemies</span>
+								<span class="menu menuText" ng-click="mCont.SetupAdd('NPCE')">+</span>
+							</span>
 						</span>
 						<span class="charDispBod">
 							<span ng-repeat="(ind, play) in players" class="dispItem">
@@ -57,8 +63,6 @@
 						</span>
 					</span>
 					<span id="characterMenu">
-						<span class="menu menuBordT menuText" ng-click="mCont.SetupAdd('NPC')">+ A</span>
-						<span class="menu menuBordT menuText" ng-click="mCont.SetupAdd('NPCE')">+ E</span>
 						<span class="menuColSpan menuTitledBlock">
 							<span class="sw_back menuColSpan">
 								<span>Wound</span>
