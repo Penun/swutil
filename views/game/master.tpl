@@ -3,11 +3,11 @@
 	<div class="mainDiv" id="forwardMain">
 		<div class="page sw_back">
 			<div ng-show="mCont.ShowStep(10)" class="sixty_he">
-				<span id="masterGrid">
-					<span id="masterGridInner">
-						<span class="noteRowSpan charDispBod">{{"{{activeNote}}"}}</span>
-						<span class="menu menuText" ng-click="mCont.ReadNote()">Read</span>
+				<span class="masterGrid">
+					<span class="masterGridInner charDispBod">
+						{{"{{activeNote}}"}}
 					</span>
+					<span class="menu menuText" ng-click="mCont.ReadNote()">Read</span>
 				</span>
 			</div>
             <div ng-show="mCont.ShowStep(1)" class="sixty_he">
@@ -27,7 +27,7 @@
 				</form>
 			</div>
 			<div ng-show="mCont.ShowStep(3)" class="sixty_he">
-				<span id="masterGrid">
+				<span class="masterGrid">
 					<span class="menu mainMenuButton">
 						<span class="menuInner" ng-click="mCont.ClearForm(3, true)"></span>
 					</span>

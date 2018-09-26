@@ -5,7 +5,7 @@ span {
     justify-content: center;
 }
 
-#masterGrid {
+.masterGrid {
     grid-template-rows: 6% 44% 9% 38%;
     grid-template-columns: 1fr 15%;
     grid-row-gap: 1%;
@@ -14,6 +14,10 @@ span {
     border-color: #111144;
     border-style: inset;
     border-width: 2px;
+}
+
+.masterGridInner {
+   grid-row: 1 / 5;
 }
 
 #characterDisp {
@@ -28,7 +32,7 @@ span {
     grid-row: 2 / 3;
     grid-column: 2;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(6, 1fr);
+    grid-template-rows: repeat(7, 1fr);
 }
 
 #initiativeDisp {
@@ -129,10 +133,12 @@ span {
 .sw_back > span {
     background-image: url("/static/img/light_underline_high.png");
 	background-size: 100% 100%;
+	align-self: stretch;
     font-size: calc(12px + 1vmin);
     font-weight: bold;
     color: #293c56;
     z-index: 1;
+    height: 100%;
 }
 
 .charAltHead {
@@ -157,11 +163,6 @@ span {
     padding-bottom: 0.5vh;
     padding-left: 0.5vw;
     padding-right: 0.5vw;
-    align-content: start;
-    justify-content: stretch;
-}
-
-.charDispBodInn {
     align-content: start;
     justify-content: stretch;
 }
