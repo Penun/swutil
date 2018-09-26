@@ -3,8 +3,12 @@
 	<div class="mainDiv" id="forwardMain">
 		<div class="page sw_back">
 			<div ng-show="mCont.ShowStep(10)" class="sixty_he">
-				<p class="note">{{"{{activeNote}}"}}</p>
-				<button ng-click="mCont.ReadNote()">Read</button>
+				<span class="masterGrid">
+					<span class="masterGridInner charDispBod">
+						{{"{{activeNote}}"}}
+					</span>
+					<span class="menu menuText" ng-click="mCont.ReadNote()">Read</span>
+				</span>
 			</div>
             <div ng-show="mCont.ShowStep(1)" class="sixty_he">
 				<ul>
@@ -23,7 +27,7 @@
 				</form>
 			</div>
 			<div ng-show="mCont.ShowStep(3)" class="sixty_he">
-				<span id="masterGrid">
+				<span class="masterGrid">
 					<span class="menu mainMenuButton">
 						<span class="menuInner" ng-click="mCont.ClearForm(3, true)"></span>
 					</span>
@@ -32,10 +36,16 @@
 							<span>Players</span>
 						</span>
 						<span class="sw_back">
-							<span>Allies</span>
+							<span class="charAltHead">
+								<span>Allies</span>
+								<span class="menu menuText" ng-click="mCont.SetupAdd('NPC')">+</span>
+							</span>
 						</span>
 						<span class="sw_back">
-							<span>Enemies</span>
+							<span class="charAltHead">
+								<span>Enemies</span>
+								<span class="menu menuText" ng-click="mCont.SetupAdd('NPCE')">+</span>
+							</span>
 						</span>
 						<span class="charDispBod">
 							<span ng-repeat="(ind, play) in players" class="dispItem">
@@ -44,21 +54,43 @@
 							</span>
 						</span>
 						<span class="charDispBod">
-							<span ng-repeat="(ind, ally) in allies" class="dispItem">
-								<span>{{"{{ally.player.name}}"}}</span>
-								<span class="menu menuText menuBordT menuBordR">X</span>
+							<span ng-show="mCont.addAction != 'NPC'" class="dispList">
+								<span ng-repeat="(ind, ally) in allies" class="dispItem">
+									<span>{{"{{ally.player.name}}"}}</span>
+									<span class="menu menuText menuBordT menuBordR">X</span>
+								</span>
+							</span>
+							<span ng-show="mCont.addAction == 'NPC'" class="formWrapper">
+								<span class="menu menuText" ng-click="mCont.ClearForm(5, false)">Cancel</span>
+								<form name="addAllyForm" id="addAllyForm" class="formInner" novalidate>
+									<span class="flexItem"><span>Name:</span><span><input type="text" name="addNameA" id="addNameA" ng-model="mCont.addForm.name" placeholder="Name" required/></span></span>
+									<span class="flexItem"><span>Wound:</span><span><input type="number" name="addWoundA" id="addWoundA" ng-model="mCont.addForm.wound" placeholder="0" required/></span></span>
+									<span class="flexItem"><span>Strain:</span><span><input type="number" name="addStrainA" id="addStrainA" ng-model="mCont.addForm.strain" placeholder="0" /></span></span>
+									<span class="flexItem"><span>Initiative:</span><span><input type="number" name="addInitA" id="addInitA" ng-model="mCont.addForm.initiative" step="any" placeholder="0" /></span></span>
+								</form>
+								<span ng-show="addAllyForm.$valid" ng-click="mCont.AddForm()" class="menu menuText">Add</span>
 							</span>
 						</span>
 						<span class="charDispBod">
-							<span ng-repeat="(ind, enem) in enems" class="dispItem">
-								<span>{{"{{enem.player.name}}"}}</span>
-								<span class="menu menuText menuBordT menuBordR">X</span>
+							<span ng-show="mCont.addAction != 'NPCE'" class="dispList">
+								<span ng-repeat="(ind, enem) in enems" class="dispItem">
+									<span>{{"{{enem.player.name}}"}}</span>
+									<span class="menu menuText menuBordT menuBordR">X</span>
+								</span>
+							</span>
+							<span ng-show="mCont.addAction == 'NPCE'" class="formWrapper">
+								<span class="menu menuText" ng-click="mCont.ClearForm(5, false)">Cancel</span>
+								<form name="addEnemForm" id="addEnemForm" class="formInner" novalidate>
+									<span class="flexItem"><span>Name:</span><span><input type="text" name="addNameE" id="addNameE" ng-model="mCont.addForm.name" placeholder="Name" required/></span></span>
+									<span class="flexItem"><span>Wound:</span><span><input type="number" name="addWoundE" id="addWoundE" ng-model="mCont.addForm.wound" placeholder="0" required/></span></span>
+									<span class="flexItem"><span>Strain:</span><span><input type="number" name="addStrainE" id="addStrainE" ng-model="mCont.addForm.strain" placeholder="0" /></span></span>
+									<span class="flexItem"><span>Initiative:</span><span><input type="number" name="addInitE" id="addInitE" ng-model="mCont.addForm.initiative" step="any" placeholder="0" /></span></span>
+								</form>
+								<span ng-show="addEnemForm.$valid" ng-click="mCont.AddForm(false)" class="menu menuText">Add</span>
 							</span>
 						</span>
 					</span>
 					<span id="characterMenu">
-						<span class="menu menuBordT menuText" ng-click="mCont.SetupAdd('NPC')">+ A</span>
-						<span class="menu menuBordT menuText" ng-click="mCont.SetupAdd('NPCE')">+ E</span>
 						<span class="menuColSpan menuTitledBlock">
 							<span class="sw_back menuColSpan">
 								<span>Wound</span>
