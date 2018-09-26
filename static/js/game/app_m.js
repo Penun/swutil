@@ -174,57 +174,65 @@
 
 		this.SetupAdd = function(addAction){
 			this.addAction = addAction;
-			this.AddForm(true);
 		};
 
-		this.AddForm = function(setup){
-			if (setup){
-				$scope.SetStep(5, false);
-			} else {
-				if (typeof this.addForm.name === 'undefined' || this.addForm.name <= 0){
-					var addName = document.getElementById("addName");
-					addName.focus();
-					return;
-				}
-				if (typeof this.addForm.initiative === 'undefined' || this.addForm.initiative <= 0){
-					var addInit = document.getElementById("addInit");
-					addInit.focus();
-					return;
-				}
-				if (typeof this.addForm.wound === 'undefined' || this.addForm.wound <= 0){
-					var addWound = document.getElementById("addWound");
-					addWound.focus();
-					return;
-				}
-				var char = {
-					player: {name: this.addForm.name},
-					initiative: this.addForm.initiative,
-				};
-				char.player.wound = char.cur_wound = this.addForm.wound;
-				if (typeof this.addForm.strain !== 'undefined' || this.addForm.strain > 0){
-					char.player.strain = char.cur_strain = this.addForm.strain;
-				}
-				char.type = this.addAction;
-				switch (this.addAction) {
-					case "NPCE":
-						$scope.enems.push(char);
-						break;
-					case "NPC":
-						$scope.allies.push(char);
-						break;
-					default:
-						break;
-				}
-				sendData = {
-					type: "add",
-					data: {
-						message: JSON.stringify(char)
+		this.AddForm = function(){
+			switch (this.addAction){
+				case "NPC":
+					if (typeof this.addForm.name === 'undefined' || this.addForm.name <= 0){
+						var addName = document.getElementById("addNameA");
+						addName.focus();
+						return;
 					}
-				};
-				sendData = JSON.stringify(sendData);
-				$scope.sock.send(sendData);
-				this.ClearForm(5, true);
+					if (typeof this.addForm.wound === 'undefined' || this.addForm.wound <= 0){
+						var addWound = document.getElementById("addWoundA");
+						addWound.focus();
+						return;
+					}
+					break;
+				case "NPCE":
+					if (typeof this.addForm.name === 'undefined' || this.addForm.name <= 0){
+						var addName = document.getElementById("addNameE");
+						addName.focus();
+						return;
+					}
+					if (typeof this.addForm.wound === 'undefined' || this.addForm.wound <= 0){
+						var addWound = document.getElementById("addWoundE");
+						addWound.focus();
+						return;
+					}
+					break;
+				default:
+					break;
 			}
+			var char = {
+				player: {name: this.addForm.name},
+				initiative: this.addForm.initiative,
+			};
+			char.player.wound = char.cur_wound = this.addForm.wound;
+			if (typeof this.addForm.strain !== 'undefined' || this.addForm.strain > 0){
+				char.player.strain = char.cur_strain = this.addForm.strain;
+			}
+			char.type = this.addAction;
+			switch (this.addAction) {
+				case "NPCE":
+					$scope.enems.push(char);
+					break;
+				case "NPC":
+					$scope.allies.push(char);
+					break;
+				default:
+					break;
+			}
+			sendData = {
+				type: "add",
+				data: {
+					message: JSON.stringify(char)
+				}
+			};
+			sendData = JSON.stringify(sendData);
+			$scope.sock.send(sendData);
+			this.ClearForm(5, false);
 		};
 
 		this.SetupDam = function(damAction){
