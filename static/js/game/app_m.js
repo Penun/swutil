@@ -174,7 +174,6 @@
 
 		this.SetupAdd = function(addAction){
 			this.addAction = addAction;
-			this.AddForm();
 		};
 
 		this.AddForm = function(){
@@ -183,11 +182,6 @@
 					if (typeof this.addForm.name === 'undefined' || this.addForm.name <= 0){
 						var addName = document.getElementById("addNameA");
 						addName.focus();
-						return;
-					}
-					if (typeof this.addForm.initiative === 'undefined' || this.addForm.initiative <= 0){
-						var addInit = document.getElementById("addInitA");
-						addInit.focus();
 						return;
 					}
 					if (typeof this.addForm.wound === 'undefined' || this.addForm.wound <= 0){
@@ -200,11 +194,6 @@
 					if (typeof this.addForm.name === 'undefined' || this.addForm.name <= 0){
 						var addName = document.getElementById("addNameE");
 						addName.focus();
-						return;
-					}
-					if (typeof this.addForm.initiative === 'undefined' || this.addForm.initiative <= 0){
-						var addInit = document.getElementById("addInitE");
-						addInit.focus();
 						return;
 					}
 					if (typeof this.addForm.wound === 'undefined' || this.addForm.wound <= 0){

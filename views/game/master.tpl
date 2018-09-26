@@ -54,43 +54,39 @@
 							</span>
 						</span>
 						<span class="charDispBod">
-							<span ng-show="mCont.addAction != 'NPC'" class="charDispBodInn">
+							<span ng-show="mCont.addAction != 'NPC'" class="dispList">
 								<span ng-repeat="(ind, ally) in allies" class="dispItem">
 									<span>{{"{{ally.player.name}}"}}</span>
 									<span class="menu menuText menuBordT menuBordR">X</span>
 								</span>
 							</span>
-							<span ng-show="mCont.addAction == 'NPC'" class="">
+							<span ng-show="mCont.addAction == 'NPC'" class="formWrapper">
 								<span class="menu menuText" ng-click="mCont.ClearForm(5, false)">Cancel</span>
-								<form name="addAllyForm" id="addAllyForm" novalidate>
-									<span>
-										<span>Name:</span><span><input type="text" name="addNameA" id="addNameA" ng-model="mCont.addForm.name" placeholder="Name" required/></span>
-										<span>Wound:</span><span><input type="number" name="addWoundA" id="addWoundA" ng-model="mCont.addForm.wound" placeholder="0" required/></span>
-										<span>Strain:</span><span><input type="number" name="addStrainA" id="addStrainA" ng-model="mCont.addForm.strain" placeholder="0" /></span>
-										<span>Initiative:</span><span><input type="number" name="addInitA" id="addInitA" ng-model="mCont.addForm.initiative" step="any" placeholder="0" required/></span>
-										<span></span><span ng-show="addAllyForm.$valid" ng-click="mCont.AddForm()">Add</span>
-									</span>
+								<form name="addAllyForm" id="addAllyForm" class="formInner" novalidate>
+									<span class="flexItem"><span>Name:</span><span><input type="text" name="addNameA" id="addNameA" ng-model="mCont.addForm.name" placeholder="Name" required/></span></span>
+									<span class="flexItem"><span>Wound:</span><span><input type="number" name="addWoundA" id="addWoundA" ng-model="mCont.addForm.wound" placeholder="0" required/></span></span>
+									<span class="flexItem"><span>Strain:</span><span><input type="number" name="addStrainA" id="addStrainA" ng-model="mCont.addForm.strain" placeholder="0" /></span></span>
+									<span class="flexItem"><span>Initiative:</span><span><input type="number" name="addInitA" id="addInitA" ng-model="mCont.addForm.initiative" step="any" placeholder="0" /></span></span>
 								</form>
+								<span ng-show="addAllyForm.$valid" ng-click="mCont.AddForm()" class="menu menuText">Add</span>
 							</span>
 						</span>
 						<span class="charDispBod">
-							<span ng-show="mCont.addAction != 'NPCE'" class="charDispBodInn">
+							<span ng-show="mCont.addAction != 'NPCE'" class="dispList">
 								<span ng-repeat="(ind, enem) in enems" class="dispItem">
 									<span>{{"{{enem.player.name}}"}}</span>
 									<span class="menu menuText menuBordT menuBordR">X</span>
 								</span>
 							</span>
-							<span ng-show="mCont.addAction == 'NPCE'" class="">
+							<span ng-show="mCont.addAction == 'NPCE'" class="formWrapper">
 								<span class="menu menuText" ng-click="mCont.ClearForm(5, false)">Cancel</span>
-								<form name="addEnemForm" id="addEnemForm" novalidate>
-									<span>
-										<span>Name:</span><span><input type="text" name="addNameE" id="addNameE" ng-model="mCont.addForm.name" placeholder="Name" required/></span>
-										<span>Wound:</span><span><input type="number" name="addWoundE" id="addWoundE" ng-model="mCont.addForm.wound" placeholder="0" required/></span>
-										<span>Strain:</span><span><input type="number" name="addStrainE" id="addStrainE" ng-model="mCont.addForm.strain" placeholder="0" /></span>
-										<span>Initiative:</span><span><input type="number" name="addInitE" id="addInitE" ng-model="mCont.addForm.initiative" step="any" placeholder="0" required/></span>
-										<span></span><span ng-show="addEnemForm.$valid" ng-click="mCont.AddForm(false)">Add</span>
-									</span>
+								<form name="addEnemForm" id="addEnemForm" class="formInner" novalidate>
+									<span class="flexItem"><span>Name:</span><span><input type="text" name="addNameE" id="addNameE" ng-model="mCont.addForm.name" placeholder="Name" required/></span></span>
+									<span class="flexItem"><span>Wound:</span><span><input type="number" name="addWoundE" id="addWoundE" ng-model="mCont.addForm.wound" placeholder="0" required/></span></span>
+									<span class="flexItem"><span>Strain:</span><span><input type="number" name="addStrainE" id="addStrainE" ng-model="mCont.addForm.strain" placeholder="0" /></span></span>
+									<span class="flexItem"><span>Initiative:</span><span><input type="number" name="addInitE" id="addInitE" ng-model="mCont.addForm.initiative" step="any" placeholder="0" /></span></span>
 								</form>
+								<span ng-show="addEnemForm.$valid" ng-click="mCont.AddForm(false)" class="menu menuText">Add</span>
 							</span>
 						</span>
 					</span>
