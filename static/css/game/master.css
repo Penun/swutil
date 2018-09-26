@@ -140,6 +140,14 @@ span {
     align-content: stretch;
 }
 
+.charAltHead > .menuText {
+    color: #a4dde5;
+}
+
+.charAltHead > .menuText:hover {
+    color: #293c56;
+}
+
 .charDispBod {
     border-color: #111144;
     border-style: inset;
@@ -149,6 +157,11 @@ span {
     padding-bottom: 0.5vh;
     padding-left: 0.5vw;
     padding-right: 0.5vw;
+    align-content: start;
+    justify-content: stretch;
+}
+
+.charDispBodInn {
     align-content: start;
     justify-content: stretch;
 }
