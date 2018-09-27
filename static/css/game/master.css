@@ -5,7 +5,7 @@ span {
     justify-content: center;
 }
 
-#masterGrid {
+.masterGrid {
     grid-template-rows: 6% 44% 9% 38%;
     grid-template-columns: 1fr 15%;
     grid-row-gap: 1%;
@@ -14,6 +14,10 @@ span {
     border-color: #111144;
     border-style: inset;
     border-width: 2px;
+}
+
+.masterGridInner {
+   grid-row: 1 / 5;
 }
 
 #characterDisp {
@@ -137,6 +141,19 @@ span {
     height: 100%;
 }
 
+.charAltHead {
+    grid-template-columns: 1fr 10%;
+    align-content: stretch;
+}
+
+.charAltHead > .menuText {
+    color: #a4dde5;
+}
+
+.charAltHead > .menuText:hover {
+    color: #293c56;
+}
+
 .charDispBod {
     border-color: #111144;
     border-style: inset;
@@ -146,6 +163,12 @@ span {
     padding-bottom: 0.5vh;
     padding-left: 0.5vw;
     padding-right: 0.5vw;
+    align-content: start;
+    justify-content: stretch;
+    grid-template-rows: 1fr;
+}
+
+.dispList {
     align-content: start;
     justify-content: stretch;
 }
@@ -159,10 +182,70 @@ span {
     font-size: calc(12px + 2vmin);
     text-align: center;
     grid-template-columns: 1fr 10%;
+    cursor: pointer;
+}
+
+.dispItemName {
+    align-content: stretch;
+    justify-content: stretch;
+}
+
+.formWrapper {
+    grid-template-rows: 10% 1fr 10%;
+    justify-content: stretch;
+}
+
+.formInner {
+    justify-content: stretch;
+    align-content: stretch;
+}
+
+.flexItem {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: calc(12px + 2vmin);
+    text-align: center;
+    justify-content: flex-end;
 }
 
 #vehicleDisp > .menuColSpan {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     grid-column-gap: 1vw;
+}
+
+.selectedItem {
+    background-image: url("/static/img/light_underline_high.png");
+    background-size: 100% 100%;
+    color: #293c56;
+    text-shadow:
+        -1px -1px 0 #DFDFFF,
+        1px -1px 0 #DFDFFF,
+        -1px 1px 0 #DFDFFF,
+        1px 1px 0 #DFDFFF;
+}
+
+.inputBack {
+    border-color: #111144;
+    border-style: inset;
+    border-width: 2px;
+    box-shadow: 3px 3px 20px #111144 inset;
+    background-color: rgba(0, 0, 25, 0.5);
+    width: 40%;
+}
+
+.inputBod {
+    color: #a4dde5;
+    padding: 5px;
+    margin: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    font-size: calc(12px + 1.5vmin);
+    text-align: center;
+    border: none;
 }

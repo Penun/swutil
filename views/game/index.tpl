@@ -5,12 +5,16 @@
 			<div id="menu" class="sixty_he" ng-show="mCont.ShowStep(0)">
 				<ul>
 					<li class="clickable" ng-click="SetStep(3, true)">Note</li>
-					<li class="clickable" ng-click="SetStep(2, true)">Stats</li>
+					<li class="clickable" ng-click="SetStep(2, true)">Game</li>
 				</ul>
 			</div>
 			<div ng-show="mCont.ShowStep(10)" class="sixty_he">
-				<p class="note">{{"{{activeNote}}"}}</p>
-				<button ng-click="mCont.ReadNote()">Read</button>
+				<span class="playerGrid">
+					<span class="playerGridInner">
+						<span class="noteRowSpan charDispBod">{{"{{activeNote}}"}}</span>
+						<span class="menu menuText" ng-click="mCont.ReadNote()">Read</span>
+					</span>
+				</span>
 			</div>
             <div ng-show="mCont.ShowStep(1)" class="sixty_he">
                 <form id="charAddForm" name="charAddForm" novalidate>
@@ -22,15 +26,59 @@
                     <button ng-show="charAddForm.$valid" ng-click="mCont.AddChar()" class="menu_p">Add</button>
                 </form>
             </div>
-            <div ng-show="mCont.ShowStep(2)" class="sixty_he">
-				<p class="menu_p"><button ng-click="SetStep(0, false)">Menu</button></p>
-                <p class="s_ws_p_inline"><label><b>{{"{{curChar.name}}"}}</b></label></p>
-                <p class="s_ws_p_inline"><label><b>W:</b></label> {{"{{curChar.curWound}}"}}/{{"{{curChar.wound}}"}}</p>
-				<p class="s_ws_p_inline"><button ng-click="mCont.Wound(1)" class="inline_butt">+</button> <button ng-click="mCont.Wound(-1)" class="inline_butt">-</button></p>
-                <p class="s_ws_p_inline"><label><b>S:</b></label> {{"{{curChar.curStrain}}"}}/{{"{{curChar.strain}}"}}</p>
-				<p class="s_ws_p_inline"><button ng-click="mCont.Strain(1)" class="inline_butt">+</button> <button ng-click="mCont.Strain(-1)" class="inline_butt">-</button></p>
-				<p class="s_ws_p_inline"><label><b>Initiative:</b></label> <span ng-show="curChar.initiative > 0" class="inline_span">{{"{{curChar.initiative}}"}}</span><button ng-show="curChar.initiative == 0" ng-click="mCont.InputSet('Initiative')" class="inline_butt">Set</button></p>
-            </div>
+			<div ng-show="mCont.ShowStep(2)" class="sixty_he">
+				<span class="playerGrid">
+					<span class="playerGridInner">
+						<span class="sw_back">
+							<span>{{"{{curChar.name}}"}}</span>
+						</span>
+						<span class="menu mainMenuButton">
+							<span class="menuInner" ng-click="SetStep(0, false)"></span>
+						</span>
+						<span class="dualBlock">
+							<span class="sw_back">
+								<span>Wound:</span>
+							</span>
+							<span class="charDispBod">
+								<span class="dispItem">{{"{{curChar.curWound}}"}} / {{"{{curChar.wound}}"}}</span>
+							</span>
+						</span>
+						<span class="dualBlock">
+							<span class="menu menuText menuBordT" ng-click="mCont.Wound(-1)">-</span>
+							<span class="menu menuText menuBordT" ng-click="mCont.Wound(1)">+</span>
+						</span>
+						<span class="dualBlock">
+							<span class="sw_back">
+								<span>Strain:</span>
+							</span>
+							<span class="charDispBod">
+								<span class="dispItem">{{"{{curChar.curStrain}}"}} / {{"{{curChar.strain}}"}}</span>
+							</span>
+						</span>
+						<span class="dualBlock">
+							<span class="menu menuText menuBordT" ng-click="mCont.Strain(-1)">-</span>
+							<span class="menu menuText menuBordT" ng-click="mCont.Strain(1)">+</span>
+						</span>
+						<span class="dualBlock">
+							<span class="sw_back">
+								<span>Initiative:</span>
+							</span>
+							<span class="charDispBod" ng-show="curChar.initiative > 0">
+								<span class="dispItem">{{"{{curChar.initiative}}"}}</span>
+							</span>
+							<form name="iniForm" id="iniForm" ng-show="curChar.initiative <= 0" novalidate>
+								<span id="innerIniForm">
+									<span class="inputBod">
+										<input type="number" name="inpIn" id="inpIn" ng-model="mCont.inpForm.input" class="inputInit" placeholder="0" required/>
+									</span>
+								</span>
+							</form>
+						</span>
+						<span class="menu menuText menuBordT menuBordR" ng-show="inpForm.$valid" ng-click="mCont.Input('Initiative')">Set</span>
+						<span class="menu menuText menuBordT menuBordR" ng-show="curChar.initiative > 0" ng-click="mCont.ResetInit()">Reset</span>
+					</span>
+				</span>
+			</div>
 			<div ng-show="mCont.ShowStep(3)" class="sixty_he">
 				<p class="menu_p"><button ng-click="SetStep(0, false)">Menu</button></p>
 				<form name="noteForm" id="noteForm" novalidate>

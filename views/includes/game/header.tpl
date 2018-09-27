@@ -6,6 +6,7 @@
 
 <title>SWUTIL Track</title>
 {{template "includes/game/styles.html"}}
+<link rel="stylesheet" href="/static/css/game/player.css" type="text/css" media="screen" />
 <link rel="stylesheet" type="text/css" href="/static/css/mob.css" media="screen and (max-width: 45em)" />
 {{template "includes/game/js.html"}}
 </head>

@@ -164,10 +164,10 @@
 					$scope.SetStep(10, false);
 					break;
 				case 3: //Wound
-					$scope.curChar.wound += Number(data.data);
+					$scope.curChar.curWound += Number(data.data);
 					break;
 				case 4: //strain
-					$scope.curChar.strain += Number(data.data);
+					$scope.curChar.curStrain += Number(data.data);
 					break;
 				case 5: // Reset Init
 					$scope.curChar.initiative = 0;
@@ -233,13 +233,13 @@
 			}, 50);
 		};
 
-		this.Input = function(){
+		this.Input = function(command){
 			if (typeof this.inpForm.input === 'undefined'){
 				var inpIn = document.getElementById("inpIn");
 				inpIn.focus();
 				return;
 			}
-			switch(this.formInput){
+			switch(command){
 				case "Initiative":
 					this.Initiative();
 					break;
