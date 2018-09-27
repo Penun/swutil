@@ -185,6 +185,11 @@ span {
     cursor: pointer;
 }
 
+.dispItemName {
+    align-content: stretch;
+    justify-content: stretch;
+}
+
 .formWrapper {
     grid-template-rows: 10% 1fr 10%;
     justify-content: stretch;

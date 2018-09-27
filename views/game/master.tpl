@@ -49,16 +49,16 @@
 						</span>
 						<span class="charDispBod">
 							<span class="dispList">
-								<span ng-repeat="(ind, play) in players" class="dispItem" ng-class="{selectedItem: false}">
-									<span>{{"{{play.player.name}}"}}</span>
+								<span ng-repeat="(ind, play) in playChars | filter: {type: 'PC'}:true" class="dispItem" ng-class="{selectedItem: play.selected}">
+									<span class="dispItemName" ng-click="mCont.SelectChar(play)">{{"{{play.player.name}}"}}</span>
 									<span class="menu menuText menuBordT menuBordR">X</span>
 								</span>
 							</span>
 						</span>
 						<span class="charDispBod">
 							<span ng-show="mCont.addAction != 'NPC'" class="dispList">
-								<span ng-repeat="(ind, ally) in allies" class="dispItem" ng-class="{selectedItem: false}">
-									<span>{{"{{ally.player.name}}"}}</span>
+								<span ng-repeat="(ind, ally) in playChars | filter: {type: 'NPC'}:true" class="dispItem" ng-class="{selectedItem: ally.selected}">
+									<span class="dispItemName" ng-click="mCont.SelectChar(ally)">{{"{{ally.player.name}}"}}</span>
 									<span class="menu menuText menuBordT menuBordR">X</span>
 								</span>
 							</span>
@@ -75,8 +75,8 @@
 						</span>
 						<span class="charDispBod">
 							<span ng-show="mCont.addAction != 'NPCE'" class="dispList">
-								<span ng-repeat="(ind, enem) in enems" class="dispItem" ng-class="{selectedItem: false}">
-									<span>{{"{{enem.player.name}}"}}</span>
+								<span ng-repeat="(ind, enem) in playChars | filter: {type: 'NPCE'}:true" class="dispItem" ng-class="{selectedItem: enem.selected}">
+									<span class="dispItemName" ng-click="mCont.SelectChar(enem)">{{"{{enem.player.name}}"}}</span>
 									<span class="menu menuText menuBordT menuBordR">X</span>
 								</span>
 							</span>
