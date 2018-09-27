@@ -11,8 +11,6 @@
 		this.inpForm = {};
 		this.addForm = {};
 		this.addAction = "";
-		this.delForm = {};
-		this.delAction = "";
 		this.damForm = {type: "wound"};
 		$scope.backStep = $scope.curStep = 3;
 		this.textareaReq = true;
@@ -138,35 +136,6 @@
 			};
 			sendData = JSON.stringify(sendData);
 			$scope.sock.send(sendData);
-			this.ClearForm(3, false);
-		};
-
-		this.DelPlayer = function(){
-			if (typeof this.action.players === 'undefined' || this.action.players.length == 0){
-				var subSel = document.getElementById("subSelAct");
-				subSel.focus();
-				return;
-			}
-			var delPlayers = [];
-			for (var i = 0; i < this.action.players.length; i++){
-				delPlayers.push({player: {name: this.action.players[i]}, type: "PC"});
-			}
-			var sendData = {
-				type: "delete",
-				data: {
-					message: JSON.stringify(delPlayers)
-				}
-			};
-			sendData = JSON.stringify(sendData);
-			$scope.sock.send(sendData);
-			for (var i = 0; i < this.action.players.length; i++){
-				for (var j = 0; j < $scope.playChars.length; j++){
-					if ($scope.playChars[j].player.name == this.action.players[i]){
-						$scope.playChars.splice(j, 1);
-						j--;
-					}
-				}
-			}
 			this.ClearForm(3, false);
 		};
 
@@ -317,47 +286,22 @@
 			}
 		};
 
-		this.SetupDel = function(delAction){
-			this.delAction = delAction;
-			switch (this.delAction){
-				case "NPCE":
-					this.delChars = $scope.playChars;
-					break;
-				case "NPC":
-					this.delChars = $scope.playChars;
-					break;
-			}
-			this.DelForm(true);
-		};
-
-		this.DelForm = function(setup){
-			if (setup){
-				$scope.SetStep(6, false);
-			} else {
-				if (this.delForm.chars.length <= 0){
-					return;
-				}
-				var enemPlays = [];
-				for (var i = 0; i < this.delForm.chars.length; i++){
-					enemPlays.push({player: {name: this.delForm.chars[i]}, type: this.delAction});
-				}
-				sendData = {
-					type: "delete",
-					data: {
-						message: JSON.stringify(enemPlays)
-					}
-				};
-				sendData = JSON.stringify(sendData);
-				$scope.sock.send(sendData);
-				for (var i = 0; i < this.delForm.chars.length; i++){
-					for (var j = 0; j < this.delChars.length; j++){
-						if (this.delChars[j].player.name == this.delForm.chars[i]){
-							this.delChars.splice(j, 1);
-							j--;
+		this.DelChar = function(charId){
+			for (var i = 0; i < $scope.playChars.length; i++){
+				if ($scope.playChars[i].id == charId){
+					var delChars = [];
+					delChars.push({player: $scope.playChars[i].player, type: $scope.playChars[i].type});
+					sendData = {
+						type: "delete",
+						data: {
+							message: JSON.stringify(delChars)
 						}
-					}
+					};
+					sendData = JSON.stringify(sendData);
+					$scope.sock.send(sendData);
+					$scope.playChars.splice(i, 1);
+					break;
 				}
-				this.ClearForm(6, true);
 			}
 		};
 

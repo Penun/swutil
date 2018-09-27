@@ -51,7 +51,7 @@
 							<span class="dispList">
 								<span ng-repeat="(ind, play) in playChars | filter: {type: 'PC'}:true" class="dispItem" ng-class="{selectedItem: play.selected}">
 									<span class="dispItemName" ng-click="mCont.SelectChar(play)">{{"{{play.player.name}}"}}</span>
-									<span class="menu menuText menuBordT menuBordR">X</span>
+									<span class="menu menuText menuBordT menuBordR" ng-click="mCont.DelChar(play.id)">X</span>
 								</span>
 							</span>
 						</span>
@@ -59,7 +59,7 @@
 							<span ng-show="mCont.addAction != 'NPC'" class="dispList">
 								<span ng-repeat="(ind, ally) in playChars | filter: {type: 'NPC'}:true" class="dispItem" ng-class="{selectedItem: ally.selected}">
 									<span class="dispItemName" ng-click="mCont.SelectChar(ally)">{{"{{ally.player.name}}"}}</span>
-									<span class="menu menuText menuBordT menuBordR">X</span>
+									<span class="menu menuText menuBordT menuBordR" ng-click="mCont.DelChar(ally.id)">X</span>
 								</span>
 							</span>
 							<span ng-show="mCont.addAction == 'NPC'" class="formWrapper">
@@ -77,7 +77,7 @@
 							<span ng-show="mCont.addAction != 'NPCE'" class="dispList">
 								<span ng-repeat="(ind, enem) in playChars | filter: {type: 'NPCE'}:true" class="dispItem" ng-class="{selectedItem: enem.selected}">
 									<span class="dispItemName" ng-click="mCont.SelectChar(enem)">{{"{{enem.player.name}}"}}</span>
-									<span class="menu menuText menuBordT menuBordR">X</span>
+									<span class="menu menuText menuBordT menuBordR" ng-click="mCont.DelChar(enem.id)">X</span>
 								</span>
 							</span>
 							<span ng-show="mCont.addAction == 'NPCE'" class="formWrapper">
@@ -137,11 +137,11 @@
 						</span>
 					</span>
 					<span id="initiativeDisp" class="charDispBod">
-						<span ng-show="!startInit && (players.length > 0 || allies.length > 0 || enems.length > 0)">There</span>
+						<span ng-show="!startInit && (playChars.length > 0)">There</span>
 						<span ng-show="startInit">Initiative running....</span>
 					</span>
 					<span id="initiativeMenu" class="menuTitledBlock">
-						<span class="menu menuBordT menuText menuColSpan" ng-show="players.length > 0 || allies.length > 0 || enems.length > 0" ng-click="mCont.ToggleInit()">{{"{{startInit ? \"End\" : \"Start\"}}"}}</span>
+						<span class="menu menuBordT menuText menuColSpan" ng-show="playChars.length > 0" ng-click="mCont.ToggleInit()">{{"{{startInit ? \"End\" : \"Start\"}}"}}</span>
 						<span class="menu menuText" ng-show="startInit" ng-click="mCont.PrevTurn()"><</span>
 						<span class="menu menuText" ng-show="startInit" ng-click="mCont.NextTurn()">></span>
 					</span>
@@ -215,7 +215,7 @@
 				<p class="act_p" ng-show="startInit && enems.length > 0"><button ng-click="mCont.SetupDam('NPCE')">Adjust Enemy</button></p>
 				<p class="act_p" ng-show="startInit && friends.length > 0"><button ng-click="mCont.SetupDam('NPC')">Adjust Friend</button></p>
 			</div> -->
-			<div ng-show="mCont.ShowStep(5)" class="sixty_he">
+			<!-- <div ng-show="mCont.ShowStep(5)" class="sixty_he">
 				<button class="menu_p" ng-click="mCont.ClearForm(5, true)">Cancel</button>
 				<form name="addForm" id="addForm" novalidate>
 					<p class="s_ws_p_inline"><label for="addName"><b>Name:</b></label> <input type="text" name="addName" id="addName" ng-model="mCont.addForm.name" placeholder="Name" required/></p>
@@ -224,15 +224,15 @@
 					<p class="s_ws_p_inline"><label for="addStrain"><b>Strain:</b></label> <input type="number" name="addStrain" id="addStrain" ng-model="mCont.addForm.strain" placeholder="0" /></p>
 					<button ng-show="addForm.$valid" ng-click="mCont.AddForm(false)">Add</button>
 				</form>
-			</div>
-			<div ng-show="mCont.ShowStep(6)" class="sixty_he">
+			</div> -->
+			<!-- <div ng-show="mCont.ShowStep(6)" class="sixty_he">
 				<p><button class="menu_p" ng-click="mCont.ClearForm(6, true)">Cancel</button></p>
 				<form name="delForm" id="delForm" novalidate>
 					<p class="s_ws_p_inline"><label for="enemSel"><b>{{"{{mCont.delAction}}"}}:</b></label></p>
 					<select name="enemSel" id="enemSel" ng-show="mCont.delChars.length > 0" ng-model="mCont.delForm.chars" ng-options="char.player.name as char.player.name for char in mCont.delChars" multiple required></select>
 					<button ng-show="delForm.$valid" ng-click="mCont.DelForm(false)">Delete</button>
 				</form>
-			</div>
+			</div> -->
 			<div ng-show="mCont.ShowStep(7)" class="sixty_he">
 				<p><button class="menu_p" ng-click="mCont.ClearForm(7, true)">Cancel</button></p>
 				<form name="damForm" id="damForm" novalidate>
