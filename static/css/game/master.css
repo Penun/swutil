@@ -182,6 +182,12 @@ span {
     font-size: calc(12px + 2vmin);
     text-align: center;
     grid-template-columns: 1fr 10%;
+    cursor: pointer;
+}
+
+.dispItemName {
+    align-content: stretch;
+    justify-content: stretch;
 }
 
 .formWrapper {
@@ -206,4 +212,40 @@ span {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     grid-column-gap: 1vw;
+}
+
+.selectedItem {
+    background-image: url("/static/img/light_underline_high.png");
+    background-size: 100% 100%;
+    color: #293c56;
+    text-shadow:
+        -1px -1px 0 #DFDFFF,
+        1px -1px 0 #DFDFFF,
+        -1px 1px 0 #DFDFFF,
+        1px 1px 0 #DFDFFF;
+}
+
+.inputBack {
+    border-color: #111144;
+    border-style: inset;
+    border-width: 2px;
+    box-shadow: 3px 3px 20px #111144 inset;
+    background-color: rgba(0, 0, 25, 0.5);
+    width: 40%;
+}
+
+.inputBod {
+    color: #a4dde5;
+    padding: 5px;
+    margin: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    font-size: calc(12px + 1.5vmin);
+    text-align: center;
+    border: none;
 }
