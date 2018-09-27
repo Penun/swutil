@@ -209,80 +209,108 @@
 			}
 		};
 
-		this.SetupDam = function(damAction){
-			this.damAction = damAction;
-			switch (this.damAction){
-				case "NPCE":
-					this.damChars = $scope.playChars;
-					break;
-				case "NPC":
-					this.damChars = $scope.playChars;
-					break;
-			}
-			this.DamForm(true, false);
-		};
+		// this.SetupDam = function(damAction){
+		// 	this.damAction = damAction;
+		// 	switch (this.damAction){
+		// 		case "NPCE":
+		// 			this.damChars = $scope.playChars;
+		// 			break;
+		// 		case "NPC":
+		// 			this.damChars = $scope.playChars;
+		// 			break;
+		// 	}
+		// 	this.DamForm(true, false);
+		// };
+		//
+		// this.DamForm = function(setup, takeDam){
+		// 	if (setup){
+		// 		$scope.SetStep(7, false);
+		// 	} else {
+		// 		if (this.damForm.chars.length <= 0){
+		// 			return;
+		// 		}
+		// 		if (typeof this.damForm.type === 'undefined'){
+		// 			return;
+		// 		}
+		// 		if (typeof this.damForm.damage === 'undefined' || this.damForm.damage <= 0){
+		// 			var damEnemIn = document.getElementById("damEnemIn");
+		// 			damEnemIn.focus();
+		// 			return;
+		// 		}
+		// 		var damChars = [];
+		// 		switch (this.damAction){
+		// 			case "NPCE":
+		// 				damChars = $scope.playChars;
+		// 				break;
+		// 			case "NPC":
+		// 				damChars = $scope.playChars;
+		// 				break;
+		// 		}
+		// 		var sendData = {
+		// 			type: "",
+		// 			data: {
+		// 				players: [],
+		// 				message: takeDam ? -this.damForm.damage : this.damForm.damage
+		// 			}
+		// 		};
+		// 		for (var i = 0; i < this.damForm.chars.length; i++){
+		// 			for (var j = 0; j < damChars.length; j++){
+		// 				if (damChars[j].player.name == this.damForm.chars[i]){
+		// 					if (this.damForm.type == "wound"){
+		// 						sendData.type = "wound";
+		// 						if (takeDam){
+		// 							damChars[j].cur_wound -= this.damForm.damage;
+		// 							sendData.data.players.push(this.damForm.chars[i]);
+		// 						} else if (damChars[j].cur_wound + this.damForm.damage <= damChars[j].player.wound){
+		// 							damChars[j].cur_wound += this.damForm.damage;
+		// 							sendData.data.players.push(this.damForm.chars[i]);
+		// 						}
+		// 					} else if (typeof damChars[j].player.strain !== 'undefined'){
+		// 						sendData.type = "strain";
+		// 						if (takeDam){
+		// 							damChars[j].cur_strain -= this.damForm.damage;
+		// 							sendData.data.players.push(this.damForm.chars[i]);
+		// 						} else if (damChars[j].cur_strain + this.damForm.damage <= damChars[j].player.strain){
+		// 							damChars[j].cur_strain += this.damForm.damage;
+		// 							sendData.data.players.push(this.damForm.chars[i]);
+		// 						}
+		// 					}
+		// 					break;
+		// 				}
+		// 			}
+		// 		}
+		// 		sendData.data.message = String(sendData.data.message);
+		// 		sendData = JSON.stringify(sendData);
+		// 		$scope.sock.send(sendData);
+		// 		this.ClearForm(7, true);
+		// 	}
+		// };
 
-		this.DamForm = function(setup, takeDam){
-			if (setup){
-				$scope.SetStep(7, false);
-			} else {
-				if (this.damForm.chars.length <= 0){
-					return;
+		this.AdjustChar = function(dam, woStType){
+			var sendData = {
+				type: woStType,
+				data: {
+					players: [],
+					message: String(dam)
 				}
-				if (typeof this.damForm.type === 'undefined'){
-					return;
-				}
-				if (typeof this.damForm.damage === 'undefined' || this.damForm.damage <= 0){
-					var damEnemIn = document.getElementById("damEnemIn");
-					damEnemIn.focus();
-					return;
-				}
-				var damChars = [];
-				switch (this.damAction){
-					case "NPCE":
-						damChars = $scope.playChars;
-						break;
-					case "NPC":
-						damChars = $scope.playChars;
-						break;
-				}
-				var sendData = {
-					type: "",
-					data: {
-						players: [],
-						message: takeDam ? -this.damForm.damage : this.damForm.damage
+			};
+			var found = false;
+			for (var i = 0; i < $scope.playChars.length; i++){
+				if ($scope.playChars[i].selected){
+					sendData.data.players.push($scope.playChars[i].player.name);
+					if (woStType == "wound"){
+						$scope.playChars[i].cur_wound += dam;
+					} else {
+						$scope.playChars[i].cur_strain += dam;
 					}
-				};
-				for (var i = 0; i < this.damForm.chars.length; i++){
-					for (var j = 0; j < damChars.length; j++){
-						if (damChars[j].player.name == this.damForm.chars[i]){
-							if (this.damForm.type == "wound"){
-								sendData.type = "wound";
-								if (takeDam){
-									damChars[j].cur_wound -= this.damForm.damage;
-									sendData.data.players.push(this.damForm.chars[i]);
-								} else if (damChars[j].cur_wound + this.damForm.damage <= damChars[j].player.wound){
-									damChars[j].cur_wound += this.damForm.damage;
-									sendData.data.players.push(this.damForm.chars[i]);
-								}
-							} else if (typeof damChars[j].player.strain !== 'undefined'){
-								sendData.type = "strain";
-								if (takeDam){
-									damChars[j].cur_strain -= this.damForm.damage;
-									sendData.data.players.push(this.damForm.chars[i]);
-								} else if (damChars[j].cur_strain + this.damForm.damage <= damChars[j].player.strain){
-									damChars[j].cur_strain += this.damForm.damage;
-									sendData.data.players.push(this.damForm.chars[i]);
-								}
-							}
-							break;
-						}
+					if (!found){
+						found = true;
 					}
 				}
-				sendData.data.message = String(sendData.data.message);
+			}
+			if (found){
 				sendData = JSON.stringify(sendData);
 				$scope.sock.send(sendData);
-				this.ClearForm(7, true);
 			}
 		};
 

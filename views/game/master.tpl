@@ -97,15 +97,15 @@
 							<span class="sw_back menuColSpan">
 								<span>Wound</span>
 							</span>
-							<span class="menu menuText">-</span>
-							<span class="menu menuText">+</span>
+							<span class="menu menuText" ng-click="mCont.AdjustChar(-1, 'wound')">-</span>
+							<span class="menu menuText" ng-click="mCont.AdjustChar(1, 'wound')">+</span>
 						</span>
 						<span class="menuColSpan menuTitledBlock">
 							<span class="sw_back menuColSpan">
 								<span>Strain</span>
 							</span>
-							<span class="menu menuText">-</span>
-							<span class="menu menuText">+</span>
+							<span class="menu menuText" ng-click="mCont.AdjustChar(-1, 'strain')">-</span>
+							<span class="menu menuText" ng-click="mCont.AdjustChar(1, 'strain')">+</span>
 						</span>
 						<span class="menuColSpan menuTitledBlock">
 							<span class="sw_back menuColSpan">
@@ -233,7 +233,7 @@
 					<button ng-show="delForm.$valid" ng-click="mCont.DelForm(false)">Delete</button>
 				</form>
 			</div> -->
-			<div ng-show="mCont.ShowStep(7)" class="sixty_he">
+			<!-- <div ng-show="mCont.ShowStep(7)" class="sixty_he">
 				<p><button class="menu_p" ng-click="mCont.ClearForm(7, true)">Cancel</button></p>
 				<form name="damForm" id="damForm" novalidate>
 					<p class="s_ws_p_inline"><label for="damCharSel"><b>Enemies:</b></label></p>
@@ -244,7 +244,7 @@
 					<p class="act_p"><button ng-show="damForm.$valid" ng-click="mCont.DamForm(false, true)">Damage</button>
 					<button ng-show="damForm.$valid" ng-click="mCont.DamForm(false, false)">Heal</button></p>
 				</form>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </body>
