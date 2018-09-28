@@ -163,26 +163,18 @@
 				}
 				break;
 			case 5: // INITIATIVE
-				for (var i = 0; i < $scope.gameChars.length; i++){
-					if ($scope.gameChars[i].player.name == data.player.name){
-						$scope.gameChars[i].initiative = Number(data.data);
-						break;
-					}
-				}
-				$scope.SortList($scope.gameChars, "initiative");
-				$scope.ApplyInit();
-				break;
-			case 6: // INITIATIVE DM RESET
 				for (var i = 0; i < data.players.length; i++){
 					for (var j = 0; j < $scope.gameChars.length; j++){
 						if ($scope.gameChars[j].player.name == data.players[i]){
-							$scope.gameChars[j].initiative = 0;
+							$scope.gameChars[j].initiative = Number(data.data);
 							break;
 						}
 					}
 				}
 				$scope.SortList($scope.gameChars, "initiative");
 				$scope.ApplyInit();
+				break;
+			case 6:
 				break;
 			case 7: // Init StartInit
 				$scope.startInit = true;

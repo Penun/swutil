@@ -1,16 +1,13 @@
 (function(){
 	var app = angular.module('ddcharL', []);
 	app.controller('mainController', ['$window', '$scope', '$http', '$timeout', function($window, $scope, $http, $timeout){
-		$scope.char = {};
 		$scope.playChars = [];
 		$scope.charsCurId = 0;
 		$scope.allyVs = [];
 		$scope.enemVs = [];
 		this.inText = {};
-		this.inpForm = {};
 		this.addForm = {};
 		this.addAction = "";
-		this.damForm = {type: "wound"};
 		$scope.backStep = $scope.curStep = 3;
 		this.textareaReq = true;
 		$scope.activeNote = "";
@@ -47,7 +44,7 @@
 			var data = JSON.parse(event.data);
 			switch (data.type) {
 				case 0: // JOIN
-					if (data.player.type == "play" && data.player.name != $scope.char.name){
+					if (data.player.type == "play"){
 						var isFound = false;
 						for (var i = 0; i < $scope.playChars.length; i++){
 							if ($scope.playChars[i].player.name == data.player.name){
@@ -120,18 +117,18 @@
 			this.ClearForm(2, true);
 		};
 
-		this.Initiative = function(){
+		this.Initiative = function(newVal){
 			var sendData = {
-				type: "initiative_d",
+				type: "initiative",
 				data: {
 					players: [],
-					message: "action"
+					message: String(newVal)
 				}
 			};
 			var found = false;
 			for (var i = 0; i < $scope.playChars.length; i++){
 				if ($scope.playChars[i].selected){
-					$scope.playChars[i].initiative = 0;
+					$scope.playChars[i].initiative = newVal;
 					sendData.data.players.push($scope.playChars[i].player.name);
 					if (!found){
 						found = true;
@@ -141,6 +138,7 @@
 			if (found){
 				sendData = JSON.stringify(sendData);
 				$scope.sock.send(sendData);
+				$scope.initVal = null;
 			}
 		};
 
@@ -273,13 +271,6 @@
 				case 3:
 					this.action = {};
 					if (move){
-						$scope.SetStep(1, true);
-					}
-					break;
-				case 4:
-					this.inpForm = {};
-					if (move){
-						this.inputText = "";
 						$scope.SetStep(1, true);
 					}
 					break;

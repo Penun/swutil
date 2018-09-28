@@ -170,10 +170,9 @@
 					$scope.curChar.curStrain += Number(data.data);
 					break;
 				case 5:
+					$scope.curChar.initiative = Number(data.data);
 					break;
 				case 6:
-					$scope.curChar.initiative = 0;
-					break;
 				case 7:
 				case 8:
 				case 9:
@@ -257,6 +256,7 @@
 			var sendData = {
 				type: "initiative",
 				data: {
+					players: [$scope.curChar.name],
 					message: String(this.inpForm.input)
 				}
 			};

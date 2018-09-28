@@ -117,7 +117,7 @@ func (this *WebSocketController) Join() {
 			case "initiative":
 				init, _ := strconv.ParseFloat(conReq.Data.Message, 64)
 				InitPlayer(uname, init)
-				SortPlayerInit()
+				go SortPlayerInit()
 				publish <- newEvent(game.EVENT_INIT, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "initiative_t":
 				players[curInitInd].IsTurn = false
@@ -187,11 +187,18 @@ func (this *WebSocketController) JoinM() {
 					StrainPlayer(play, strain)
 				}
 				publish <- newEvent(game.EVENT_STRAIN, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
-			case "initiative_d":
-				for i := 0; i < len(conReq.Data.Players); i++ {
-					InitPlayer(conReq.Data.Players[i], 0)
+			case "initiative":
+				init, _ := strconv.ParseFloat(conReq.Data.Message, 64)
+				for _, play := range conReq.Data.Players {
+					InitPlayer(play, init)
 				}
-				SortPlayerInit()
+				go SortPlayerInit()
+				publish <- newEvent(game.EVENT_INIT, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+			case "initiative_d":
+				for _, play := range conReq.Data.Players {
+					InitPlayer(play, 0)
+				}
+				go SortPlayerInit()
 				publish <- newEvent(game.EVENT_INIT_D, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "initiative_s":
 				if len(players) > 0 {
@@ -230,7 +237,7 @@ func (this *WebSocketController) JoinM() {
 				err = json.Unmarshal([]byte(conReq.Data.Message), &newPlay)
 				if err == nil {
 					players = append(players, newPlay)
-					SortPlayerInit()
+					go SortPlayerInit()
 					publish <- newEvent(game.EVENT_JOIN, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 				} else {
 					beego.Error(err.Error())
@@ -289,7 +296,7 @@ func broadcastWebSocket(event game.Event) {
 			}
 		case game.EVENT_NOTE:
 			send = FindInSlice(event.Targets, subscribers[i])
-		case game.EVENT_INIT_D:
+		case game.EVENT_INIT:
 			if watch {
 				send = true
 			} else {
@@ -306,10 +313,6 @@ func broadcastWebSocket(event game.Event) {
 				send = true
 			} else {
 				send = FindInSlice(event.Targets, subscribers[i])
-			}
-		case game.EVENT_INIT:
-			if watch {
-				send = true
 			}
 		case game.EVENT_INIT_S:
 			if watch {
