@@ -169,7 +169,9 @@
 				case 4: //strain
 					$scope.curChar.curStrain += Number(data.data);
 					break;
-				case 5: // Reset Init
+				case 5:
+					break;
+				case 6:
 					$scope.curChar.initiative = 0;
 					break;
 				case 7:

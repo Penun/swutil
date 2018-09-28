@@ -7,7 +7,6 @@
 		$scope.allyVs = [];
 		$scope.enemVs = [];
 		this.inText = {};
-		this.action = {};
 		this.inpForm = {};
 		this.addForm = {};
 		this.addAction = "";
@@ -122,21 +121,27 @@
 		};
 
 		this.Initiative = function(){
-			if (typeof this.action.players === 'undefined' || this.action.players.length == 0){
-				var subSel = document.getElementById("subSelAct");
-				subSel.focus();
-				return;
-			}
 			var sendData = {
 				type: "initiative_d",
 				data: {
-					players: this.action.players,
+					players: [],
 					message: "action"
 				}
 			};
-			sendData = JSON.stringify(sendData);
-			$scope.sock.send(sendData);
-			this.ClearForm(3, false);
+			var found = false;
+			for (var i = 0; i < $scope.playChars.length; i++){
+				if ($scope.playChars[i].selected){
+					$scope.playChars[i].initiative = 0;
+					sendData.data.players.push($scope.playChars[i].player.name);
+					if (!found){
+						found = true;
+					}
+				}
+			}
+			if (found){
+				sendData = JSON.stringify(sendData);
+				$scope.sock.send(sendData);
+			}
 		};
 
 		this.SetupAdd = function(addAction){
@@ -223,7 +228,7 @@
 					sendData.data.players.push($scope.playChars[i].player.name);
 					if (woStType == "wound"){
 						$scope.playChars[i].cur_wound += dam;
-					} else {
+					} else if (typeof $scope.playChars[i].cur_strain !== 'undefined' && $scope.playChars[i].cur_strain !== null && typeof $scope.playChars[i].player.strain !== 'undefined' && $scope.playChars[i].player.strain !== null) {
 						$scope.playChars[i].cur_strain += dam;
 					}
 					if (!found){

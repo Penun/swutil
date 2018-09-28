@@ -69,6 +69,7 @@
 									<span class="flexItem"><span>Wound:</span><span class="inputBack"><input type="number" name="addWoundA" id="addWoundA" class="inputBod" ng-model="mCont.addForm.wound" placeholder="0" required/></span></span>
 									<span class="flexItem"><span>Strain:</span><span class="inputBack"><input type="number" name="addStrainA" id="addStrainA" class="inputBod" ng-model="mCont.addForm.strain" placeholder="0" /></span></span>
 									<span class="flexItem"><span>Initiative:</span><span class="inputBack"><input type="number" name="addInitA" id="addInitA" class="inputBod" ng-model="mCont.addForm.initiative" step="any" placeholder="0" /></span></span>
+									<input style="position: absolute; left: -9999px" ng-show="addAllyForm.$valid" ng-click="mCont.AddForm()" type="submit" />
 								</form>
 								<span ng-show="addAllyForm.$valid" ng-click="mCont.AddForm()" class="menu menuText">Add</span>
 							</span>
@@ -87,8 +88,9 @@
 									<span class="flexItem"><span>Wound:</span><span class="inputBack"><input type="number" name="addWoundE" id="addWoundE" class="inputBod" ng-model="mCont.addForm.wound" placeholder="0" required/></span></span>
 									<span class="flexItem"><span>Strain:</span><span class="inputBack"><input type="number" name="addStrainE" id="addStrainE" class="inputBod" ng-model="mCont.addForm.strain" placeholder="0" /></span></span>
 									<span class="flexItem"><span>Initiative:</span><span class="inputBack"><input type="number" name="addInitE" id="addInitE" class="inputBod" ng-model="mCont.addForm.initiative" step="any" placeholder="0" /></span></span>
+									<input style="position: absolute; left: -9999px" ng-show="addEnemForm.$valid" ng-click="mCont.AddForm()" type="submit" />
 								</form>
-								<span ng-show="addEnemForm.$valid" ng-click="mCont.AddForm(false)" class="menu menuText">Add</span>
+								<span ng-show="addEnemForm.$valid" ng-click="mCont.AddForm()" class="menu menuText">Add</span>
 							</span>
 						</span>
 					</span>
@@ -137,7 +139,9 @@
 						</span>
 					</span>
 					<span id="initiativeDisp" class="charDispBod">
-						<span ng-show="!startInit && (playChars.length > 0)">There</span>
+						<span ng-show="!startInit && (playChars.length > 0)">
+							<span class="menu menuText" ng-click="mCont.Initiative()">Reset</span>
+						</span>
 						<span ng-show="startInit">Initiative running....</span>
 					</span>
 					<span id="initiativeMenu" class="menuTitledBlock">
