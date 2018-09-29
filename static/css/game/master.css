@@ -141,6 +141,10 @@ span {
     height: 100%;
 }
 
+.clickHead {
+    cursor: pointer;
+}
+
 .charAltHead {
     grid-template-columns: 1fr 10%;
     align-content: stretch;
@@ -206,6 +210,10 @@ span {
     font-size: calc(12px + 2vmin);
     text-align: center;
     justify-content: flex-end;
+}
+
+.initBlock {
+    grid-template-columns: 1fr 15%;
 }
 
 #vehicleDisp > .menuColSpan {

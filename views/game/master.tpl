@@ -33,17 +33,17 @@
 					</span>
 					<span id="characterDisp">
 						<span class="sw_back">
-							<span>Players</span>
+							<span class="clickHead" ng-click="mCont.SelectPlayerType(false, 'PC')">Players</span>
 						</span>
 						<span class="sw_back">
 							<span class="charAltHead">
-								<span>Allies</span>
+								<span class="clickHead" ng-click="mCont.SelectPlayerType(false, 'NPC')">Allies</span>
 								<span class="menu menuText" ng-click="mCont.SetupAdd('NPC')">+</span>
 							</span>
 						</span>
 						<span class="sw_back">
 							<span class="charAltHead">
-								<span>Enemies</span>
+								<span class="clickHead" ng-click="mCont.SelectPlayerType(false, 'NPCE')">Enemies</span>
 								<span class="menu menuText" ng-click="mCont.SetupAdd('NPCE')">+</span>
 							</span>
 						</span>
@@ -139,13 +139,13 @@
 						</span>
 					</span>
 					<span id="initiativeDisp" class="charDispBod">
-						<span ng-show="!startInit && (playChars.length > 0)">
+						<span ng-show="!startInit && (playChars.length > 0)" class="initBlock">
 							<form name="setInitForm" id="setInitForm" novalidate>
 								<span class="flexItem"><span>Initiative:</span><span class="inputBack"><input type="number" name="initVal" id="initVal" ng-model="initVal" class="inputBod" placeholder="0" required/></span></span>
 								<input style="position: absolute; left: -9999px" ng-show="setInitForm.$valid" ng-click="mCont.Initiative(initVal)" type="submit" />
 							</form>
 							<span class="menu menuText" ng-show="setInitForm.$valid" ng-click="mCont.Initiative(initVal)">Set</span>
-							<span class="menu menuText" ng-click="mCont.Initiative(0)">Reset</span>
+							<span class="menu menuText" ng-show="!setInitForm.$valid" ng-click="mCont.Initiative()">Reset</span>
 						</span>
 						<span ng-show="startInit">Initiative running....</span>
 					</span>

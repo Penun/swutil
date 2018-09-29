@@ -9,10 +9,8 @@
 		this.addForm = {};
 		this.addAction = "";
 		$scope.backStep = $scope.curStep = 3;
-		this.textareaReq = true;
 		$scope.activeNote = "";
 		this.inTextText = "";
-		this.inputText = "";
 		$scope.startInit = false;
 
 		angular.element(document).ready(function(){
@@ -118,6 +116,9 @@
 		};
 
 		this.Initiative = function(newVal){
+			if (newVal === null){
+				newVal = 0;
+			}
 			var sendData = {
 				type: "initiative",
 				data: {
@@ -139,6 +140,7 @@
 				sendData = JSON.stringify(sendData);
 				$scope.sock.send(sendData);
 				$scope.initVal = null;
+				this.SelectAll(true);
 			}
 		};
 
@@ -208,6 +210,20 @@
 					} else {
 						$scope.playChars[i].selected = true;
 					}
+				}
+			}
+		};
+
+		this.SelectAll = function(deselect = false){
+			for (var i = 0; i < $scope.playChars.length; i++){
+				$scope.playChars[i].selected = !deselect;
+			}
+		};
+
+		this.SelectPlayerType = function(deselect = false, targType){
+			for (var i = 0; i < $scope.playChars.length; i++){
+				if ($scope.playChars[i].type == targType){
+					$scope.playChars[i].selected = !deselect;
 				}
 			}
 		};
