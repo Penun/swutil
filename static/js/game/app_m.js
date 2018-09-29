@@ -140,7 +140,7 @@
 				sendData = JSON.stringify(sendData);
 				$scope.sock.send(sendData);
 				$scope.initVal = null;
-				this.SelectAll(true);
+				this.SelectPlayerChar(true, "ALL");
 			}
 		};
 
@@ -214,15 +214,17 @@
 			}
 		};
 
-		this.SelectAll = function(deselect = false){
-			for (var i = 0; i < $scope.playChars.length; i++){
-				$scope.playChars[i].selected = !deselect;
+		this.SelectPlayerChar = function(deselect = false, targType = "ALL"){
+			if (!deselect){
+				for (var i = 0; i < $scope.playChars.length; i++){
+					if ($scope.playChars[i].selected && ($scope.playChars[i].type == targType || targType == "ALL")){
+						deselect = true;
+						break;
+					}
+				}
 			}
-		};
-
-		this.SelectPlayerType = function(deselect = false, targType){
 			for (var i = 0; i < $scope.playChars.length; i++){
-				if ($scope.playChars[i].type == targType){
+				if ($scope.playChars[i].type == targType || targType == "ALL"){
 					$scope.playChars[i].selected = !deselect;
 				}
 			}

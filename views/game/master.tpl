@@ -33,17 +33,17 @@
 					</span>
 					<span id="characterDisp">
 						<span class="sw_back">
-							<span class="clickHead" ng-click="mCont.SelectPlayerType(false, 'PC')">Players</span>
+							<span class="clickHead" ng-click="mCont.SelectPlayerChar(false, 'PC')">Players</span>
 						</span>
 						<span class="sw_back">
 							<span class="charAltHead">
-								<span class="clickHead" ng-click="mCont.SelectPlayerType(false, 'NPC')">Allies</span>
+								<span class="clickHead" ng-click="mCont.SelectPlayerChar(false, 'NPC')">Allies</span>
 								<span class="menu menuText" ng-click="mCont.SetupAdd('NPC')">+</span>
 							</span>
 						</span>
 						<span class="sw_back">
 							<span class="charAltHead">
-								<span class="clickHead" ng-click="mCont.SelectPlayerType(false, 'NPCE')">Enemies</span>
+								<span class="clickHead" ng-click="mCont.SelectPlayerChar(false, 'NPCE')">Enemies</span>
 								<span class="menu menuText" ng-click="mCont.SetupAdd('NPCE')">+</span>
 							</span>
 						</span>
@@ -94,7 +94,10 @@
 							</span>
 						</span>
 					</span>
-					<span id="characterMenu">
+					<span id="characterMenu" ng-show="playChars.length > 0">
+						<span class="menuColSpan menuTitledBlock">
+							<span class="menu menuText menuAll menuBordT" ng-click="mCont.SelectPlayerChar()">All</span>
+						</span>
 						<span class="menuColSpan menuTitledBlock">
 							<span class="sw_back menuColSpan">
 								<span>Wound</span>
@@ -163,7 +166,7 @@
 						<span class="charDispBod">
 							<span ng-repeat="(ind, allyV) in allyVs" class="dispItem">
 								<span>{{"{{allyV.name}}"}}</span>
-								<span class="menu menuText menuBordT menuBordR">X</span>
+								<span class="menu menuText  menuBordR">X</span>
 							</span>
 						</span>
 						<span class="charDispBod">
