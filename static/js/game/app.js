@@ -236,6 +236,9 @@
 		};
 
 		this.Initiative = function(newInit){
+			if ($scope.initStarted){
+				return;
+			}
 			if (newInit == null){
 				this.TargetFormInput();
 				return;

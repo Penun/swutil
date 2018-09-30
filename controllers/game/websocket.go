@@ -188,12 +188,14 @@ func (this *WebSocketController) JoinM() {
 				}
 				publish <- newEvent(game.EVENT_STRAIN, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "initiative":
-				init, _ := strconv.ParseFloat(conReq.Data.Message, 64)
-				for _, play := range conReq.Data.Players {
-					InitPlayer(play, init)
+				if !initStarted {
+					init, _ := strconv.ParseFloat(conReq.Data.Message, 64)
+					for _, play := range conReq.Data.Players {
+						InitPlayer(play, init)
+					}
+					go SortPlayerInit()
+					publish <- newEvent(game.EVENT_INIT, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 				}
-				go SortPlayerInit()
-				publish <- newEvent(game.EVENT_INIT, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "initiative_d":
 				for _, play := range conReq.Data.Players {
 					InitPlayer(play, 0)
@@ -203,7 +205,7 @@ func (this *WebSocketController) JoinM() {
 			case "initiative_s":
 				if len(players) > 0 {
 					initStarted = true
-					curInitInd = 0
+					FindNextInitInd(true, false)
 					players[curInitInd].IsTurn = true
 					publish <- newEvent(game.EVENT_INIT_S, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 				}
@@ -215,21 +217,12 @@ func (this *WebSocketController) JoinM() {
 				}
 				publish <- newEvent(game.EVENT_INIT_E, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "initiative_t":
-				prevInitInd = curInitInd
+				players[curInitInd].IsTurn = false
 				if conReq.Data.Message == "+" {
-					if curInitInd == len(players) - 1 {
-						curInitInd = 0
-					} else {
-						curInitInd++
-					}
+					FindNextInitInd(false, false)
 				} else {
-					if curInitInd == 0 {
-						curInitInd = len(players) - 1
-					} else {
-						curInitInd--
-					}
+					FindNextInitInd(false, true)
 				}
-				players[prevInitInd].IsTurn = false
 				players[curInitInd].IsTurn = true
 				publish <- newEvent(game.EVENT_INIT_T, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			case "add":

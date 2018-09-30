@@ -49,7 +49,6 @@ var (
 	players = make([]game.LivePlayer, 0)
 	master = false
 	curInitInd = 0
-	prevInitInd = 0
 	initStarted = false
 )
 
@@ -151,7 +150,7 @@ func (this *GameStatusController) GetPlayer() {
 			if play.Player.Name == getReq.Name {
 				resp.LivePlayer = &play
 				resp.Success = true
-				break;
+				break
 			}
         }
 	}
@@ -174,7 +173,7 @@ func WoundPlayer(playName string, wound int) {
 	if playName != "" {
 		for i := 0; i < len(players); i++ {
 			if players[i].Player.Name == playName {
-				players[i].CurWound += wound;
+				players[i].CurWound += wound
 				break
 			}
 		}
@@ -185,7 +184,7 @@ func StrainPlayer(playName string, strain int) {
 	if playName != "" {
 		for i := 0; i < len(players); i++ {
 			if players[i].Player.Name == playName {
-				players[i].CurStrain += strain;
+				players[i].CurStrain += strain
 				break
 			}
 		}
@@ -196,7 +195,7 @@ func InitPlayer(playName string, init float64) {
 	if playName != "" {
 		for i := 0; i < len(players); i++ {
 			if players[i].Player.Name == playName {
-				players[i].Initiative = init;
+				players[i].Initiative = init
 				break
 			}
 		}
@@ -260,7 +259,7 @@ func SortPlayerInit() {
 		minInd := i
 		for j := i + 1; j < len(players); j++ {
 			if players[j].Initiative > players[minInd].Initiative {
-				minInd = j;
+				minInd = j
 			}
 		}
 		if minInd != i {
@@ -276,5 +275,41 @@ func SortPlayerInit() {
 				break
 			}
 		}
+	}
+}
+
+func FindNextInitInd(incCur bool, reverse bool) {
+	if !incCur {
+		if !reverse {
+			MoveCurIndFor()
+		} else {
+			MoveCurIndBack()
+		}
+	}
+	for i := 0; i < len(players); i++ {
+		if players[curInitInd].Initiative > 0 {
+			return
+		}
+		if !reverse {
+			MoveCurIndFor()
+		} else {
+			MoveCurIndBack()
+		}
+	}
+}
+
+func MoveCurIndFor() {
+	if curInitInd == len(players) - 1 {
+		curInitInd = 0
+	} else {
+		curInitInd++
+	}
+}
+
+func MoveCurIndBack() {
+	if curInitInd == 0 {
+		curInitInd = len(players) - 1
+	} else {
+		curInitInd--
 	}
 }

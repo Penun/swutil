@@ -178,24 +178,16 @@
 				break;
 			case 7: // Init StartInit
 				$scope.startInit = true;
-				$scope.gameChars[0].isTurn = true;
-				$scope.curInitInd = 0;
+				$scope.FindNextInitInd(true, false);
+				$scope.gameChars[$scope.curInitInd].isTurn = true;
 				break;
 			case 8: // Turn initiative
 				if ($scope.startInit){
 					$scope.gameChars[$scope.curInitInd].isTurn = false;
 					if (data.data === "+"){
-						if ($scope.curInitInd == $scope.gameChars.length - 1){
-							$scope.curInitInd = 0;
-						} else {
-							$scope.curInitInd++;
-						}
+						$scope.FindNextInitInd(false, false);
 					} else {
-						if ($scope.curInitInd == 0){
-							$scope.curInitInd = $scope.gameChars.length - 1;
-						} else {
-							$scope.curInitInd--;
-						}
+						$scope.FindNextInitInd(false, true);
 					}
 					$scope.gameChars[$scope.curInitInd].isTurn = true;
 				}
@@ -209,6 +201,42 @@
 				break;
 			}
 			$scope.$apply();
+		};
+
+		$scope.FindNextInitInd = function(incCur, reverse){
+			if (!incCur){
+				if (!reverse){
+					$scope.MoveCurFor();
+				} else {
+					$scope.MoveCurBack();
+				}
+			}
+			for (var i = 0; i < $scope.gameChars.length; i++){
+				if ($scope.gameChars[$scope.curInitInd].initiative > 0){
+					return;
+				}
+				if (!reverse){
+					$scope.MoveCurFor();
+				} else {
+					$scope.MoveCurBack();
+				}
+			}
+		};
+
+		$scope.MoveCurFor = function(){
+			if ($scope.curInitInd == $scope.gameChars.length - 1){
+				$scope.curInitInd = 0;
+			} else {
+				$scope.curInitInd++;
+			}
+		};
+
+		$scope.MoveCurBack = function(){
+			if ($scope.curInitInd == 0){
+				$scope.curInitInd = $scope.gameChars.length - 1;
+			} else {
+				$scope.curInitInd--;
+			}
 		};
 
 		$scope.PCDisplayList = function(gameChar){

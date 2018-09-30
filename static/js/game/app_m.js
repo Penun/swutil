@@ -116,7 +116,7 @@
 		};
 
 		this.Initiative = function(newVal){
-			if (newVal === null){
+			if (newVal === null || typeof newVal === 'undefined'){
 				newVal = 0;
 			}
 			var sendData = {
