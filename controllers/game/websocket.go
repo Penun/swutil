@@ -315,17 +315,11 @@ func broadcastWebSocket(event game.Event) {
 				send = FindInSlice(event.Targets, subscribers[i])
 			}
 		case game.EVENT_INIT_S:
-			if watch {
-				send = true
-			} else if len(players) > 0 && players[curInitInd].Player.Name == subscribers[i].Name {
+			if subscribers[i].Type != "master" {
 				send = true
 			}
 		case game.EVENT_INIT_T:
 			if watch {
-				send = true
-			} else if len(players) > 0 && players[curInitInd].Player.Name == subscribers[i].Name {
-				send = true
-			} else if event.Sender.Type == "master" && (players[curInitInd].Player.Name == subscribers[i].Name || players[prevInitInd].Player.Name == subscribers[i].Name) {
 				send = true
 			}
 		case game.EVENT_INIT_E:

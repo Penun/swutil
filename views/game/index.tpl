@@ -69,13 +69,14 @@
 							<form name="iniForm" id="iniForm" ng-show="curChar.initiative <= 0" novalidate>
 								<span id="innerIniForm">
 									<span class="inputBod">
-										<input type="number" name="inpIn" id="inpIn" ng-model="mCont.inpForm.input" class="inputInit" placeholder="0" required/>
+										<input type="number" name="inpIn" id="inpIn" ng-model="inpIn" class="inputInit" placeholder="0" required/>
+										<input style="position: absolute; left: -9999px" ng-show="iniForm.$valid" ng-click="mCont.Initiative(inpIn)" type="submit" />
 									</span>
 								</span>
 							</form>
 						</span>
-						<span class="menu menuText menuBordT menuBordR" ng-show="inpForm.$valid" ng-click="mCont.Input('Initiative')">Set</span>
-						<span class="menu menuText menuBordT menuBordR" ng-show="curChar.initiative > 0" ng-click="mCont.ResetInit()">Reset</span>
+						<span class="menu menuText menuBordT menuBordR" ng-show="iniForm.$valid" ng-click="mCont.Initiative(inpIn)">Set</span>
+						<span class="menu menuText menuBordT menuBordR" ng-show="curChar.initiative > 0 && !initStarted" ng-click="mCont.Initiative(0)">Reset</span>
 					</span>
 				</span>
 			</div>

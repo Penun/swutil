@@ -4,7 +4,6 @@
 		$scope.char = {};
 		$scope.curChar = {};
 		$scope.note = {};
-		this.inpForm = {};
 		$scope.backStep = $scope.curStep = 1;
 		$scope.textareaReq = true;
 		$scope.activeNote = "";
@@ -14,6 +13,7 @@
 		$scope.audObj = document.createElement("AUDIO");
 		$scope.playSugs = [];
 		this.lastPlayFind = "";
+		$scope.initStarted = false;
 
 		angular.element(document).ready(function(){
 			$http.get("/track/check").then(function(ret){
@@ -172,10 +172,14 @@
 				case 5:
 					$scope.curChar.initiative = Number(data.data);
 					break;
-				case 6:
 				case 7:
-				case 8:
+					$scope.initStarted = true;
+					break;
 				case 9:
+					$scope.initStarted = false;
+					break;
+				case 6:
+				case 8:
 				default:
 					return;
 			}
@@ -227,44 +231,28 @@
 		};
 
 		this.TargetFormInput = function(){
-			$scope.SetStep(4, false);
-			$timeout(function(){
-				var inpIn = document.getElementById("inpIn");
-				inpIn.focus();
-			}, 50);
+			var inpIn = document.getElementById("inpIn");
+			inpIn.focus();
 		};
 
-		this.Input = function(command){
-			if (typeof this.inpForm.input === 'undefined'){
-				var inpIn = document.getElementById("inpIn");
-				inpIn.focus();
-				return;
-			}
-			switch(command){
-				case "Initiative":
-					this.Initiative();
-					break;
-			}
-		};
-
-		this.Initiative = function(){
-			if (this.inpForm.input <= 0){
+		this.Initiative = function(newInit){
+			if (newInit == null){
 				this.TargetFormInput();
 				return;
 			}
-			$scope.curChar.initiative = this.inpForm.input;
+			$scope.curChar.initiative = newInit;
 			var sendData = {
 				type: "initiative",
 				data: {
 					players: [$scope.curChar.name],
-					message: String(this.inpForm.input)
+					message: String(newInit)
 				}
 			};
-			sendData = JSON.stringify(sendData);
 			if ($scope.sock.readyState == 1){
+				sendData = JSON.stringify(sendData);
 				$scope.sock.send(sendData);
+				this.ClearForm();
 			}
-			this.ClearForm();
 		};
 
 		this.Wound = function(wnd){
@@ -302,7 +290,7 @@
 		this.ClearForm = function(){
 			$scope.SetStep($scope.backStep, false);
 			this.formInput = "";
-			this.inpForm = {};
+			$scope.inpIn = null;
 		};
 
 		this.ShowStep = function(step){
