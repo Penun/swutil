@@ -61,7 +61,7 @@
 							}
 						});
 					}
-				} else if (data.player.type == "master") {
+				} else if (data.player.type == "master"){
 					if (data.data !== ""){
 						var tPlay = JSON.parse(data.data);
 						if (tPlay.type == 'NPC'){
@@ -69,8 +69,12 @@
 						} else {
 							tPlay.initDisplay = "NPC";
 						}
+						if (typeof tPlay.initiative === 'undefined'){
+							tPlay.initiative = 0;
+						}
 						$scope.gameChars.push(tPlay);
 						$scope.SortList($scope.gameChars, "initiative");
+						$scope.UpdateCurByIsTurn();
 					}
 				}
 				break;
@@ -80,15 +84,16 @@
 						var tPlays = JSON.parse(data.data);
 						for (var i = 0; i < tPlays.length; i++){
 							for (var j = 0; j < $scope.gameChars.length; j++){
-								var setTurn = $scope.gameChars[j].isTurn;
 								if ($scope.gameChars[j].player.name == tPlays[i].player.name){
+									var setTurn = $scope.gameChars[j].isTurn;
 									$scope.gameChars.splice(j, 1);
-									if ($scope.gameChars.length == j){
-										j--;
-									}
-									if (setTurn && $scope.gameChars.length > 0) {
-										$scope.gameChars[j].isTurn = true;
-										$scope.curInitInd = j;
+									if (setTurn){
+										if ($scope.gameChars.length > 0) {
+											$scope.FindNextInitInd(true, false);
+										} else {
+											$scope.curInitInd = 0;
+										}
+										$scope.gameChars[$scope.curInitInd].isTurn = true;
 									}
 									break;
 								}
@@ -103,18 +108,19 @@
 						if ($scope.gameChars[i].name == data.player.name){
 							var setTurn = $scope.gameChars[i].isTurn;
 							$scope.gameChars.splice(i, 1);
-							if ($scope.gameChars.length == i){
-								i--;
-							}
-							if (setTurn && $scope.gameChars.length > 0) {
-								$scope.gameChars[i].isTurn = true;
-								$scope.curInitInd = i;
+							if (setTurn){
+								if ($scope.gameChars.length > 0) {
+									$scope.FindNextInitInd(true, false);
+								} else {
+									$scope.curInitInd = 0;
+								}
+								$scope.gameChars[$scope.curInitInd].isTurn = true;
 							}
 							break;
 						}
 					}
 				}
-				$scope.SortList($scope.gameChars, "initiative");
+				$scope.UpdateCurByIsTurn();
 				break;
 			case 3: // WOUND
 				if (data.player.type != "master"){
@@ -265,6 +271,16 @@
 				}
 				if (minInd !== i){
 					[list[i], list[minInd]] = [list[minInd], list[i]];
+				}
+			}
+		};
+
+		$scope.UpdateCurByIsTurn = function(){
+			if ($scope.startInit){
+				for (var i = 0; i < $scope.gameChars.length; i++){
+					if ($scope.gameChars[i].isTurn){
+						$scope.curInitInd = i;
+					}
 				}
 			}
 		};

@@ -62,9 +62,7 @@ func (this *WebSocketController) Join() {
 				tempPlay.CurWound = newPlay.Wound
 				tempPlay.CurStrain = newPlay.Strain
 				players = append(players, tempPlay)
-				if initStarted {
-					SortPlayerInit()
-				}
+				go UpdateCurIndByIsTurn()
 				this.SetSession("player", uname)
 			} else {
 				this.Redirect("/", 302)
@@ -230,7 +228,8 @@ func (this *WebSocketController) JoinM() {
 				err = json.Unmarshal([]byte(conReq.Data.Message), &newPlay)
 				if err == nil {
 					players = append(players, newPlay)
-					go SortPlayerInit()
+					SortPlayerInit()
+					UpdateCurIndByIsTurn()
 					publish <- newEvent(game.EVENT_JOIN, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 				} else {
 					beego.Error(err.Error())
@@ -243,7 +242,7 @@ func (this *WebSocketController) JoinM() {
 						for j := 0; j < len(players); j++ {
 							if players[j].Player.Name == targs[i].Player.Name {
 								RemovePlayer(j)
-								SortPlayerInit()
+								UpdateCurIndByIsTurn()
 								j--
 							}
 						}
@@ -298,11 +297,15 @@ func broadcastWebSocket(event game.Event) {
 		case game.EVENT_WOUND:
 			if watch {
 				send = true
+			} else if subscribers[i].Type == "master" {
+				send = true
 			} else {
 				send = FindInSlice(event.Targets, subscribers[i])
 			}
 		case game.EVENT_STRAIN:
 			if watch {
+				send = true
+			} else if subscribers[i].Type == "master" {
 				send = true
 			} else {
 				send = FindInSlice(event.Targets, subscribers[i])
