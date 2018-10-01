@@ -126,6 +126,11 @@
 						$scope.subs = ret.data.result;
 					}
 				});
+				$http.get("/track/status").then(function(ret){
+					if (ret.data.success){
+						$scope.initStarted = ret.data.start_init;
+					}
+				});
 				$scope.SetStep(2, true);
 			} else if ($scope.sock.readyState == 3){
 				$scope.curChar = {};
@@ -259,7 +264,7 @@
 		};
 
 		this.Wound = function(wnd){
-			if ($scope.curChar.curWound + wnd <= $scope.curChar.wound){
+			if ($scope.curChar.curWound + wnd <= $scope.curChar.wound && $scope.curChar.curWound + wnd >= -$scope.curChar.wound * 2){
 				$scope.curChar.curWound += wnd;
 				var sendData = {
 					type: "wound",
@@ -275,7 +280,7 @@
 		};
 
 		this.Strain = function(str){
-			if ($scope.curChar.curStrain + str <= $scope.curChar.strain){
+			if ($scope.curChar.curStrain + str <= $scope.curChar.strain && $scope.curChar.curStrain + str >= -$scope.curChar.strain * 2){
 				$scope.curChar.curStrain += str;
 				var sendData = {
 					type: "strain",

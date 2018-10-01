@@ -173,8 +173,10 @@ func WoundPlayer(playName string, wound int) {
 	if playName != "" {
 		for i := 0; i < len(players); i++ {
 			if players[i].Player.Name == playName {
-				players[i].CurWound += wound
-				break
+				if players[i].CurWound + wound <= players[i].Player.Wound && players[i].CurWound + wound >= -players[i].Player.Wound * 2 {
+					players[i].CurWound += wound
+					break
+				}
 			}
 		}
 	}
@@ -184,8 +186,10 @@ func StrainPlayer(playName string, strain int) {
 	if playName != "" {
 		for i := 0; i < len(players); i++ {
 			if players[i].Player.Name == playName {
-				players[i].CurStrain += strain
-				break
+				if players[i].CurStrain + strain <= players[i].Player.Strain && players[i].CurStrain + strain >= -players[i].Player.Strain * 2 {
+					players[i].CurStrain += strain
+					break
+				}
 			}
 		}
 	}
@@ -234,7 +238,6 @@ func FindInSlice(targets []string, sub Subscriber) bool {
 }
 
 func RemovePlayer(i int) {
-	setTurn := players[i].IsTurn
 	playLen := len(players)
 	if i == playLen - 1 {
 		players = players[:playLen-1]
@@ -245,12 +248,10 @@ func RemovePlayer(i int) {
 	if curInitInd == i {
 		if playLen == 0 {
 			curInitInd = 0
-		} else if i == playLen {
-			curInitInd--
+		} else {
+			FindNextInitInd(true, false)
+			players[curInitInd].IsTurn = true
 		}
-	}
-	if setTurn && playLen > 0 {
-		players[curInitInd].IsTurn = true
 	}
 }
 
@@ -268,6 +269,9 @@ func SortPlayerInit() {
 			players[minInd] = swap
 		}
 	}
+}
+
+func UpdateCurIndByIsTurn() {
 	if initStarted {
 		for ind, play := range players {
 			if play.IsTurn {

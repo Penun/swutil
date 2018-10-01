@@ -188,6 +188,8 @@
 			}
 			if (typeof this.addForm.initiative !== 'undefined' || this.addForm.initiative > 0){
 				char.initiative = this.addForm.initiative;
+			} else {
+				char.initiative = 0;
 			}
 			$scope.playChars.push(char);
 			$scope.charsCurId++;
@@ -241,14 +243,22 @@
 			var found = false;
 			for (var i = 0; i < $scope.playChars.length; i++){
 				if ($scope.playChars[i].selected){
-					sendData.data.players.push($scope.playChars[i].player.name);
 					if (woStType == "wound"){
-						$scope.playChars[i].cur_wound += dam;
+						if ($scope.playChars[i].cur_wound + dam <= $scope.playChars[i].player.wound && $scope.playChars[i].cur_wound + dam >= -$scope.playChars[i].player.wound * 2){
+							$scope.playChars[i].cur_wound += dam;
+							sendData.data.players.push($scope.playChars[i].player.name);
+							if (!found){
+								found = true;
+							}
+						}
 					} else if (typeof $scope.playChars[i].cur_strain !== 'undefined' && $scope.playChars[i].cur_strain !== null && typeof $scope.playChars[i].player.strain !== 'undefined' && $scope.playChars[i].player.strain !== null) {
-						$scope.playChars[i].cur_strain += dam;
-					}
-					if (!found){
-						found = true;
+						if ($scope.playChars[i].cur_strain + dam <= $scope.playChars[i].player.strain && $scope.playChars[i].cur_strain + dam >= -$scope.playChars[i].player.strain * 2){
+							$scope.playChars[i].cur_strain += dam;
+							sendData.data.players.push($scope.playChars[i].player.name);
+							if (!found){
+								found = true;
+							}
+						}
 					}
 				}
 			}
