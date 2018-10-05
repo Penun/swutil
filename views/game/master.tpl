@@ -49,17 +49,27 @@
 						</span>
 						<span class="charDispBod">
 							<span class="dispList">
-								<span ng-repeat="(ind, play) in playChars | filter: {type: 'PC'}:true" class="dispItem" ng-class="{selectedItem: play.selected}">
+								<span ng-repeat="(ind, play) in playChars | filter: {type: 'PC'}:true | orderBy: '+player.name'" class="dispItem" ng-class="{selectedItem: play.selected}">
 									<span class="dispItemName" ng-click="mCont.SelectChar(play)">{{"{{play.player.name}}"}}</span>
 									<span class="menu menuText menuBordT menuBordR" ng-click="mCont.DelChar(play.id)">X</span>
+									<span class="menuColSpan dispItemStats" ng-click="mCont.SelectChar(play)">
+										<span>W: {{"{{play.cur_wound}}"}}</span>
+										<span ng-show="play.player.strain > 0" class="dispItemStr">S: {{"{{play.cur_strain}}"}}</span>
+										<span ng-show="play.initiative > 0" class="dispItemInit">I: {{"{{play.initiative}}"}}</span>
+									</span>
 								</span>
 							</span>
 						</span>
 						<span class="charDispBod">
 							<span ng-show="mCont.addAction != 'NPC'" class="dispList">
-								<span ng-repeat="(ind, ally) in playChars | filter: {type: 'NPC'}:true" class="dispItem" ng-class="{selectedItem: ally.selected}">
+								<span ng-repeat="(ind, ally) in playChars | filter: {type: 'NPC'}:true | orderBy: '+player.name'" class="dispItem" ng-class="{selectedItem: ally.selected}">
 									<span class="dispItemName" ng-click="mCont.SelectChar(ally)">{{"{{ally.player.name}}"}}</span>
 									<span class="menu menuText menuBordT menuBordR" ng-click="mCont.DelChar(ally.id)">X</span>
+									<span class="menuColSpan dispItemStats" ng-click="mCont.SelectChar(ally)">
+										<span>W: {{"{{ally.cur_wound}}"}}</span>
+										<span ng-show="ally.player.strain > 0" class="dispItemStr">S: {{"{{ally.cur_strain}}"}}</span>
+										<span ng-show="ally.initiative > 0" class="dispItemInit">I: {{"{{ally.initiative}}"}}</span>
+									</span>
 								</span>
 							</span>
 							<span ng-show="mCont.addAction == 'NPC'" class="formWrapper">
@@ -76,9 +86,14 @@
 						</span>
 						<span class="charDispBod">
 							<span ng-show="mCont.addAction != 'NPCE'" class="dispList">
-								<span ng-repeat="(ind, enem) in playChars | filter: {type: 'NPCE'}:true" class="dispItem" ng-class="{selectedItem: enem.selected}">
+								<span ng-repeat="(ind, enem) in playChars | filter: {type: 'NPCE'}:true | orderBy: '+player.name'" class="dispItem" ng-class="{selectedItem: enem.selected}">
 									<span class="dispItemName" ng-click="mCont.SelectChar(enem)">{{"{{enem.player.name}}"}}</span>
 									<span class="menu menuText menuBordT menuBordR" ng-click="mCont.DelChar(enem.id)">X</span>
+									<span class="menuColSpan dispItemStats" ng-click="mCont.SelectChar(enem)">
+										<span>W: {{"{{enem.cur_wound}}"}}</span>
+										<span ng-show="enem.player.strain > 0" class="dispItemStr">S: {{"{{enem.cur_strain}}"}}</span>
+										<span ng-show="enem.initiative > 0" class="dispItemInit">I: {{"{{enem.initiative}}"}}</span>
+									</span>
 								</span>
 							</span>
 							<span ng-show="mCont.addAction == 'NPCE'" class="formWrapper">
@@ -157,7 +172,7 @@
 						<span class="menu menuText" ng-show="startInit" ng-click="mCont.PrevTurn()"><</span>
 						<span class="menu menuText" ng-show="startInit" ng-click="mCont.NextTurn()">></span>
 					</span>
-					<span id="vehicleDisp">
+					<!-- <span id="vehicleDisp">
 						<span class="menuColSpan sw_back">
 							<span class="menuColSpan">Vehicles</span>
 							<span>Allies</span>
@@ -193,7 +208,7 @@
 							<span class="menu menuText">-</span>
 							<span class="menu menuText">+</span>
 						</span>
-					</span>
+					</span> -->
 				</span>
 			</div>
 		</div>

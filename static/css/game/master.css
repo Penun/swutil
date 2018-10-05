@@ -6,7 +6,7 @@ span {
 }
 
 .masterGrid {
-    grid-template-rows: 6% 44% 9% 38%;
+    grid-template-rows: 6% 82% 9%;
     grid-template-columns: 1fr 15%;
     grid-row-gap: 1%;
     overflow-y: auto;
@@ -24,7 +24,7 @@ span {
     grid-row: 1 / 3;
     grid-column: 1 / 2;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 10% 1fr;
+    grid-template-rows: 6% 1fr;
     grid-column-gap: 1vw;
 }
 
@@ -32,7 +32,8 @@ span {
     grid-row: 2 / 3;
     grid-column: 2;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(7, 1fr);
+    grid-template-rows: 6% auto;
+    align-content: start;
 }
 
 #initiativeDisp {
@@ -180,17 +181,19 @@ span {
 .dispList {
     align-content: start;
     justify-content: stretch;
+    height: 100%;
 }
 
 .dispItem {
     background-image: url("/static/img/light_underline.png");
-	background-size: 105% 20%;
+	background-size: 105% 10%;
     background-position: bottom center;
     background-repeat: no-repeat;
     padding-top: 0.5vh;
     font-size: calc(12px + 2vmin);
     text-align: center;
     grid-template-columns: 1fr 10%;
+    grid-template-rows: 1fr 1fr;
     cursor: pointer;
 }
 
@@ -199,9 +202,23 @@ span {
     justify-content: stretch;
 }
 
+.dispItemStats {
+    grid-template-columns: repeat(3, 1fr);
+    font-size: calc(12px + 1vmin);
+}
+
+.dispItemStr {
+    grid-column: 2 / 3;
+}
+
+.dispItemInit {
+    grid-column: 3 / 4;
+}
+
 .formWrapper {
-    grid-template-rows: 10% 1fr 10%;
+    grid-template-rows: 6% auto 6%;
     justify-content: stretch;
+    align-content: start;
 }
 
 .formInner {

@@ -99,6 +99,13 @@
 						}
 					}
 					break;
+				case 5:
+				for (var i = 0; i < $scope.playChars.length; i++){
+					if ($scope.playChars[i].player.name == data.player.name){
+						$scope.playChars[i].initiative = Number(data.data);
+					}
+				}
+					break;
 				default:
 					return;
 			}

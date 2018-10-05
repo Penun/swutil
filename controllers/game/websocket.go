@@ -291,13 +291,15 @@ func broadcastWebSocket(event game.Event) {
 		case game.EVENT_INIT:
 			if watch {
 				send = true
+			} else if subscribers[i].Type == "master" && event.Sender.Type != "master" {
+				send = true
 			} else {
 				send = FindInSlice(event.Targets, subscribers[i])
 			}
 		case game.EVENT_WOUND:
 			if watch {
 				send = true
-			} else if subscribers[i].Type == "master" {
+			} else if subscribers[i].Type == "master" && event.Sender.Type != "master" {
 				send = true
 			} else {
 				send = FindInSlice(event.Targets, subscribers[i])
@@ -305,7 +307,7 @@ func broadcastWebSocket(event game.Event) {
 		case game.EVENT_STRAIN:
 			if watch {
 				send = true
-			} else if subscribers[i].Type == "master" {
+			} else if subscribers[i].Type == "master" && event.Sender.Type != "master" {
 				send = true
 			} else {
 				send = FindInSlice(event.Targets, subscribers[i])
