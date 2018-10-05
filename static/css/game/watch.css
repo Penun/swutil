@@ -89,3 +89,8 @@ span {
         /* 1px 1px 0 #83d9e6; */
         1px 1px 0 #DFDFFF;
 }
+
+.initImg {
+    height: 4vh;
+    padding-bottom: 1vh;
+}

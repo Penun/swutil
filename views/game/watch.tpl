@@ -40,7 +40,7 @@
 						</span>
 						<span class="colBod">
 							<span ng-repeat="(ind, init) in gameChars | filter: InitDisplayList" ng-class="{activePlayer: startInit && init.isTurn}" class="listItem dualInner">
-								<span>{{"{{init.initDisplay}}"}}</span>
+								<span>{{str2html rawInitImg}}</span>
 								<span></span>
 							</span>
 						</span>

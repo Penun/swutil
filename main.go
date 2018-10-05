@@ -15,13 +15,19 @@ func init() {
 	orm.RegisterDataBase("default", "mysql", dbUser + ":" + dbPass + "@/" + dbInitial + "?charset=utf8")
 }
 
-func rawImg() (out string) {
+func rawSpecImg() (out string) {
 	out = "<img class=\"detail_img\" ng-src=\"/static/img/species/{{speImg}}\" alt=\"\">"
+	return
+}
+
+func rawInitImg() (out string) {
+	out = "<img class=\"initImg\" ng-src=\"/static/img/{{init.dispType}}\" alt=\"\">"
 	return
 }
 
 func main() {
 	orm.Debug = true
-	beego.AddFuncMap("rawImg", rawImg)
+	beego.AddFuncMap("rawSpecImg", rawSpecImg)
+	beego.AddFuncMap("rawInitImg", rawInitImg)
 	beego.Run()
 }

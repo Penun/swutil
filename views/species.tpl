@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="sw_back_s speciesPaOut fade_in" ng-show="curSpec != null">
-                <div class="tp_spanCol tp_spanRow">{{str2html rawImg}}</div>
+                <div class="tp_spanCol tp_spanRow">{{str2html rawSpecImg}}</div>
                 <h1 class="tp_head">{{"{{curSpec.name}}"}}</h1><button type="button" ng-click="mCont.CloseSpecies()" class="closeButton">X</button>
                 <div class="characterBlock gridRow2 tp_spanCol alCenter">
                     <span></span>

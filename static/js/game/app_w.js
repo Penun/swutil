@@ -4,6 +4,10 @@
 		$scope.gameChars = [];
 		$scope.startInit = false;
 		$scope.curInitInd = 0;
+		$scope.empLFileName = "empireLogo.png";
+		$scope.empDFileName = "empireLogo_dark.png";
+		$scope.rebLFileName = "rebelLogo.png";
+		$scope.rebDFileName = "rebelLogo_dark.png";
 
 		angular.element(document).ready(function(){
 			$scope.sock = new WebSocket('ws://' + $window.location.host + '/track/join?type=watch');
@@ -16,11 +20,7 @@
 				$http.get("/track/subs?type=watch").then(function(ret){
 					if (ret.data.success){
 						for (var i = 0; i < ret.data.result.length; i++){
-							if (ret.data.result[i].type == 'NPCE'){
-								ret.data.result[i].initDisplay = "NPC";
-							} else {
-								ret.data.result[i].initDisplay = "PC";
-							}
+							ret.data.result[i].dispType = (ret.data.result[i].type == 'NPCE') ? $scope.empLFileName : $scope.rebLFileName;
 							$scope.gameChars.push(ret.data.result[i]);
 						}
 						$http.get("/track/status").then(function(ret){
@@ -28,7 +28,7 @@
 								$scope.startInit = ret.data.start_init;
 								if ($scope.startInit){
 									$scope.curInitInd = ret.data.cur_init_ind;
-									$scope.gameChars[$scope.curInitInd].isTurn = true;
+									$scope.SetTurn(true);
 								}
 							}
 						});
@@ -56,7 +56,7 @@
 						}
 						$http.post("/track/player", sendData).then(function(ret){
 							if (ret.data.success){
-								ret.data.live_player.initDisplay = "PC";
+								ret.data.live_player.dispType = $scope.rebLFileName;
 								$scope.gameChars.push(ret.data.live_player);
 							}
 						});
@@ -64,11 +64,7 @@
 				} else if (data.player.type == "master"){
 					if (data.data !== ""){
 						var tPlay = JSON.parse(data.data);
-						if (tPlay.type == 'NPC'){
-							tPlay.initDisplay = "PC";
-						} else {
-							tPlay.initDisplay = "NPC";
-						}
+						tPlay.dispType = (tPlay.type == 'NPC') ? tPlay.dispType = $scope.rebLFileName : $scope.empLFileName;
 						if (typeof tPlay.initiative === 'undefined'){
 							tPlay.initiative = 0;
 						}
@@ -93,7 +89,7 @@
 										} else {
 											$scope.curInitInd = 0;
 										}
-										$scope.gameChars[$scope.curInitInd].isTurn = true;
+										$scope.SetTurn(true);
 									}
 									break;
 								}
@@ -114,7 +110,7 @@
 								} else {
 									$scope.curInitInd = 0;
 								}
-								$scope.gameChars[$scope.curInitInd].isTurn = true;
+								$scope.SetTurn(true);
 							}
 							break;
 						}
@@ -185,25 +181,27 @@
 			case 7: // Init StartInit
 				$scope.startInit = true;
 				$scope.FindNextInitInd(true, false);
-				$scope.gameChars[$scope.curInitInd].isTurn = true;
+				$scope.SetTurn(true);
 				break;
 			case 8: // Turn initiative
 				if ($scope.startInit){
-					$scope.gameChars[$scope.curInitInd].isTurn = false;
+					$scope.SetTurn(false);
 					if (data.data === "+"){
 						$scope.FindNextInitInd(false, false);
 					} else {
 						$scope.FindNextInitInd(false, true);
 					}
-					$scope.gameChars[$scope.curInitInd].isTurn = true;
+					$scope.SetTurn(true);
 				}
 				break;
 			case 9: // End initiative
 				$scope.startInit = false;
 				$scope.curInitInd = 0;
 				for (var i = 0; i < $scope.gameChars.length; i++){
-					$scope.gameChars[i].isTurn = false;
+					$scope.SetTurn(false);
+					$scope.curInitInd++;
 				}
+				$scope.curInitInd = 0;
 				break;
 			}
 			$scope.$apply();
@@ -282,6 +280,15 @@
 						$scope.curInitInd = i;
 					}
 				}
+			}
+		};
+
+		$scope.SetTurn = function(isTurn){
+			$scope.gameChars[$scope.curInitInd].isTurn = isTurn;
+			if (isTurn){
+				$scope.gameChars[$scope.curInitInd].dispType = ($scope.gameChars[$scope.curInitInd].type == 'NPCE') ? $scope.empDFileName : $scope.rebDFileName;
+			} else {
+				$scope.gameChars[$scope.curInitInd].dispType = ($scope.gameChars[$scope.curInitInd].type == 'NPCE') ? $scope.empLFileName : $scope.rebLFileName;
 			}
 		};
 
