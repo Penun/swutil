@@ -18,6 +18,10 @@ const (
 	EVENT_INIT_S //7
 	EVENT_INIT_T //8
 	EVENT_INIT_E //9
+    EVENT_BOOST //10
+    EVENT_SETBACK //11
+    EVENT_UPGRADE //12
+    EVENT_UPDIFF //13
 )
 
 type Event struct {
@@ -95,6 +99,10 @@ type LivePlayer struct {
 	Initiative float64 `json:"initiative"`
     CurWound int `json:"cur_wound"`
     CurStrain int `json:"cur_strain"`
+    CurBoost int `json:"cur_boost"`
+    CurSetback int `json:"cur_setback"`
+    CurUpgrade int `json:"cur_upgrade"`
+    CurUpDiff int `json:"cur_upDiff"`
     IsTurn bool `json:"isTurn"`
 	Type string `json:"type"`
 }

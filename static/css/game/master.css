@@ -279,3 +279,7 @@ span {
     text-align: center;
     border: none;
 }
+
+input[type='submit'] {
+    display: none;
+}

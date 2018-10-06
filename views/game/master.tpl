@@ -79,7 +79,7 @@
 									<span class="flexItem"><span>Wound:</span><span class="inputBack"><input type="number" name="addWoundA" id="addWoundA" class="inputBod" ng-model="mCont.addForm.wound" placeholder="0" required/></span></span>
 									<span class="flexItem"><span>Strain:</span><span class="inputBack"><input type="number" name="addStrainA" id="addStrainA" class="inputBod" ng-model="mCont.addForm.strain" placeholder="0" /></span></span>
 									<span class="flexItem"><span>Initiative:</span><span class="inputBack"><input type="number" name="addInitA" id="addInitA" class="inputBod" ng-model="mCont.addForm.initiative" step="any" placeholder="0" /></span></span>
-									<input style="position: absolute; left: -9999px" ng-show="addAllyForm.$valid" ng-click="mCont.AddForm()" type="submit" />
+									<input ng-disabled="!addAllyForm.$valid" ng-click="mCont.AddForm()" type="submit" />
 								</form>
 								<span ng-show="addAllyForm.$valid" ng-click="mCont.AddForm()" class="menu menuText">Add</span>
 							</span>
@@ -103,7 +103,7 @@
 									<span class="flexItem"><span>Wound:</span><span class="inputBack"><input type="number" name="addWoundE" id="addWoundE" class="inputBod" ng-model="mCont.addForm.wound" placeholder="0" required/></span></span>
 									<span class="flexItem"><span>Strain:</span><span class="inputBack"><input type="number" name="addStrainE" id="addStrainE" class="inputBod" ng-model="mCont.addForm.strain" placeholder="0" /></span></span>
 									<span class="flexItem"><span>Initiative:</span><span class="inputBack"><input type="number" name="addInitE" id="addInitE" class="inputBod" ng-model="mCont.addForm.initiative" step="any" placeholder="0" /></span></span>
-									<input style="position: absolute; left: -9999px" ng-show="addEnemForm.$valid" ng-click="mCont.AddForm()" type="submit" />
+									<input ng-disabled="!addEnemForm.$valid" ng-click="mCont.AddForm()" type="submit" />
 								</form>
 								<span ng-show="addEnemForm.$valid" ng-click="mCont.AddForm()" class="menu menuText">Add</span>
 							</span>
@@ -131,36 +131,36 @@
 							<span class="sw_back menuColSpan">
 								<span>Boost</span>
 							</span>
-							<span class="menu menuText">-</span>
-							<span class="menu menuText">+</span>
+							<span class="menu menuText" ng-click="mCont.AdjustChar(-1, 'boost')">-</span>
+							<span class="menu menuText" ng-click="mCont.AdjustChar(1, 'boost')">+</span>
 						</span>
 						<span class="menuColSpan menuTitledBlock">
 							<span class="sw_back menuColSpan">
 								<span>Setback</span>
 							</span>
-							<span class="menu menuText">-</span>
-							<span class="menu menuText">+</span>
+							<span class="menu menuText" ng-click="mCont.AdjustChar(-1, 'setback')">-</span>
+							<span class="menu menuText" ng-click="mCont.AdjustChar(1, 'setback')">+</span>
 						</span>
 						<span class="menuColSpan menuTitledBlock">
 							<span class="sw_back menuColSpan">
 								<span>Upgrade</span>
 							</span>
-							<span class="menu menuText">-</span>
-							<span class="menu menuText">+</span>
+							<span class="menu menuText" ng-click="mCont.AdjustChar(-1, 'upgrade')">-</span>
+							<span class="menu menuText" ng-click="mCont.AdjustChar(1, 'upgrade')">+</span>
 						</span>
 						<span class="menuColSpan menuTitledBlock">
 							<span class="sw_back menuColSpan">
 								<span>Up Diff</span>
 							</span>
-							<span class="menu menuText">-</span>
-							<span class="menu menuText">+</span>
+							<span class="menu menuText" ng-click="mCont.AdjustChar(-1, 'upDiff')">-</span>
+							<span class="menu menuText" ng-click="mCont.AdjustChar(1, 'upDiff')">+</span>
 						</span>
 					</span>
 					<span id="initiativeDisp" class="charDispBod">
 						<span ng-show="!startInit && (playChars.length > 0)" class="initBlock">
 							<form name="setInitForm" id="setInitForm" novalidate>
 								<span class="flexItem"><span>Initiative:</span><span class="inputBack"><input type="number" name="initVal" id="initVal" ng-model="initVal" class="inputBod" placeholder="0" required/></span></span>
-								<input style="position: absolute; left: -9999px" ng-show="setInitForm.$valid" ng-click="mCont.Initiative(initVal)" type="submit" />
+								<input ng-click="mCont.Initiative(initVal)" type="submit" />
 							</form>
 							<span class="menu menuText" ng-show="setInitForm.$valid" ng-click="mCont.Initiative(initVal)">Set</span>
 							<span class="menu menuText" ng-show="!setInitForm.$valid" ng-click="mCont.Initiative()">Reset</span>

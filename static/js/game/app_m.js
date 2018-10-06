@@ -62,6 +62,10 @@
 										if ($scope.playChars[i].player.name == ret.data.live_player.player.name){
 											$scope.playChars[i].cur_wound = ret.data.live_player.cur_wound;
 											$scope.playChars[i].cur_strain = ret.data.live_player.cur_strain;
+											$scope.playChars[i].cur_boost = ret.data.live_player.cur_boost;
+											$scope.playChars[i].cur_setback = ret.data.live_player.cur_setback;
+											$scope.playChars[i].cur_upgrade = ret.data.live_player.cur_upgrade;
+											$scope.playChars[i].cur_upDiff = ret.data.live_player.cur_upDiff;
 											$scope.playChars[i].player.wound = ret.data.live_player.player.wound;
 											$scope.playChars[i].player.strain = ret.data.live_player.player.strain;
 											$scope.playChars[i].initiative = ret.data.live_player.initiative;
@@ -216,19 +220,19 @@
 					break;
 			}
 			var char = {
+				id: $scope.charsCurId,
 				player: {name: this.addForm.name},
 				type: this.addAction,
-				id: $scope.charsCurId
+				cur_boost: 0,
+				cur_setback: 0,
+				cur_upgrade: 0,
+				cur_upDiff: 0
 			};
 			char.player.wound = char.cur_wound = this.addForm.wound;
 			if (typeof this.addForm.strain !== 'undefined' || this.addForm.strain > 0){
 				char.player.strain = char.cur_strain = this.addForm.strain;
 			}
-			if (typeof this.addForm.initiative !== 'undefined' || this.addForm.initiative > 0){
-				char.initiative = this.addForm.initiative;
-			} else {
-				char.initiative = 0;
-			}
+			char.initiative = typeof this.addForm.initiative !== 'undefined' || this.addForm.initiative > 0 ? this.addForm.initiative : 0;
 			$scope.playChars.push(char);
 			$scope.charsCurId++;
 			sendData = {
@@ -245,11 +249,7 @@
 		this.SelectChar = function(gameChar){
 			for (var i = 0; i < $scope.playChars.length; i++){
 				if ($scope.playChars[i].id == gameChar.id){
-					if ($scope.playChars[i].selected){
-						$scope.playChars[i].selected = false;
-					} else {
-						$scope.playChars[i].selected = true;
-					}
+					$scope.playChars[i].selected = !$scope.playChars[i].selected;
 				}
 			}
 		};
@@ -270,9 +270,9 @@
 			}
 		};
 
-		this.AdjustChar = function(dam, woStType){
+		this.AdjustChar = function(dam, adjType){
 			var sendData = {
-				type: woStType,
+				type: adjType,
 				data: {
 					players: [],
 					message: String(dam)
@@ -281,22 +281,63 @@
 			var found = false;
 			for (var i = 0; i < $scope.playChars.length; i++){
 				if ($scope.playChars[i].selected){
-					if (woStType == "wound"){
-						if ($scope.playChars[i].cur_wound + dam <= $scope.playChars[i].player.wound && $scope.playChars[i].cur_wound + dam >= -$scope.playChars[i].player.wound * 2){
-							$scope.playChars[i].cur_wound += dam;
-							sendData.data.players.push($scope.playChars[i].player.name);
-							if (!found){
-								found = true;
+					switch (adjType){
+						case "wound":
+							if ($scope.playChars[i].cur_wound + dam <= $scope.playChars[i].player.wound && $scope.playChars[i].cur_wound + dam >= -$scope.playChars[i].player.wound * 2){
+								$scope.playChars[i].cur_wound += dam;
+								sendData.data.players.push($scope.playChars[i].player.name);
+								if (!found){
+									found = true;
+								}
 							}
-						}
-					} else if (typeof $scope.playChars[i].cur_strain !== 'undefined' && $scope.playChars[i].cur_strain !== null && typeof $scope.playChars[i].player.strain !== 'undefined' && $scope.playChars[i].player.strain !== null) {
-						if ($scope.playChars[i].cur_strain + dam <= $scope.playChars[i].player.strain && $scope.playChars[i].cur_strain + dam >= -$scope.playChars[i].player.strain * 2){
-							$scope.playChars[i].cur_strain += dam;
-							sendData.data.players.push($scope.playChars[i].player.name);
-							if (!found){
-								found = true;
+							break;
+						case "strain":
+							if (typeof $scope.playChars[i].cur_strain !== 'undefined' && $scope.playChars[i].cur_strain !== null && typeof $scope.playChars[i].player.strain !== 'undefined' && $scope.playChars[i].player.strain !== null) {
+								if ($scope.playChars[i].cur_strain + dam <= $scope.playChars[i].player.strain && $scope.playChars[i].cur_strain + dam >= -$scope.playChars[i].player.strain * 2){
+									$scope.playChars[i].cur_strain += dam;
+									sendData.data.players.push($scope.playChars[i].player.name);
+									if (!found){
+										found = true;
+									}
+								}
 							}
-						}
+							break;
+						case "boost":
+							if ($scope.playChars[i].cur_boost + dam >= 0){
+								$scope.playChars[i].cur_boost += dam;
+								sendData.data.players.push($scope.playChars[i].player.name);
+								if (!found){
+									found = true;
+								}
+							}
+							break;
+						case "setback":
+							if ($scope.playChars[i].cur_setback + dam >= 0){
+								$scope.playChars[i].cur_setback += dam;
+								sendData.data.players.push($scope.playChars[i].player.name);
+								if (!found){
+									found = true;
+								}
+							}
+							break;
+						case "upgrade":
+							if ($scope.playChars[i].cur_upgrade + dam >= 0){
+								$scope.playChars[i].cur_upgrade += dam;
+								sendData.data.players.push($scope.playChars[i].player.name);
+								if (!found){
+									found = true;
+								}
+							}
+							break;
+						case "upDiff":
+							if ($scope.playChars[i].cur_upDiff + dam >= 0){
+								$scope.playChars[i].cur_upDiff += dam;
+								sendData.data.players.push($scope.playChars[i].player.name);
+								if (!found){
+									found = true;
+								}
+							}
+							break;
 					}
 				}
 			}
@@ -310,11 +351,11 @@
 			for (var i = 0; i < $scope.playChars.length; i++){
 				if ($scope.playChars[i].id == charId){
 					var delChars = [];
-					delChars.push({player: $scope.playChars[i].player, type: $scope.playChars[i].type});
+					delChars.push($scope.playChars[i].player.name);
 					sendData = {
 						type: "delete",
 						data: {
-							message: JSON.stringify(delChars)
+							players: delChars
 						}
 					};
 					sendData = JSON.stringify(sendData);

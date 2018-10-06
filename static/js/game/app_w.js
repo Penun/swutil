@@ -9,6 +9,8 @@
 		$scope.rebLFileName = "rebelLogo.png";
 		$scope.rebDFileName = "rebelLogo_dark.png";
 
+		this.testNum = 4;
+
 		angular.element(document).ready(function(){
 			$scope.sock = new WebSocket('ws://' + $window.location.host + '/track/join?type=watch');
 			$timeout($scope.SetupSocket, 30);
@@ -76,19 +78,14 @@
 				break;
 			case 1: // LEAVE
 				if (data.player.type == "master") {
-					if (data.data !== ""){
-						var tPlays = JSON.parse(data.data);
-						for (var i = 0; i < tPlays.length; i++){
+					if (data.players !== ""){
+						for (var i = 0; i < data.players.length; i++){
 							for (var j = 0; j < $scope.gameChars.length; j++){
-								if ($scope.gameChars[j].player.name == tPlays[i].player.name){
+								if ($scope.gameChars[j].player.name == data.players[i]){
 									var setTurn = $scope.gameChars[j].isTurn;
 									$scope.gameChars.splice(j, 1);
 									if (setTurn){
-										if ($scope.gameChars.length > 0) {
-											$scope.FindNextInitInd(true, false);
-										} else {
-											$scope.curInitInd = 0;
-										}
+										$scope.gameChars.length > 0 ? $scope.FindNextInitInd(true, false) : $scope.curInitInd = 0;
 										$scope.SetTurn(true);
 									}
 									break;
@@ -105,11 +102,7 @@
 							var setTurn = $scope.gameChars[i].isTurn;
 							$scope.gameChars.splice(i, 1);
 							if (setTurn){
-								if ($scope.gameChars.length > 0) {
-									$scope.FindNextInitInd(true, false);
-								} else {
-									$scope.curInitInd = 0;
-								}
+								$scope.gameChars.length > 0 ? $scope.FindNextInitInd(true, false) : $scope.curInitInd = 0;
 								$scope.SetTurn(true);
 							}
 							break;
@@ -122,11 +115,7 @@
 				if (data.player.type != "master"){
 					for (var i = 0; i < $scope.gameChars.length; i++){
 						if ($scope.gameChars[i].player.name == data.player.name){
-							if (typeof $scope.gameChars[i].cur_wound === 'undefined'){
-								$scope.gameChars[i].cur_wound = Number(data.data);
-							} else {
-								$scope.gameChars[i].cur_wound += Number(data.data);
-							}
+							$scope.gameChars[i].cur_wound = typeof $scope.gameChars[i].cur_wound === 'undefined' ? Number(data.data) : $scope.gameChars[i].cur_wound + Number(data.data);
 							break;
 						}
 					}
@@ -145,11 +134,7 @@
 				if (data.player.type != "master"){
 					for (var i = 0; i < $scope.gameChars.length; i++){
 						if ($scope.gameChars[i].player.name == data.player.name){
-							if (typeof $scope.gameChars[i].cur_strain === 'undefined'){
-								$scope.gameChars[i].cur_strain = Number(data.data);
-							} else {
-								$scope.gameChars[i].cur_strain += Number(data.data);
-							}
+							$scope.gameChars[i].cur_strain = typeof $scope.gameChars[i].cur_strain === 'undefined' ? Number(data.data) : $scope.gameChars[i].cur_strain + Number(data.data)
 							break;
 						}
 					}
@@ -186,11 +171,7 @@
 			case 8: // Turn initiative
 				if ($scope.startInit){
 					$scope.SetTurn(false);
-					if (data.data === "+"){
-						$scope.FindNextInitInd(false, false);
-					} else {
-						$scope.FindNextInitInd(false, true);
-					}
+					data.data === "+" ? $scope.FindNextInitInd(false, false) : $scope.FindNextInitInd(false, true);
 					$scope.SetTurn(true);
 				}
 				break;
@@ -203,60 +184,76 @@
 				}
 				$scope.curInitInd = 0;
 				break;
+			case 10: // Boost
+				var dir = Number(data.data);
+				for (var i = 0; i < data.players.length; i++){
+					for (var j = 0; j < $scope.gameChars.length; j++){
+						if ($scope.gameChars[j].player.name == data.players[i] && $scope.gameChars[j].cur_boost + dir >= 0){
+							$scope.gameChars[j].cur_boost += dir;
+						}
+					}
+				}
+				break;
+			case 11: // Setback
+				var dir = Number(data.data);
+				for (var i = 0; i < data.players.length; i++){
+					for (var j = 0; j < $scope.gameChars.length; j++){
+						if ($scope.gameChars[j].player.name == data.players[i] && $scope.gameChars[j].cur_setback + dir >= 0){
+							$scope.gameChars[j].cur_setback += dir;
+						}
+					}
+				}
+				break;
+			case 12: // Upgrade
+				var dir = Number(data.data);
+				for (var i = 0; i < data.players.length; i++){
+					for (var j = 0; j < $scope.gameChars.length; j++){
+						if ($scope.gameChars[j].player.name == data.players[i] && $scope.gameChars[j].cur_upgrade + dir >= 0){
+							$scope.gameChars[j].cur_upgrade += dir;
+						}
+					}
+				}
+					break;
+			case 13: // UpDiff
+				var dir = Number(data.data);
+				for (var i = 0; i < data.players.length; i++){
+					for (var j = 0; j < $scope.gameChars.length; j++){
+						if ($scope.gameChars[j].player.name == data.players[i] && $scope.gameChars[j].cur_upDiff + dir >= 0){
+							$scope.gameChars[j].cur_upDiff += dir;
+						}
+					}
+				}
+				break;
 			}
 			$scope.$apply();
 		};
 
 		$scope.FindNextInitInd = function(incCur, reverse){
 			if (!incCur){
-				if (!reverse){
-					$scope.MoveCurFor();
-				} else {
-					$scope.MoveCurBack();
-				}
+				!reverse ? $scope.MoveCurFor() : $scope.MoveCurBack();
 			}
 			for (var i = 0; i < $scope.gameChars.length; i++){
 				if ($scope.gameChars[$scope.curInitInd].initiative > 0){
 					return;
 				}
-				if (!reverse){
-					$scope.MoveCurFor();
-				} else {
-					$scope.MoveCurBack();
-				}
+				!reverse ? $scope.MoveCurFor() : $scope.MoveCurBack();
 			}
 		};
 
 		$scope.MoveCurFor = function(){
-			if ($scope.curInitInd == $scope.gameChars.length - 1){
-				$scope.curInitInd = 0;
-			} else {
-				$scope.curInitInd++;
-			}
+			$scope.curInitInd == $scope.gameChars.length - 1 ? $scope.curInitInd = 0 : $scope.curInitInd++;
 		};
 
 		$scope.MoveCurBack = function(){
-			if ($scope.curInitInd == 0){
-				$scope.curInitInd = $scope.gameChars.length - 1;
-			} else {
-				$scope.curInitInd--;
-			}
+			$scope.curInitInd == 0 ? $scope.curInitInd = $scope.gameChars.length - 1 : $scope.curInitInd--;
 		};
 
 		$scope.PCDisplayList = function(gameChar){
-			if (gameChar.type == 'NPC' || gameChar.type == 'PC'){
-				return true;
-			} else {
-				return false;
-			}
+			return gameChar.type == 'NPC' || gameChar.type == 'PC';
 		};
 
 		$scope.InitDisplayList = function(gameChar){
-			if (gameChar.initiative > 0){
-				return true;
-			} else {
-				return false;
-			}
+			return gameChar.initiative > 0;
 		}
 
 		$scope.SortList = function(list, varName){
@@ -286,22 +283,50 @@
 		$scope.SetTurn = function(isTurn){
 			$scope.gameChars[$scope.curInitInd].isTurn = isTurn;
 			if (isTurn){
-				$scope.gameChars[$scope.curInitInd].dispType = ($scope.gameChars[$scope.curInitInd].type == 'NPCE') ? $scope.empDFileName : $scope.rebDFileName;
+				$scope.gameChars[$scope.curInitInd].dispType = $scope.gameChars[$scope.curInitInd].type == 'NPCE' ? $scope.empDFileName : $scope.rebDFileName;
 			} else {
-				$scope.gameChars[$scope.curInitInd].dispType = ($scope.gameChars[$scope.curInitInd].type == 'NPCE') ? $scope.empLFileName : $scope.rebLFileName;
+				$scope.gameChars[$scope.curInitInd].dispType = $scope.gameChars[$scope.curInitInd].type == 'NPCE' ? $scope.empLFileName : $scope.rebLFileName;
 			}
 		};
 
 		$scope.ApplyInit = function(){
 			if ($scope.startInit){
 				for (var i = 0; i < $scope.gameChars.length; i++){
-					if ($scope.curInitInd == i){
-						$scope.gameChars[i].isTurn = true;
-					} else {
-						$scope.gameChars[i].isTurn = false;
-					}
+					$scope.gameChars[i].isTurn = $scope.curInitInd == i;
 				}
 			}
+		};
+
+		$scope.CalcBoost = function(gameChar){
+			var loopArr = [];
+			for (var i = 0; i < gameChar.cur_boost; i++){
+				loopArr.push(i);
+			}
+			return loopArr;
+		};
+
+		$scope.CalcSetback = function(gameChar){
+			var loopArr = [];
+			for (var i = 0; i < gameChar.cur_setback; i++){
+				loopArr.push(i);
+			}
+			return loopArr;
+		};
+
+		$scope.CalcUpgrade = function(gameChar){
+			var loopArr = [];
+			for (var i = 0; i < gameChar.cur_upgrade; i++){
+				loopArr.push(i);
+			}
+			return loopArr;
+		};
+
+		$scope.CalcUpDiff = function(gameChar){
+			var loopArr = [];
+			for (var i = 0; i < gameChar.cur_upDiff; i++){
+				loopArr.push(i);
+			}
+			return loopArr;
 		};
 	}]);
 })();
