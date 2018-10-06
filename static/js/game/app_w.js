@@ -12,7 +12,7 @@
 		this.testNum = 4;
 
 		angular.element(document).ready(function(){
-			$scope.sock = new WebSocket('ws://' + $window.location.host + '/track/join?type=watch');
+			$scope.sock = new WebSocket('ws://' + $window.location.host + '/track/joinw');
 			$timeout($scope.SetupSocket, 30);
 		});
 

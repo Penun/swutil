@@ -83,10 +83,8 @@ span {
     color: #293c56;
     text-shadow:
         -1px -1px 0 #DFDFFF,
-        /* 1px -1px 0 #83d9e6, */
         1px -1px 0 #DFDFFF,
         -1px 1px 0 #DFDFFF,
-        /* 1px 1px 0 #83d9e6; */
         1px 1px 0 #DFDFFF;
 }
 

@@ -32,8 +32,9 @@ func init() {
 	beego.Router("/track/verify", &game.GameStatusController{}, "post:VerifyName")
 	beego.Router("/track/check", &game.GameStatusController{}, "get:Check")
 
-	beego.Router("/track/join", &game.WebSocketController{}, "get:Join")
-	beego.Router("/track/joinm", &game.WebSocketController{}, "get:JoinM")
+	beego.Router("/track/join", &game.PlayerSocketController{}, "get:Join")
+	beego.Router("/track/joinm", &game.MasterSocketController{}, "get:Join")
+	beego.Router("/track/joinw", &game.WatchSocketController{}, "get:Join")
 
 	beego.Router("/weapons", &controllers.WeaponsController{})
 	beego.Router("/weapons/add", &controllers.WeaponsController{}, "post:Add")

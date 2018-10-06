@@ -22,7 +22,7 @@
 					$scope.curChar.curWound = ret.data.live_player.cur_wound;
 					$scope.curChar.curStrain = ret.data.live_player.cur_strain;
 					$scope.curChar.initiative = ret.data.live_player.initiative;
-					$scope.sock = new WebSocket('ws://' + window.location.host + '/track/join?type=play&uname=' + $scope.curChar.name);
+					$scope.sock = new WebSocket('ws://' + window.location.host + '/track/join?uname=' + $scope.curChar.name);
 					$timeout($scope.SetupSocket, 500);
 				}
 			});
