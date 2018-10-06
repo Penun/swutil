@@ -1,4 +1,4 @@
-package game
+package gamesocket
 
 import (
 	"github.com/astaxie/beego"
@@ -23,7 +23,7 @@ var (
 	// Channel for exit users.
 	unsubscribe = make(chan string, 10)
 	// Send events here to publish them.
-	publish = make(chan game.Event, 10)
+	Publish = make(chan game.Event, 10)
 	subscribers = make([]Subscriber, 0)
 )
 
@@ -32,15 +32,15 @@ func tracker() {
 	for {
 		select {
 		case sub := <-subscribe:
-			if !isUserExist(subscribers, sub.Name) {
+			if !IfUserExist(sub.Name) {
 				subscribers = append(subscribers, sub) // Add user to the end of list.
 				// Publish a JOIN event.
-				publish <- newEvent(game.EVENT_JOIN, sub.Name, sub.Type, nil, "")
+				Publish <- NewEvent(game.EVENT_JOIN, sub.Name, sub.Type, nil, "")
 				beego.Info("New user:", sub.Name, ";WebSocket:", sub.Conn != nil)
 			} else {
 				beego.Info("Old user:", sub.Name, ";WebSocket:", sub.Conn != nil)
 			}
-		case event := <-publish:
+		case event := <- Publish:
 			broadcastWebSocket(event)
 		case unsub := <-unsubscribe:
 			subL := len(subscribers)
@@ -68,7 +68,7 @@ func init() {
 	go tracker()
 }
 
-func newEvent(ep game.EventType, user string, ws_type string, targets []string, data string) game.Event {
+func NewEvent(ep game.EventType, user string, ws_type string, targets []string, data string) game.Event {
 	return game.Event{ep, game.Sender{user, ws_type}, targets, data}
 }
 
@@ -80,7 +80,7 @@ func Leave(user string) {
 	unsubscribe <- user
 }
 
-func isUserExist(subscribers []Subscriber, user string) bool {
+func IfUserExist(user string) bool {
 	for i := 0; i < len(subscribers); i++ {
 		if subscribers[i].Name == user {
 			return true
