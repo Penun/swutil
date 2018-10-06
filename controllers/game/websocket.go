@@ -235,22 +235,34 @@ func (this *WebSocketController) JoinM() {
 					beego.Error(err.Error())
 				}
 			case "delete":
-				var targs []game.LivePlayer
-				err = json.Unmarshal([]byte(conReq.Data.Message), &targs)
-				if err == nil {
-					for i := 0; i < len(targs); i++ {
-						for j := 0; j < len(players); j++ {
-							if players[j].Player.Name == targs[i].Player.Name {
-								RemovePlayer(j)
-								UpdateCurIndByIsTurn()
-								j--
-							}
-						}
-					}
-					publish <- newEvent(game.EVENT_LEAVE, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
-				} else {
-					beego.Error(err.Error())
+				for _, play := range conReq.Data.Players {
+					DeletePlayerName(play)
 				}
+				publish <- newEvent(game.EVENT_LEAVE, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+			case "boost":
+				boost, _ := strconv.Atoi(conReq.Data.Message)
+				for _, play := range conReq.Data.Players {
+					BoostPlayer(play, boost)
+				}
+				publish <- newEvent(game.EVENT_BOOST, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+			case "setback":
+				setback, _ := strconv.Atoi(conReq.Data.Message)
+				for _, play := range conReq.Data.Players {
+					SetbackPlayer(play, setback)
+				}
+				publish <- newEvent(game.EVENT_SETBACK, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+			case "upgrade":
+				upgrade, _ := strconv.Atoi(conReq.Data.Message)
+				for _, play := range conReq.Data.Players {
+					UpgradePlayer(play, upgrade)
+				}
+				publish <- newEvent(game.EVENT_UPGRADE, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+			case "upDiff":
+				upDiff, _ := strconv.Atoi(conReq.Data.Message)
+				for _, play := range conReq.Data.Players {
+					UpDiffPlayer(play, upDiff)
+				}
+				publish <- newEvent(game.EVENT_UPDIFF, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			}
 		} else {
 			beego.Error(err.Error())
@@ -322,6 +334,22 @@ func broadcastWebSocket(event game.Event) {
 			}
 		case game.EVENT_INIT_E:
 			if subscribers[i].Type != "master" {
+				send = true
+			}
+		case game.EVENT_BOOST:
+			if watch {
+				send = true
+			}
+		case game.EVENT_SETBACK:
+			if watch {
+				send = true
+			}
+		case game.EVENT_UPGRADE:
+			if watch {
+				send = true
+			}
+		case game.EVENT_UPDIFF:
+			if watch {
 				send = true
 			}
 		}

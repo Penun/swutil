@@ -255,6 +255,50 @@ func RemovePlayer(i int) {
 	}
 }
 
+func BoostPlayer(playName string, dir int) {
+	if playName != "" {
+		for i := 0; i < len(players); i++ {
+			if players[i].Player.Name == playName && players[i].CurBoost + dir >= 0 {
+				players[i].CurBoost += dir
+				break
+			}
+		}
+	}
+}
+
+func SetbackPlayer(playName string, dir int) {
+	if playName != "" {
+		for i := 0; i < len(players); i++ {
+			if players[i].Player.Name == playName && players[i].CurSetback + dir >= 0 {
+				players[i].CurSetback += dir
+				break
+			}
+		}
+	}
+}
+
+func UpgradePlayer(playName string, dir int) {
+	if playName != "" {
+		for i := 0; i < len(players); i++ {
+			if players[i].Player.Name == playName && players[i].CurUpgrade + dir >= 0 {
+				players[i].CurUpgrade += dir
+				break
+			}
+		}
+	}
+}
+
+func UpDiffPlayer(playName string, dir int) {
+	if playName != "" {
+		for i := 0; i < len(players); i++ {
+			if players[i].Player.Name == playName && players[i].CurUpDiff + dir >= 0 {
+				players[i].CurUpDiff += dir
+				break
+			}
+		}
+	}
+}
+
 func SortPlayerInit() {
 	for  i := 0; i < len(players); i++ {
 		minInd := i

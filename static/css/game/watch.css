@@ -1,7 +1,7 @@
 .watchTable {
     display: grid;
     grid-template-rows: 1fr 1fr;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 30%;
     grid-column-gap: 1vw;
     grid-row-gap: 1vh;
     overflow-y: auto;
@@ -22,7 +22,7 @@
 }
 
 .playInner {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 33% 1fr 1fr 33%;
 }
 
 .dualInner {
@@ -92,5 +92,10 @@ span {
 
 .initImg {
     height: 4vh;
+    padding-bottom: 1vh;
+}
+
+.modImg {
+    padding-left: 5px;
     padding-bottom: 1vh;
 }

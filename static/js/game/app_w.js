@@ -9,6 +9,8 @@
 		$scope.rebLFileName = "rebelLogo.png";
 		$scope.rebDFileName = "rebelLogo_dark.png";
 
+		this.testNum = 4;
+
 		angular.element(document).ready(function(){
 			$scope.sock = new WebSocket('ws://' + $window.location.host + '/track/join?type=watch');
 			$timeout($scope.SetupSocket, 30);
@@ -76,11 +78,10 @@
 				break;
 			case 1: // LEAVE
 				if (data.player.type == "master") {
-					if (data.data !== ""){
-						var tPlays = JSON.parse(data.data);
-						for (var i = 0; i < tPlays.length; i++){
+					if (data.players !== ""){
+						for (var i = 0; i < data.players.length; i++){
 							for (var j = 0; j < $scope.gameChars.length; j++){
-								if ($scope.gameChars[j].player.name == tPlays[i].player.name){
+								if ($scope.gameChars[j].player.name == data.players[i]){
 									var setTurn = $scope.gameChars[j].isTurn;
 									$scope.gameChars.splice(j, 1);
 									if (setTurn){
@@ -203,6 +204,46 @@
 				}
 				$scope.curInitInd = 0;
 				break;
+			case 10: // Boost
+				var dir = Number(data.data);
+				for (var i = 0; i < data.players.length; i++){
+					for (var j = 0; j < $scope.gameChars.length; j++){
+						if ($scope.gameChars[j].player.name == data.players[i] && $scope.gameChars[j].cur_boost + dir >= 0){
+							$scope.gameChars[j].cur_boost += dir;
+						}
+					}
+				}
+				break;
+			case 11: // Setback
+				var dir = Number(data.data);
+				for (var i = 0; i < data.players.length; i++){
+					for (var j = 0; j < $scope.gameChars.length; j++){
+						if ($scope.gameChars[j].player.name == data.players[i] && $scope.gameChars[j].cur_setback + dir >= 0){
+							$scope.gameChars[j].cur_setback += dir;
+						}
+					}
+				}
+				break;
+			case 12: // Upgrade
+				var dir = Number(data.data);
+				for (var i = 0; i < data.players.length; i++){
+					for (var j = 0; j < $scope.gameChars.length; j++){
+						if ($scope.gameChars[j].player.name == data.players[i] && $scope.gameChars[j].cur_upgrade + dir >= 0){
+							$scope.gameChars[j].cur_upgrade += dir;
+						}
+					}
+				}
+					break;
+			case 13: // UpDiff
+				var dir = Number(data.data);
+				for (var i = 0; i < data.players.length; i++){
+					for (var j = 0; j < $scope.gameChars.length; j++){
+						if ($scope.gameChars[j].player.name == data.players[i] && $scope.gameChars[j].cur_upDiff + dir >= 0){
+							$scope.gameChars[j].cur_upDiff += dir;
+						}
+					}
+				}
+				break;
 			}
 			$scope.$apply();
 		};
@@ -302,6 +343,38 @@
 					}
 				}
 			}
+		};
+
+		$scope.CalcBoost = function(gameChar){
+			var loopArr = [];
+			for (var i = 0; i < gameChar.cur_boost; i++){
+				loopArr.push(i);
+			}
+			return loopArr;
+		};
+
+		$scope.CalcSetback = function(gameChar){
+			var loopArr = [];
+			for (var i = 0; i < gameChar.cur_setback; i++){
+				loopArr.push(i);
+			}
+			return loopArr;
+		};
+
+		$scope.CalcUpgrade = function(gameChar){
+			var loopArr = [];
+			for (var i = 0; i < gameChar.cur_upgrade; i++){
+				loopArr.push(i);
+			}
+			return loopArr;
+		};
+
+		$scope.CalcUpDiff = function(gameChar){
+			var loopArr = [];
+			for (var i = 0; i < gameChar.cur_upDiff; i++){
+				loopArr.push(i);
+			}
+			return loopArr;
 		};
 	}]);
 })();

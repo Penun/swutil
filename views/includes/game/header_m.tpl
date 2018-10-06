@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="Viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
 
-<title>SWUTIL Track</title>
+<title>SWUTIL Master</title>
 {{template "includes/game/styles.html"}}
 <link rel="stylesheet" href="/static/css/game/master.css" type="text/css" media="screen" />
 {{template "includes/game/js_m.html"}}
