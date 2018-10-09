@@ -14,13 +14,13 @@
 						<span class="colBod">
 							<span class="dispList">
 								<span ng-repeat="(ind, play) in gameChars | orderBy: '-disp_stats'" class="floatItem">
-									<span>{{"{{play.player.name}}"}}</span>
-									<span>{{str2html rawInitImg}}</span>
-									<span class="floatItemStats colSp_1_3" ng-show="play.disp_stats">
+									<span class="col2">{{"{{play.player.name}}"}}</span>
+									<span class="col3">{{str2html rawInitImg}}</span>
+									<span class="floatItemStats colSp_2_4" ng-show="play.disp_stats">
 	                    				<span>W:{{"{{play.cur_wound}}"}}/{{"{{play.player.wound}}"}}</span>
 	                    				<span ng-show="play.player.strain > 0">S:{{"{{play.cur_strain}}"}}/{{"{{play.player.strain}}"}}</span>
 									</span>
-									<span class="modRow colSp_1_3">
+									<span class="modRow colSp_2_4">
 										<img src="/static/img/boost.png" ng-repeat="n in CalcBoost(play)" class="modImg" />
 										<img src="/static/img/setBack.png" ng-repeat="n in CalcSetback(play)" class="modImg" />
 										<img src="/static/img/triumph.png" ng-repeat="n in CalcUpgrade(play)" class="modImg" />

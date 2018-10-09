@@ -34,13 +34,13 @@
 					<span id="characterDisp">
 						<span class="sw_back">
 							<span class="charAltHead">
-								<span class="clickHead" ng-click="mCont.SelectPlayerChar(false, 'PC')">Character Pool</span>
+								<span class="clickHead" ng-click="mCont.SelectPlayerChar()">Character Pool</span>
 								<span class="menu menuText" ng-click="mCont.SetupAdd()">+</span>
 							</span>
 						</span>
 						<span class="charDispBod">
-							<span class="dispList">
-								<span ng-repeat="(ind, play) in playChars | orderBy: '+player.name'" class="dispItem" ng-class="{selectedItem: play.selected}" ng-click="mCont.SelectChar(play)">
+							<span class="dispList hold1x1">
+								<span ng-repeat="(ind, play) in playChars | orderBy: '+disp_stats'" class="dispItem itemBord" ng-class="{selectedItem: play.selected}" ng-click="mCont.SelectChar(play)">
 									<span class="dispItemName">{{"{{play.player.name}}"}}</span>
 									<span class="menu menuText menuBordT menuBordR dispItemClose" ng-click="mCont.DelChar(play.id)">X</span>
 									<span class="menuColSpan dispItemStats">
@@ -56,8 +56,8 @@
 									</span>
 								</span>
 							</span>
-							<span ng-show="mCont.addAction" class="formWrapper">
-								<span class="menu menuText" ng-click="mCont.ClearForm(5, false)">Cancel</span>
+							<span ng-show="mCont.addAction" class="formWrapper hold1x1 itemBord">
+								<span class="menu menuText formButt" ng-click="mCont.ClearForm(5, false)">Cancel</span>
 								<form name="addCharForm" id="addCharForm" class="formInner" novalidate>
 									<span class="flexItem"><span>Show Stats:</span><span class="inputBack"><input type="checkbox" name="dispStats" id="dispStats" class="inputBod" ng-model="mCont.addForm.dispStats" /></span></span>
 									<span class="flexItem"><span>Name:</span><span class="inputBack"><input type="text" name="addName" id="addName" class="inputBod" ng-model="mCont.addForm.name" placeholder="Name" required/></span></span>
@@ -66,14 +66,11 @@
 									<span class="flexItem"><span>Initiative:</span><span class="inputBack"><input type="number" name="addInit" id="addInit" class="inputBod" ng-model="mCont.addForm.initiative" step="any" placeholder="0" /></span></span>
 									<input ng-disabled="!addCharForm.$valid" ng-click="mCont.AddForm()" type="submit" />
 								</form>
-								<span ng-show="addCharForm.$valid" ng-click="mCont.AddForm()" class="menu menuText">Add</span>
+								<span ng-show="addCharForm.$valid" ng-click="mCont.AddForm()" class="menu menuText formButt">Add</span>
 							</span>
 						</span>
 					</span>
 					<span id="characterMenu" ng-show="playChars.length > 0">
-						<span class="menuColSpan menuTitledBlock">
-							<span class="menu menuText menuAll menuBordT" ng-click="mCont.SelectPlayerChar()">All</span>
-						</span>
 						<span class="menuColSpan menuTitledBlock">
 							<span class="sw_back menuColSpan">
 								<span>Wound</span>
