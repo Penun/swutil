@@ -449,5 +449,37 @@
 				$scope.backStep = step;
 			}
 		};
+
+		$scope.CalcBoost = function(gameChar){
+			var loopArr = [];
+			for (var i = 0; i < gameChar.cur_boost; i++){
+				loopArr.push(i);
+			}
+			return loopArr;
+		};
+
+		$scope.CalcSetback = function(gameChar){
+			var loopArr = [];
+			for (var i = 0; i < gameChar.cur_setback; i++){
+				loopArr.push(i);
+			}
+			return loopArr;
+		};
+
+		$scope.CalcUpgrade = function(gameChar){
+			var loopArr = [];
+			for (var i = 0; i < gameChar.cur_upgrade; i++){
+				loopArr.push(i);
+			}
+			return loopArr;
+		};
+
+		$scope.CalcUpDiff = function(gameChar){
+			var loopArr = [];
+			for (var i = 0; i < gameChar.cur_upDiff; i++){
+				loopArr.push(i);
+			}
+			return loopArr;
+		};
 	}]);
 })();

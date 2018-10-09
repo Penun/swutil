@@ -181,26 +181,24 @@ span {
 .dispList {
     display: flex;
     align-content: flex-start;
-    justify-content: flex-start;
+    justify-content: space-around;
+    flex-wrap: wrap;
     height: 100%;
 }
 
 .dispItem {
-    background-image: url("/static/img/light_underline.png");
-	background-size: 105% 10%;
-    background-position: bottom center;
-    background-repeat: no-repeat;
-    padding-top: 0.5%;
-    padding-left: 0.5%;
+    padding: 1%;
+    margin: 1px;
+    border: 8px solid transparent;
+    border-image: url("/static/img/light_border.png") 24 round;
     font-size: calc(12px + 2vmin);
     text-align: center;
     grid-template-columns: 1fr 10%;
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-rows: auto;
+    grid-row-gap: 0.5vh;
     cursor: pointer;
-    height: 15%;
-    max-height: 15vh;
-    width: 33%;
-    max-width: 33vh;
+    height: max-content;
+    max-width: 90%;
 }
 
 .dispItemName {
@@ -210,8 +208,9 @@ span {
 
 .dispItemStats {
     grid-template-columns: repeat(3, 1fr);
-    grid-column-gap: 0.5vw;
-    font-size: calc(12px + 1vmin);
+    grid-column-gap: 1vw;
+    font-size: calc(8px + 1.5vmin);
+    font-weight: bold;
 }
 
 .dispItemStr {
@@ -220,6 +219,17 @@ span {
 
 .dispItemInit {
     grid-column: 3 / 4;
+}
+
+.modRow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.modImg {
+    padding: 3px;
 }
 
 .formWrapper {
@@ -254,6 +264,7 @@ span {
 .selectedItem {
     background-image: url("/static/img/light_underline_high.png");
     background-size: 100% 100%;
+    background-repeat: no-repeat;
     color: #293c56;
     text-shadow:
         -1px -1px 0 #DFDFFF,

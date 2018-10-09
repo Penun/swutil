@@ -13,11 +13,11 @@
 						</span>
 						<span class="colBod">
 							<span class="dispList">
-								<span ng-repeat="(ind, play) in gameChars | filter: PCDisplayList | orderBy: '+player.name'" class="listItem">
+								<span ng-repeat="(ind, play) in gameChars | filter: PCDisplayList | orderBy: '+player.name'" class="floatItem">
 									<span>{{"{{play.player.name}}"}}</span>
-									<span class="listItemStats">
-	                    				<span>W: {{"{{play.cur_wound}}"}}/{{"{{play.player.wound}}"}}</span>
-	                    				<span ng-show="play.player.strain > 0">S: {{"{{play.cur_strain}}"}}/{{"{{play.player.strain}}"}}</span>
+									<span class="floatItemStats">
+	                    				<span>W:{{"{{play.cur_wound}}"}}/{{"{{play.player.wound}}"}}</span>
+	                    				<span ng-show="play.player.strain > 0">S:{{"{{play.cur_strain}}"}}/{{"{{play.player.strain}}"}}</span>
 									</span>
 									<span class="modRow">
 										<img src="/static/img/boost.png" ng-repeat="n in CalcBoost(play)" class="modImg" />
@@ -33,9 +33,9 @@
 						<span class="sw_back">
 							<span class="colHead">Initiative Order</span>
 						</span>
-						<span class="colBod">
+						<span class="colBod initBod">
 							<span ng-repeat="(ind, init) in gameChars | filter: InitDisplayList" ng-class="{activePlayer: startInit && init.isTurn}" class="listItem">
-								<span>{{str2html rawInitImg}}</span>
+								{{str2html rawInitImg}}
 							</span>
 						</span>
 					</span>
