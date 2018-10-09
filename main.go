@@ -20,8 +20,13 @@ func rawSpecImg() (out string) {
 	return
 }
 
+func rawTeamImg() (out string) {
+	out = "<img class=\"initImg\" ng-src=\"/static/img/{{play.teamDisp}}\" alt=\"\">"
+	return
+}
+
 func rawInitImg() (out string) {
-	out = "<img class=\"initImg\" ng-src=\"/static/img/{{play.dispType}}\" alt=\"\">"
+	out = "<img class=\"initImg\" ng-src=\"/static/img/{{play.initDisp}}\" alt=\"\">"
 	return
 }
 
@@ -29,5 +34,6 @@ func main() {
 	orm.Debug = true
 	beego.AddFuncMap("rawSpecImg", rawSpecImg)
 	beego.AddFuncMap("rawInitImg", rawInitImg)
+	beego.AddFuncMap("rawTeamImg", rawTeamImg)
 	beego.Run()
 }

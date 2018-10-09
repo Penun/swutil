@@ -27,7 +27,7 @@ func (this *PlayerSocketController) Join() {
 			return
 		}
 		if newPlay := game.GetPlayerName(uname); (newPlay != game.Player{}) {
-			tempPlay := game.LivePlayer{Player: &newPlay, IsTurn: false, Type: "PC", DispStats: true}
+			tempPlay := game.LivePlayer{Player: &newPlay, IsTurn: false, Type: "PC", Team: game.T_REBEL, DispStats: true}
 			tempPlay.CurWound = newPlay.Wound
 			tempPlay.CurStrain = newPlay.Strain
 			players = append(players, tempPlay)

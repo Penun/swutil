@@ -30,6 +30,7 @@
 					if (ret.data.success){
 						for (var i = 0; i < ret.data.result.length; i++){
 							ret.data.result[i].id = $scope.charsCurId;
+							ret.data.result[i].teamDisp = $scope.AssignTeamLogo(ret.data.result[i].team);
 							$scope.playChars.push(ret.data.result[i]);
 							$scope.charsCurId++;
 						}
@@ -182,7 +183,7 @@
 				sendData = JSON.stringify(sendData);
 				$scope.sock.send(sendData);
 				$scope.initVal = null;
-				this.SelectPlayerChar(true, "ALL");
+				this.SelectAllChar(true, "ALL");
 			}
 		};
 
@@ -208,6 +209,7 @@
 				id: $scope.charsCurId,
 				player: {name: this.addForm.name},
 				type: "NPC",
+				team: this.addForm.dispStats ? 1 : 2,
 				disp_stats: this.addForm.dispStats,
 				cur_boost: 0,
 				cur_setback: 0,
@@ -219,8 +221,6 @@
 				char.player.strain = char.cur_strain = this.addForm.strain;
 			}
 			char.initiative = typeof this.addForm.initiative !== 'undefined' || this.addForm.initiative > 0 ? this.addForm.initiative : 0;
-			$scope.playChars.push(char);
-			$scope.charsCurId++;
 			sendData = {
 				type: "add",
 				data: {
@@ -229,6 +229,9 @@
 			};
 			sendData = JSON.stringify(sendData);
 			$scope.sock.send(sendData);
+			char.teamDisp = $scope.AssignTeamLogo(char.team);
+			$scope.playChars.push(char);
+			$scope.charsCurId++;
 			this.ClearForm(5, false);
 		};
 
@@ -236,23 +239,23 @@
 			for (var i = 0; i < $scope.playChars.length; i++){
 				if ($scope.playChars[i].id == gameChar.id){
 					$scope.playChars[i].selected = !$scope.playChars[i].selected;
+					$scope.playChars[i].teamDisp = $scope.AssignTeamLogo($scope.playChars[i].team, $scope.playChars[i].selected);
 				}
 			}
 		};
 
-		this.SelectPlayerChar = function(deselect = false, targType = "ALL"){
+		this.SelectAllChar = function(deselect = false){
 			if (!deselect){
 				for (var i = 0; i < $scope.playChars.length; i++){
-					if ($scope.playChars[i].selected && ($scope.playChars[i].type == targType || targType == "ALL")){
+					if ($scope.playChars[i].selected){
 						deselect = true;
 						break;
 					}
 				}
 			}
 			for (var i = 0; i < $scope.playChars.length; i++){
-				if ($scope.playChars[i].type == targType || targType == "ALL"){
-					$scope.playChars[i].selected = !deselect;
-				}
+				$scope.playChars[i].selected = !deselect;
+				$scope.playChars[i].teamDisp = $scope.AssignTeamLogo($scope.playChars[i].team, !deselect);
 			}
 		};
 
@@ -480,6 +483,20 @@
 				loopArr.push(i);
 			}
 			return loopArr;
+		};
+
+		$scope.AssignTeamLogo = function(teamId, highlight = false){
+			switch (teamId){
+				case 1: // Rebel
+					return !highlight ? "rebelLogo.png": "rebelLogo_dark.png";
+					break;
+				case 2: // Empire
+					return !highlight ? "empireLogo.png" : "empireLogo_dark.png";
+					break;
+				default:
+					return "";
+					break;
+			}
 		};
 	}]);
 })();

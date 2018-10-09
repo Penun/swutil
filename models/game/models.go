@@ -24,6 +24,12 @@ const (
     EVENT_UPDIFF //13
 )
 
+const (
+    _ = iota //0 Blank for unasigned teams
+    T_REBEL //1
+    T_EMPIRE //2
+)
+
 type Event struct {
 	Type EventType `json:"type"`
 	Sender Sender `json:"sender"`
@@ -105,7 +111,9 @@ type LivePlayer struct {
     CurUpDiff int `json:"cur_upDiff"`
     IsTurn bool `json:"isTurn"`
 	Type string `json:"type"`
+	Team int `json:"team"`
     DispStats bool `json:"disp_stats"`
+
 }
 
 type Sender struct {

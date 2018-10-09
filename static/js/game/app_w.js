@@ -4,12 +4,6 @@
 		$scope.gameChars = [];
 		$scope.startInit = false;
 		$scope.curInitInd = 0;
-		$scope.empLFileName = "empireLogo.png";
-		$scope.empDFileName = "empireLogo_dark.png";
-		$scope.rebLFileName = "rebelLogo.png";
-		$scope.rebDFileName = "rebelLogo_dark.png";
-
-		this.testNum = 4;
 
 		angular.element(document).ready(function(){
 			$scope.sock = new WebSocket('ws://' + $window.location.host + '/track/joinw');
@@ -22,7 +16,7 @@
 				$http.get("/track/subs?type=watch").then(function(ret){
 					if (ret.data.success){
 						for (var i = 0; i < ret.data.result.length; i++){
-							ret.data.result[i].dispType = ret.data.result[i].disp_stats ? $scope.rebLFileName : $scope.empLFileName;
+							ret.data.result[i].initDisp = ret.data.result[i].teamDisp = $scope.AssignTeamLogo(ret.data.result[i].team);
 							$scope.gameChars.push(ret.data.result[i]);
 						}
 						$http.get("/track/status").then(function(ret){
@@ -58,7 +52,7 @@
 						}
 						$http.post("/track/player", sendData).then(function(ret){
 							if (ret.data.success){
-								ret.data.live_player.dispType = $scope.rebLFileName;
+								ret.data.live_player.initDisp = ret.data.live_player.teamDisp = $scope.AssignTeamLogo(ret.data.live_player.team);
 								$scope.gameChars.push(ret.data.live_player);
 							}
 						});
@@ -66,7 +60,7 @@
 				} else if (data.player.type == "master"){
 					if (data.data !== ""){
 						var tPlay = JSON.parse(data.data);
-						tPlay.dispType = tPlay.disp_stats ? $scope.rebLFileName: $scope.empLFileName;
+						tPlay.initDisp = tPlay.teamDisp = $scope.AssignTeamLogo(tPlay.team);
 						if (typeof tPlay.initiative === 'undefined'){
 							tPlay.initiative = 0;
 						}
@@ -248,10 +242,6 @@
 			$scope.curInitInd == 0 ? $scope.curInitInd = $scope.gameChars.length - 1 : $scope.curInitInd--;
 		};
 
-		$scope.PCDisplayList = function(gameChar){
-			return gameChar.type == 'NPC' || gameChar.type == 'PC';
-		};
-
 		$scope.InitDisplayList = function(gameChar){
 			return gameChar.initiative > 0;
 		}
@@ -282,11 +272,7 @@
 
 		$scope.SetTurn = function(isTurn){
 			$scope.gameChars[$scope.curInitInd].isTurn = isTurn;
-			if (isTurn){
-				$scope.gameChars[$scope.curInitInd].dispType = $scope.gameChars[$scope.curInitInd].disp_stats ? $scope.rebDFileName : $scope.empDFileName;
-			} else {
-				$scope.gameChars[$scope.curInitInd].dispType = $scope.gameChars[$scope.curInitInd].disp_stats ? $scope.rebLFileName : $scope.empLFileName;
-			}
+			$scope.gameChars[$scope.curInitInd].initDisp = $scope.AssignTeamLogo($scope.gameChars[$scope.curInitInd].team, isTurn);
 		};
 
 		$scope.ApplyInit = function(){
@@ -327,6 +313,20 @@
 				loopArr.push(i);
 			}
 			return loopArr;
+		};
+
+		$scope.AssignTeamLogo = function(teamId, highlight = false){
+			switch (teamId){
+				case 1: // Rebel
+					return !highlight ? "rebelLogo.png": "rebelLogo_dark.png";
+					break;
+				case 2: // Empire
+					return !highlight ? "empireLogo.png" : "empireLogo_dark.png";
+					break;
+				default:
+					return "";
+					break;
+			}
 		};
 	}]);
 })();

@@ -127,6 +127,10 @@ span {
     grid-column: 1 / 3;
 }
 
+.colSp_1_4 {
+    grid-column: 1 / 4;
+}
+
 .menuAll {
     grid-row: 1 / 3;
     grid-column: 1 / 3;
@@ -196,7 +200,8 @@ span {
     padding: 1%;
     margin: 1px;
     font-size: calc(12px + 2vmin);
-    grid-template-columns: 1fr 10%;
+    grid-template-columns: 1fr 20% 10%;
+    grid-column-gap: 0.5vw;
     grid-template-rows: auto;
     grid-row-gap: 0.5vh;
     cursor: pointer;
@@ -217,7 +222,13 @@ span {
     justify-content: stretch;
 }
 
+.initImg {
+    height: 4vh;
+    padding: 2% 0 3% 0;
+}
+
 .dispItemClose {
+    grid-column: 3 / 4;
     align-self: stretch;
     justify-self: stretch;
 }
