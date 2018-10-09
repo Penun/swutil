@@ -1,16 +1,21 @@
-.watchTable {
+body {
+    font-size: calc(12px + 1.75vmin);
+    text-align: center;
+}
+
+span {
     display: grid;
+    align-content: stretch;
+    justify-content: stretch;
+}
+
+.watchTable {
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 1fr 30%;
     grid-column-gap: 1vw;
     grid-row-gap: 1vh;
     overflow-y: auto;
     height: 100%;
-}
-
-.watchTable > div {
-    display: grid;
-    grid-template-rows: 1fr;
 }
 
 .waColR {
@@ -29,15 +34,7 @@
     grid-template-columns: 60% 40%;
 }
 
-span {
-    align-self: center;
-    justify-self: stretch;
-    font-size: calc(12px + 2vmin);
-    text-align: center;
-}
-
 .dispPan {
-    display: grid;
     grid-template-rows: 5vh 1fr;
     height: 100%;
 }
@@ -46,10 +43,6 @@ span {
     background-image: url("/static/img/light_underline_high.png");
 	background-size: 100% 100%;
 	align-self: stretch;
-    display: grid;
-}
-
-.colHead > span {
     font-size: calc(12px + 1vmin);
     font-weight: bold;
     color: #293c56;
@@ -68,13 +61,32 @@ span {
     align-self: stretch;
 }
 
+.dispList {
+    display: flex;
+    align-content: flex-start;
+    justify-content: flex-start;
+    height: 100%;
+}
+
 .listItem {
     background-image: url("/static/img/light_underline.png");
 	background-size: 105% 20%;
     background-position: bottom center;
     background-repeat: no-repeat;
     padding-top: 0.5vh;
-    display: grid;
+    padding-left: 0.5vw;
+    width: 30%;
+    max-width: 25vw;
+    height: 15%;
+    max-height: 15vh;
+    font-size: calc(12px + 2vmin);
+    grid-template-rows: 33% 20% 1fr 15%;
+}
+
+.listItemStats {
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 0.5vw;
+    font-size: calc(12px + 0.75vmin);
 }
 
 .activePlayer {
@@ -98,6 +110,10 @@ span {
     padding-bottom: 1vh;
 }
 
-.modCol {
-    grid-column: 4 / 5;
+.modRow {
+    display: flex;
+    overflow-y: auto;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
 }

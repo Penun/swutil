@@ -53,10 +53,10 @@ func init() {
 	beego.Router("/players/add", &controllers.PlayersController{}, "post:Add")
 	beego.Router("/force", &controllers.ForceController{})
 
-	beego.Router("/edit", &controllers.EditController{})
+	//beego.Router("/edit", &controllers.EditController{})
 	//beego.Router("/species/add", &controllers.SpeciesController{}, "post:Add")
 	//beego.Router("/specializations", &controllers.SpecializationsController{})
 	//beego.Router("/specializations/add", &controllers.SpecializationsController{}, "post:Add")
-	beego.Router("/talents", &controllers.TalentsController{})
+	//beego.Router("/talents", &controllers.TalentsController{})
 	//beego.Router("/talents/add", &controllers.TalentsController{}, "post:Add")
 }

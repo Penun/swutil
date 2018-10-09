@@ -105,6 +105,7 @@ type LivePlayer struct {
     CurUpDiff int `json:"cur_upDiff"`
     IsTurn bool `json:"isTurn"`
 	Type string `json:"type"`
+    DispStats bool `json:"disp_stats"`
 }
 
 type Sender struct {

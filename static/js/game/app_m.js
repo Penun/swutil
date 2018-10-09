@@ -186,43 +186,29 @@
 			}
 		};
 
-		this.SetupAdd = function(addAction){
-			this.addAction = addAction;
+		this.SetupAdd = function(){
+			this.addAction = true;
 		};
 
 		this.AddForm = function(){
-			switch (this.addAction){
-				case "NPC":
-					if (typeof this.addForm.name === 'undefined' || this.addForm.name <= 0){
-						var addName = document.getElementById("addNameA");
-						addName.focus();
-						return;
-					}
-					if (typeof this.addForm.wound === 'undefined' || this.addForm.wound <= 0){
-						var addWound = document.getElementById("addWoundA");
-						addWound.focus();
-						return;
-					}
-					break;
-				case "NPCE":
-					if (typeof this.addForm.name === 'undefined' || this.addForm.name <= 0){
-						var addName = document.getElementById("addNameE");
-						addName.focus();
-						return;
-					}
-					if (typeof this.addForm.wound === 'undefined' || this.addForm.wound <= 0){
-						var addWound = document.getElementById("addWoundE");
-						addWound.focus();
-						return;
-					}
-					break;
-				default:
-					break;
+			if (!this.addAction){
+				return;
+			}
+			if (typeof this.addForm.name === 'undefined' || this.addForm.name <= 0){
+				var addName = document.getElementById("addName");
+				addName.focus();
+				return;
+			}
+			if (typeof this.addForm.wound === 'undefined' || this.addForm.wound <= 0){
+				var addWound = document.getElementById("addWound");
+				addWound.focus();
+				return;
 			}
 			var char = {
 				id: $scope.charsCurId,
 				player: {name: this.addForm.name},
-				type: this.addAction,
+				type: "NPC",
+				disp_stats: this.addForm.dispStats,
 				cur_boost: 0,
 				cur_setback: 0,
 				cur_upgrade: 0,
@@ -383,10 +369,7 @@
 					break;
 				case 5:
 					this.addForm = {};
-					this.addAction = "";
-					if (move){
-						$scope.SetStep($scope.backStep, false);
-					}
+					this.addAction = false;
 					break;
 				case 6:
 					this.delForm = {};

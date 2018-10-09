@@ -106,7 +106,7 @@
 			$scope.curChar.curWound = $scope.curChar.wound;
 			$scope.curChar.curStrain = $scope.curChar.strain;
 			$scope.curChar.initiative = 0;
-			$scope.sock = new WebSocket('ws://' + window.location.host + '/track/join?type=play&uname=' + $scope.curChar.name);
+			$scope.sock = new WebSocket('ws://' + window.location.host + '/track/join?uname=' + $scope.curChar.name);
 			$timeout($scope.SetupSocket, 500);
 		}
 
