@@ -78,6 +78,7 @@ span {
     border-color: #111144;
     border-style: inset;
     border-width: 0 0 1px 1px;
+    z-index: 100;
 }
 
 .menu:hover {
@@ -191,19 +192,26 @@ span {
     margin: 1px;
     border: 8px solid transparent;
     border-image: url("/static/img/light_border.png") 24 round;
+    background-color: rgba(164, 221, 230, 0.15);
     font-size: calc(12px + 2vmin);
-    text-align: center;
     grid-template-columns: 1fr 10%;
     grid-template-rows: auto;
     grid-row-gap: 0.5vh;
     cursor: pointer;
     height: max-content;
     max-width: 90%;
+    justify-items: center;
+    align-items: center;
 }
 
 .dispItemName {
     align-content: stretch;
     justify-content: stretch;
+}
+
+.dispItemClose {
+    align-self: stretch;
+    justify-self: stretch;
 }
 
 .dispItemStats {
@@ -274,9 +282,8 @@ span {
 }
 
 .inputBack {
-    border-color: #111144;
-    border-style: inset;
-    border-width: 2px;
+    border: 5px solid transparent;
+    border-image: url("/static/img/light_border.png") 24 round;
     box-shadow: 3px 3px 20px #111144 inset;
     background-color: rgba(0, 0, 25, 0.5);
     width: 40%;

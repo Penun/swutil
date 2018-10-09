@@ -21,7 +21,7 @@ func rawSpecImg() (out string) {
 }
 
 func rawInitImg() (out string) {
-	out = "<img class=\"initImg\" ng-src=\"/static/img/{{init.dispType}}\" alt=\"\">"
+	out = "<img class=\"initImg\" ng-src=\"/static/img/{{play.dispType}}\" alt=\"\">"
 	return
 }
 

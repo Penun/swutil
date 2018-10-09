@@ -40,15 +40,15 @@
 						</span>
 						<span class="charDispBod">
 							<span class="dispList">
-								<span ng-repeat="(ind, play) in playChars | orderBy: '+player.name'" class="dispItem" ng-class="{selectedItem: play.selected}">
-									<span class="dispItemName" ng-click="mCont.SelectChar(play)">{{"{{play.player.name}}"}}</span>
-									<span class="menu menuText menuBordT menuBordR" ng-click="mCont.DelChar(play.id)">X</span>
-									<span class="menuColSpan dispItemStats" ng-click="mCont.SelectChar(play)">
+								<span ng-repeat="(ind, play) in playChars | orderBy: '+player.name'" class="dispItem" ng-class="{selectedItem: play.selected}" ng-click="mCont.SelectChar(play)">
+									<span class="dispItemName">{{"{{play.player.name}}"}}</span>
+									<span class="menu menuText menuBordT menuBordR dispItemClose" ng-click="mCont.DelChar(play.id)">X</span>
+									<span class="menuColSpan dispItemStats">
 										<span>W:{{"{{play.cur_wound}}"}}/{{"{{play.player.wound}}"}}</span>
 										<span ng-show="play.player.strain > 0" class="dispItemStr">S:{{"{{play.cur_strain}}"}}/{{"{{play.player.strain}}"}}</span>
 										<span ng-show="play.initiative > 0" class="dispItemInit">I:{{"{{play.initiative}}"}}</span>
 									</span>
-									<span class="menuColSpan modRow" ng-click="mCont.SelectChar(play)">
+									<span class="menuColSpan modRow">
 										<img src="/static/img/boost.png" ng-repeat="n in CalcBoost(play)" class="modImg" />
 										<img src="/static/img/setBack.png" ng-repeat="n in CalcSetback(play)" class="modImg" />
 										<img src="/static/img/triumph.png" ng-repeat="n in CalcUpgrade(play)" class="modImg" />

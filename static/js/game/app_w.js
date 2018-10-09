@@ -22,7 +22,7 @@
 				$http.get("/track/subs?type=watch").then(function(ret){
 					if (ret.data.success){
 						for (var i = 0; i < ret.data.result.length; i++){
-							ret.data.result[i].dispType = (ret.data.result[i].type == 'NPCE') ? $scope.empLFileName : $scope.rebLFileName;
+							ret.data.result[i].dispType = ret.data.result[i].disp_stats ? $scope.rebLFileName : $scope.empLFileName;
 							$scope.gameChars.push(ret.data.result[i]);
 						}
 						$http.get("/track/status").then(function(ret){
@@ -66,7 +66,7 @@
 				} else if (data.player.type == "master"){
 					if (data.data !== ""){
 						var tPlay = JSON.parse(data.data);
-						tPlay.dispType = (tPlay.type == 'NPC') ? tPlay.dispType = $scope.rebLFileName : $scope.empLFileName;
+						tPlay.dispType = tPlay.disp_stats ? $scope.rebLFileName: $scope.empLFileName;
 						if (typeof tPlay.initiative === 'undefined'){
 							tPlay.initiative = 0;
 						}
@@ -283,9 +283,9 @@
 		$scope.SetTurn = function(isTurn){
 			$scope.gameChars[$scope.curInitInd].isTurn = isTurn;
 			if (isTurn){
-				$scope.gameChars[$scope.curInitInd].dispType = $scope.gameChars[$scope.curInitInd].type == 'NPCE' ? $scope.empDFileName : $scope.rebDFileName;
+				$scope.gameChars[$scope.curInitInd].dispType = $scope.gameChars[$scope.curInitInd].disp_stats ? $scope.rebDFileName : $scope.empDFileName;
 			} else {
-				$scope.gameChars[$scope.curInitInd].dispType = $scope.gameChars[$scope.curInitInd].type == 'NPCE' ? $scope.empLFileName : $scope.rebLFileName;
+				$scope.gameChars[$scope.curInitInd].dispType = $scope.gameChars[$scope.curInitInd].disp_stats ? $scope.rebLFileName : $scope.empLFileName;
 			}
 		};
 
