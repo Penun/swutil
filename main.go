@@ -21,12 +21,12 @@ func rawSpecImg() (out string) {
 }
 
 func rawTeamImg() (out string) {
-	out = "<img class=\"initImg\" ng-src=\"/static/img/{{play.teamDisp}}\" alt=\"\">"
+	out = "<img class=\"initImg\" ng-src=\"/static/img/emblems/{{play.teamDisp}}\" alt=\"\">"
 	return
 }
 
 func rawInitImg() (out string) {
-	out = "<img class=\"initImg\" ng-src=\"/static/img/{{play.initDisp}}\" alt=\"\">"
+	out = "<img class=\"initImg\" ng-src=\"/static/img/emblems/{{play.initDisp}}\" alt=\"\">"
 	return
 }
 

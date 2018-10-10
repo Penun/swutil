@@ -70,6 +70,8 @@
 											$scope.playChars[i].player.wound = ret.data.live_player.player.wound;
 											$scope.playChars[i].player.strain = ret.data.live_player.player.strain;
 											$scope.playChars[i].initiative = ret.data.live_player.initiative;
+											$scope.playChars[i].team = ret.data.live_player.team;
+											$scope.playChars[i].teamDisp = $scope.AssignTeamLogo(ret.data.live_player.team);
 											break;
 										}
 									}
@@ -209,7 +211,7 @@
 				id: $scope.charsCurId,
 				player: {name: this.addForm.name},
 				type: "NPC",
-				team: this.addForm.dispStats ? 1 : 2,
+				team: this.addForm.dispStats ? 1 : Math.floor(Math.random() * 9) + 2,
 				disp_stats: this.addForm.dispStats,
 				cur_boost: 0,
 				cur_setback: 0,
@@ -492,6 +494,30 @@
 					break;
 				case 2: // Empire
 					return !highlight ? "empireLogo.png" : "empireLogo_dark.png";
+					break;
+				case 3: // Jedi Order
+					return !highlight ? "jediOrder.png" : "jediOrder_dark.png";
+					break;
+				case 4: //
+					return !highlight ? "oldRepublic.png" : "oldRepublic_dark.png";
+					break;
+				case 5: //
+					return !highlight ? "sithEmpire.png" : "sithEmpire_dark.png";
+					break;
+				case 6: //
+					return !highlight ? "blackSun.png" : "blackSun_dark.png";
+					break;
+				case 7: //
+					return !highlight ? "firstOrder.png" : "firstOrder_dark.png";
+					break;
+				case 8: //
+					return !highlight ? "lordRevan.png" : "lordRevan_dark.png";
+					break;
+				case 9: //
+					return !highlight ? "mandalorian.png" : "mandalorian_dark.png";
+					break;
+				case 10: //
+					return !highlight ? "bobaFettCrest.png" : "bobaFettCrest_dark.png";
 					break;
 				default:
 					return "";

@@ -323,6 +323,30 @@
 				case 2: // Empire
 					return !highlight ? "empireLogo.png" : "empireLogo_dark.png";
 					break;
+				case 3: // Jedi Order
+					return !highlight ? "jediOrder.png" : "jediOrder_dark.png";
+					break;
+				case 4: //
+					return !highlight ? "oldRepublic.png" : "oldRepublic_dark.png";
+					break;
+				case 5: //
+					return !highlight ? "sithEmpire.png" : "sithEmpire_dark.png";
+					break;
+				case 6: //
+					return !highlight ? "blackSun.png" : "blackSun_dark.png";
+					break;
+				case 7: //
+					return !highlight ? "firstOrder.png" : "firstOrder_dark.png";
+					break;
+				case 8: //
+					return !highlight ? "lordRevan.png" : "lordRevan_dark.png";
+					break;
+				case 9: //
+					return !highlight ? "mandalorian.png" : "mandalorian_dark.png";
+					break;
+				case 10: //
+					return !highlight ? "bobaFettCrest.png" : "bobaFettCrest_dark.png";
+					break;
 				default:
 					return "";
 					break;

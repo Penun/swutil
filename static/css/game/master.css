@@ -209,6 +209,7 @@ span {
     max-width: 90%;
     justify-items: center;
     align-items: center;
+    text-align: center;
     background-color: rgba(164, 221, 230, 0.15);
 }
 
