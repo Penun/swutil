@@ -65,7 +65,8 @@ var (
 	curInitInd = 0
 	initStarted = false
     teamLogos = []string{"", "rebelLogo", "empireLogo", "jediOrder", "oldRepublic", "sithEmpire", "blackSun",
-        "galacticSenateSeal", "lordRevan", "mandalorian", "bobaFettCrest"}
+        "galacticSenateSeal", "lordRevan", "mandalorian", "bobaFettCrest", "keresh", "firstOrder", "grievous",
+        "mandClan", "mandMyst", "rebelsPheonix", "republicCredit", "revanchist", "seperatists", "vanaSages"}
 )
 
 const (
@@ -80,6 +81,16 @@ const (
     T_LORDREV //8
     T_MAND //9
     T_BOBAFETT //10
+    T_KERESH //11
+    T_FORDER //12
+    T_GRIEV //13
+    T_MANDCLAN // 14
+    T_MANDMYST // 15
+    T_REBPHEO // 16
+    T_REPCRED // 17
+    T_REVANCH // 18
+    T_SEPER // 19
+    T_VANASAGE // 20
 )
 
 type LivePlayer struct {
