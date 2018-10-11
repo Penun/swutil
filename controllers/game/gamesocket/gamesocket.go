@@ -4,18 +4,17 @@ import (
 	"encoding/json"
 	"github.com/gorilla/websocket"
 	"net/http"
-	"github.com/Penun/swutil/models/game"
 )
 
 type SocketMessage struct {
-	Type game.EventType `json:"type"`
-	Player game.Sender `json:"player"`
+	Type int `json:"type"`
+	Player Sender `json:"player"`
 	Data string `json:"data"`
 }
 
 type SocketWatchMessage struct {
-	Type game.EventType `json:"type"`
-	Player game.Sender `json:"player"`
+	Type int `json:"type"`
+	Player Sender `json:"player"`
 	Players []string `json:"players"`
 	Data string `json:"data"`
 }
@@ -29,12 +28,12 @@ func Upgrade(w http.ResponseWriter, r *http.Request) (*websocket.Conn, error) {
 }
 
 // broadcastWebSocket broadcasts messages to WebSocket users.
-func broadcastWebSocket(event game.Event) {
+func broadcastWebSocket(event Event) {
 	for i := 0; i < len(subscribers); i++ {
 		send := false
 		watch := subscribers[i].Type == "watch"
 		switch event.Type {
-		case game.EVENT_JOIN:
+		case EVENT_JOIN:
 			if event.Sender.Type == "master" {
 				if event.Data == "" {
 					send = true
@@ -44,7 +43,7 @@ func broadcastWebSocket(event game.Event) {
 			} else if event.Sender.Type == "play" {
 				send = true
 			}
-		case game.EVENT_LEAVE:
+		case EVENT_LEAVE:
 			if event.Sender.Type == "master" {
 				if event.Data == "" {
 					send = true
@@ -54,9 +53,9 @@ func broadcastWebSocket(event game.Event) {
 			} else {
 				send = true
 			}
-		case game.EVENT_NOTE:
+		case EVENT_NOTE:
 			send = FindInSlice(event.Targets, subscribers[i])
-		case game.EVENT_INIT:
+		case EVENT_INIT:
 			if watch {
 				send = true
 			} else if subscribers[i].Type == "master" && event.Sender.Type != "master" {
@@ -64,7 +63,7 @@ func broadcastWebSocket(event game.Event) {
 			} else {
 				send = FindInSlice(event.Targets, subscribers[i])
 			}
-		case game.EVENT_WOUND:
+		case EVENT_WOUND:
 			if watch {
 				send = true
 			} else if subscribers[i].Type == "master" && event.Sender.Type != "master" {
@@ -72,7 +71,7 @@ func broadcastWebSocket(event game.Event) {
 			} else {
 				send = FindInSlice(event.Targets, subscribers[i])
 			}
-		case game.EVENT_STRAIN:
+		case EVENT_STRAIN:
 			if watch {
 				send = true
 			} else if subscribers[i].Type == "master" && event.Sender.Type != "master" {
@@ -80,33 +79,39 @@ func broadcastWebSocket(event game.Event) {
 			} else {
 				send = FindInSlice(event.Targets, subscribers[i])
 			}
-		case game.EVENT_INIT_S:
+		case EVENT_INIT_S:
 			if subscribers[i].Type != "master" {
 				send = true
 			}
-		case game.EVENT_INIT_T:
+		case EVENT_INIT_T:
 			if watch {
 				send = true
 			}
-		case game.EVENT_INIT_E:
+		case EVENT_INIT_E:
 			if subscribers[i].Type != "master" {
 				send = true
 			}
-		case game.EVENT_BOOST:
+		case EVENT_BOOST:
 			if watch {
 				send = true
 			}
-		case game.EVENT_SETBACK:
+		case EVENT_SETBACK:
 			if watch {
 				send = true
 			}
-		case game.EVENT_UPGRADE:
+		case EVENT_UPGRADE:
 			if watch {
 				send = true
 			}
-		case game.EVENT_UPDIFF:
+		case EVENT_UPDIFF:
 			if watch {
 				send = true
+			}
+		case EVENT_TEAM:
+			if watch {
+				send = true
+			} else {
+				send = FindInSlice(event.Targets, subscribers[i])
 			}
 		}
 

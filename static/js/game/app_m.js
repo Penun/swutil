@@ -1,7 +1,7 @@
 (function(){
 	var app = angular.module('ddcharL', []);
 	app.controller('mainController', ['$window', '$scope', '$http', '$timeout', function($window, $scope, $http, $timeout){
-		$scope.playChars = [];
+		$scope.gameChars = [];
 		$scope.charsCurId = 0;
 		$scope.allyVs = [];
 		$scope.enemVs = [];
@@ -12,6 +12,7 @@
 		$scope.activeNote = "";
 		this.inTextText = "";
 		$scope.startInit = false;
+		$scope.teamLogos = [];
 
 		angular.element(document).ready(function(){
 			$http.get("/track/status").then(function(ret){
@@ -30,11 +31,18 @@
 					if (ret.data.success){
 						for (var i = 0; i < ret.data.result.length; i++){
 							ret.data.result[i].id = $scope.charsCurId;
-							ret.data.result[i].teamDisp = $scope.AssignTeamLogo(ret.data.result[i].team);
-							$scope.playChars.push(ret.data.result[i]);
+							$scope.gameChars.push(ret.data.result[i]);
 							$scope.charsCurId++;
 						}
 					}
+					$http.get("/track/logos").then(function(ret){
+						if (ret.data.success){
+							$scope.teamLogos = ret.data.result;
+							for (var i = 0; i < $scope.gameChars.length; i++){
+								$scope.gameChars[i].teamDisp = $scope.AssignTeamLogo($scope.gameChars[i].team);
+							}
+						}
+					});
 				});
 			}
 		};
@@ -45,33 +53,33 @@
 				case 0: // JOIN
 					if (data.player.type == "play"){
 						var isFound = false;
-						for (var i = 0; i < $scope.playChars.length; i++){
-							if ($scope.playChars[i].player.name == data.player.name){
+						for (var i = 0; i < $scope.gameChars.length; i++){
+							if ($scope.gameChars[i].player.name == data.player.name){
 								isFound = true;
 								break;
 							}
 						}
 						if (!isFound){
-							$scope.playChars.push({player: data.player, type: "PC", id: $scope.charsCurId});
+							$scope.gameChars.push({player: data.player, type: "PC", id: $scope.charsCurId});
 							$scope.charsCurId++;
 							var sendData = {
 								name: data.player.name
 							};
 							$http.post("/track/player", sendData).then(function(ret){
 								if (ret.data.success){
-									for (var i = 0; i < $scope.playChars.length; i++){
-										if ($scope.playChars[i].player.name == ret.data.live_player.player.name){
-											$scope.playChars[i].cur_wound = ret.data.live_player.cur_wound;
-											$scope.playChars[i].cur_strain = ret.data.live_player.cur_strain;
-											$scope.playChars[i].cur_boost = ret.data.live_player.cur_boost;
-											$scope.playChars[i].cur_setback = ret.data.live_player.cur_setback;
-											$scope.playChars[i].cur_upgrade = ret.data.live_player.cur_upgrade;
-											$scope.playChars[i].cur_upDiff = ret.data.live_player.cur_upDiff;
-											$scope.playChars[i].player.wound = ret.data.live_player.player.wound;
-											$scope.playChars[i].player.strain = ret.data.live_player.player.strain;
-											$scope.playChars[i].initiative = ret.data.live_player.initiative;
-											$scope.playChars[i].team = ret.data.live_player.team;
-											$scope.playChars[i].teamDisp = $scope.AssignTeamLogo(ret.data.live_player.team);
+									for (var i = 0; i < $scope.gameChars.length; i++){
+										if ($scope.gameChars[i].player.name == ret.data.live_player.player.name){
+											$scope.gameChars[i].cur_wound = ret.data.live_player.cur_wound;
+											$scope.gameChars[i].cur_strain = ret.data.live_player.cur_strain;
+											$scope.gameChars[i].cur_boost = ret.data.live_player.cur_boost;
+											$scope.gameChars[i].cur_setback = ret.data.live_player.cur_setback;
+											$scope.gameChars[i].cur_upgrade = ret.data.live_player.cur_upgrade;
+											$scope.gameChars[i].cur_upDiff = ret.data.live_player.cur_upDiff;
+											$scope.gameChars[i].player.wound = ret.data.live_player.player.wound;
+											$scope.gameChars[i].player.strain = ret.data.live_player.player.strain;
+											$scope.gameChars[i].initiative = ret.data.live_player.initiative;
+											$scope.gameChars[i].team = ret.data.live_player.team;
+											$scope.gameChars[i].teamDisp = $scope.AssignTeamLogo(ret.data.live_player.team);
 											break;
 										}
 									}
@@ -81,9 +89,9 @@
 					}
 					break;
 				case 1: // LEAVE
-					for (var i = 0; i < $scope.playChars.length; i++){
-						if ($scope.playChars[i].name == data.player.name){
-							$scope.playChars.splice(i, 1);
+					for (var i = 0; i < $scope.gameChars.length; i++){
+						if ($scope.gameChars[i].name == data.player.name){
+							$scope.gameChars.splice(i, 1);
 							break;
 						}
 					}
@@ -93,23 +101,23 @@
 					$scope.SetStep(10, false);
 					break;
 				case 3:
-					for (var i = 0; i < $scope.playChars.length; i++){
-						if ($scope.playChars[i].player.name == data.player.name){
-							$scope.playChars[i].cur_wound += Number(data.data);
+					for (var i = 0; i < $scope.gameChars.length; i++){
+						if ($scope.gameChars[i].player.name == data.player.name){
+							$scope.gameChars[i].cur_wound += Number(data.data);
 						}
 					}
 					break;
 				case 4:
-					for (var i = 0; i < $scope.playChars.length; i++){
-						if ($scope.playChars[i].player.name == data.player.name){
-							$scope.playChars[i].cur_strain += Number(data.data);
+					for (var i = 0; i < $scope.gameChars.length; i++){
+						if ($scope.gameChars[i].player.name == data.player.name){
+							$scope.gameChars[i].cur_strain += Number(data.data);
 						}
 					}
 					break;
 				case 5:
-				for (var i = 0; i < $scope.playChars.length; i++){
-					if ($scope.playChars[i].player.name == data.player.name){
-						$scope.playChars[i].initiative = Number(data.data);
+				for (var i = 0; i < $scope.gameChars.length; i++){
+					if ($scope.gameChars[i].player.name == data.player.name){
+						$scope.gameChars[i].initiative = Number(data.data);
 					}
 				}
 					break;
@@ -149,7 +157,7 @@
 					return;
 			}
 			var sendData = {
-				type: "note",
+				type: 2, // EVENT_NOTE
 				data: {
 					players: this.inText.players,
 					message: this.inText.message
@@ -165,32 +173,63 @@
 				newVal = 0;
 			}
 			var sendData = {
-				type: "initiative",
+				type: 5, // EVENT_INIT
 				data: {
 					players: [],
 					message: String(newVal)
 				}
 			};
-			var found = false;
-			for (var i = 0; i < $scope.playChars.length; i++){
-				if ($scope.playChars[i].selected){
-					$scope.playChars[i].initiative = newVal;
-					sendData.data.players.push($scope.playChars[i].player.name);
-					if (!found){
-						found = true;
-					}
+			for (var i = 0; i < $scope.gameChars.length; i++){
+				if ($scope.gameChars[i].selected && $scope.gameChars[i]. team > 0){
+					$scope.gameChars[i].initiative = newVal;
+					sendData.data.players.push($scope.gameChars[i].player.name);
 				}
 			}
-			if (found){
+			if (sendData.data.players.length > 0){
 				sendData = JSON.stringify(sendData);
 				$scope.sock.send(sendData);
 				$scope.initVal = null;
-				this.SelectAllChar(true, "ALL");
+				this.SelectAllChar(true);
 			}
 		};
 
+		this.SetTeam = function(ind){
+			if (ind === null || typeof ind === 'undefined'){
+				ind = 0;
+			}
+			var sendData = {
+				type: 14, // EVENT_TEAM
+				data: {
+					players: [],
+					message: String(ind)
+				}
+			};
+			for (var i = 0; i < $scope.gameChars.length; i++){
+				if ($scope.gameChars[i].selected){
+					$scope.gameChars[i].team = ind;
+					$scope.gameChars[i].teamDisp = $scope.AssignTeamLogo(ind);
+					$scope.gameChars[i].selected = false;
+					if (ind == 0){
+						$scope.gameChars[i].initiative = 0;
+					}
+					sendData.data.players.push($scope.gameChars[i].player.name);
+				}
+			}
+			if (sendData.data.players.length > 0){
+				sendData = JSON.stringify(sendData);
+				$scope.sock.send(sendData);
+			}
+			this.teamAction = false;
+		};
+
 		this.SetupAdd = function(){
-			this.addAction = true;
+			this.addAction = !this.addAction;
+			this.teamAction = false;
+		};
+
+		this.SetupTeam = function(){
+			this.teamAction = !this.teamAction;
+			this.addAction = false;
 		};
 
 		this.AddForm = function(){
@@ -211,7 +250,9 @@
 				id: $scope.charsCurId,
 				player: {name: this.addForm.name},
 				type: "NPC",
-				team: this.addForm.dispStats ? 1 : Math.floor(Math.random() * 9) + 2,
+				initiative: 0,
+				team: 0,
+				teamDisp: "",
 				disp_stats: this.addForm.dispStats,
 				cur_boost: 0,
 				cur_setback: 0,
@@ -222,71 +263,76 @@
 			if (typeof this.addForm.strain !== 'undefined' || this.addForm.strain > 0){
 				char.player.strain = char.cur_strain = this.addForm.strain;
 			}
-			char.initiative = typeof this.addForm.initiative !== 'undefined' || this.addForm.initiative > 0 ? this.addForm.initiative : 0;
+			$scope.gameChars.push(char);
+			$scope.charsCurId++;
 			sendData = {
-				type: "add",
+				type: 0, // EVENT_JOIN
 				data: {
 					message: JSON.stringify(char)
 				}
 			};
 			sendData = JSON.stringify(sendData);
 			$scope.sock.send(sendData);
-			char.teamDisp = $scope.AssignTeamLogo(char.team);
-			$scope.playChars.push(char);
-			$scope.charsCurId++;
 			this.ClearForm(5, false);
 		};
 
 		this.SelectChar = function(gameChar){
-			for (var i = 0; i < $scope.playChars.length; i++){
-				if ($scope.playChars[i].id == gameChar.id){
-					$scope.playChars[i].selected = !$scope.playChars[i].selected;
-					$scope.playChars[i].teamDisp = $scope.AssignTeamLogo($scope.playChars[i].team, $scope.playChars[i].selected);
+			for (var i = 0; i < $scope.gameChars.length; i++){
+				if ($scope.gameChars[i].id == gameChar.id){
+					$scope.gameChars[i].selected = !$scope.gameChars[i].selected;
+					if ($scope.gameChars[i].team > 0){
+						$scope.gameChars[i].teamDisp = $scope.AssignTeamLogo($scope.gameChars[i].team, $scope.gameChars[i].selected);
+					}
 				}
 			}
 		};
 
 		this.SelectAllChar = function(deselect = false){
 			if (!deselect){
-				for (var i = 0; i < $scope.playChars.length; i++){
-					if ($scope.playChars[i].selected){
+				for (var i = 0; i < $scope.gameChars.length; i++){
+					if ($scope.gameChars[i].selected){
 						deselect = true;
 						break;
 					}
 				}
 			}
-			for (var i = 0; i < $scope.playChars.length; i++){
-				$scope.playChars[i].selected = !deselect;
-				$scope.playChars[i].teamDisp = $scope.AssignTeamLogo($scope.playChars[i].team, !deselect);
+			for (var i = 0; i < $scope.gameChars.length; i++){
+				$scope.gameChars[i].selected = !deselect;
+				if ($scope.gameChars[i].team > 0){
+					$scope.gameChars[i].teamDisp = $scope.AssignTeamLogo($scope.gameChars[i].team, !deselect);
+				}
 			}
 		};
 
 		this.AdjustChar = function(dam, adjType){
 			var sendData = {
-				type: adjType,
 				data: {
 					players: [],
 					message: String(dam)
 				}
 			};
 			var found = false;
-			for (var i = 0; i < $scope.playChars.length; i++){
-				if ($scope.playChars[i].selected){
+			for (var i = 0; i < $scope.gameChars.length; i++){
+				if ($scope.gameChars[i].selected){
 					switch (adjType){
 						case "wound":
-							if ($scope.playChars[i].cur_wound + dam <= $scope.playChars[i].player.wound && $scope.playChars[i].cur_wound + dam >= -$scope.playChars[i].player.wound * 2){
-								$scope.playChars[i].cur_wound += dam;
-								sendData.data.players.push($scope.playChars[i].player.name);
+							adjType = 3;
+						case 3: // EVENT_WOUND
+							if ($scope.gameChars[i].cur_wound + dam <= $scope.gameChars[i].player.wound && $scope.gameChars[i].cur_wound + dam >= -$scope.gameChars[i].player.wound * 2){
+								$scope.gameChars[i].cur_wound += dam;
+								sendData.data.players.push($scope.gameChars[i].player.name);
 								if (!found){
 									found = true;
 								}
 							}
 							break;
 						case "strain":
-							if (typeof $scope.playChars[i].cur_strain !== 'undefined' && $scope.playChars[i].cur_strain !== null && typeof $scope.playChars[i].player.strain !== 'undefined' && $scope.playChars[i].player.strain !== null) {
-								if ($scope.playChars[i].cur_strain + dam <= $scope.playChars[i].player.strain && $scope.playChars[i].cur_strain + dam >= -$scope.playChars[i].player.strain * 2){
-									$scope.playChars[i].cur_strain += dam;
-									sendData.data.players.push($scope.playChars[i].player.name);
+							adjType = 4;
+						case 4: // EVENT_STRAIN
+							if (typeof $scope.gameChars[i].cur_strain !== 'undefined' && $scope.gameChars[i].cur_strain !== null && typeof $scope.gameChars[i].player.strain !== 'undefined' && $scope.gameChars[i].player.strain !== null) {
+								if ($scope.gameChars[i].cur_strain + dam <= $scope.gameChars[i].player.strain && $scope.gameChars[i].cur_strain + dam >= -$scope.gameChars[i].player.strain * 2){
+									$scope.gameChars[i].cur_strain += dam;
+									sendData.data.players.push($scope.gameChars[i].player.name);
 									if (!found){
 										found = true;
 									}
@@ -294,36 +340,44 @@
 							}
 							break;
 						case "boost":
-							if ($scope.playChars[i].cur_boost + dam >= 0){
-								$scope.playChars[i].cur_boost += dam;
-								sendData.data.players.push($scope.playChars[i].player.name);
+							adjType = 10;
+						case 10: // EVENT_BOOST
+							if ($scope.gameChars[i].cur_boost + dam >= 0){
+								$scope.gameChars[i].cur_boost += dam;
+								sendData.data.players.push($scope.gameChars[i].player.name);
 								if (!found){
 									found = true;
 								}
 							}
 							break;
 						case "setback":
-							if ($scope.playChars[i].cur_setback + dam >= 0){
-								$scope.playChars[i].cur_setback += dam;
-								sendData.data.players.push($scope.playChars[i].player.name);
+							adjType = 11;
+						case 11:
+							if ($scope.gameChars[i].cur_setback + dam >= 0){
+								$scope.gameChars[i].cur_setback += dam;
+								sendData.data.players.push($scope.gameChars[i].player.name);
 								if (!found){
 									found = true;
 								}
 							}
 							break;
 						case "upgrade":
-							if ($scope.playChars[i].cur_upgrade + dam >= 0){
-								$scope.playChars[i].cur_upgrade += dam;
-								sendData.data.players.push($scope.playChars[i].player.name);
+							adjType = 12;
+						case 12:
+							if ($scope.gameChars[i].cur_upgrade + dam >= 0){
+								$scope.gameChars[i].cur_upgrade += dam;
+								sendData.data.players.push($scope.gameChars[i].player.name);
 								if (!found){
 									found = true;
 								}
 							}
 							break;
 						case "upDiff":
-							if ($scope.playChars[i].cur_upDiff + dam >= 0){
-								$scope.playChars[i].cur_upDiff += dam;
-								sendData.data.players.push($scope.playChars[i].player.name);
+							adjType = 13;
+						case 13:
+							if ($scope.gameChars[i].cur_upDiff + dam >= 0){
+								$scope.gameChars[i].cur_upDiff += dam;
+								sendData.data.players.push($scope.gameChars[i].player.name);
 								if (!found){
 									found = true;
 								}
@@ -333,25 +387,26 @@
 				}
 			}
 			if (found){
+				sendData.type = adjType;
 				sendData = JSON.stringify(sendData);
 				$scope.sock.send(sendData);
 			}
 		};
 
 		this.DelChar = function(charId){
-			for (var i = 0; i < $scope.playChars.length; i++){
-				if ($scope.playChars[i].id == charId){
+			for (var i = 0; i < $scope.gameChars.length; i++){
+				if ($scope.gameChars[i].id == charId){
 					var delChars = [];
-					delChars.push($scope.playChars[i].player.name);
+					delChars.push($scope.gameChars[i].player.name);
 					sendData = {
-						type: "delete",
+						type: 1, // EVENT_LEAVE
 						data: {
 							players: delChars
 						}
 					};
 					sendData = JSON.stringify(sendData);
 					$scope.sock.send(sendData);
-					$scope.playChars.splice(i, 1);
+					$scope.gameChars.splice(i, 1);
 					break;
 				}
 			}
@@ -375,19 +430,7 @@
 				case 5:
 					this.addForm = {};
 					this.addAction = false;
-					break;
-				case 6:
-					this.delForm = {};
-					if (move){
-						$scope.SetStep($scope.backStep, false);
-					}
-					break;
-				case 7:
-					this.damForm = {type: "wound"};
-					this.damAction = "";
-					if (move){
-						$scope.SetStep($scope.backStep, false);
-					}
+					this.teamAction = false;
 					break;
 				default:
 					return;
@@ -396,10 +439,10 @@
 
 		this.ToggleInit = function(){
 			if (!$scope.startInit){
-				if ($scope.playChars.length > 0 || $scope.playChars.length > 0 || $scope.playChars.length > 0){
+				if ($scope.gameChars.length > 0 || $scope.gameChars.length > 0 || $scope.gameChars.length > 0){
 					$scope.startInit = true;
 					var sendData = {
-						type: "initiative_s",
+						type: 7, // EVENT_INIT_S
 						data: {}
 					};
 					sendData = JSON.stringify(sendData);
@@ -408,7 +451,7 @@
 			} else {
 				$scope.startInit = false;
 				var sendData = {
-					type: "initiative_e",
+					type: 9, // EVENT_INIT_E
 					data: {}
 				};
 				sendData = JSON.stringify(sendData);
@@ -421,7 +464,7 @@
 				return;
 			}
 			var sendData = {
-				type: "initiative_t",
+				type: 8, // EVENT_INIT_T
 				data: {
 					message: "+"
 				}
@@ -435,7 +478,7 @@
 				return;
 			}
 			var sendData = {
-				type: "initiative_t",
+				type: 8, // EVENT_INIT_T
 				data: {
 					message: "-"
 				}
@@ -488,41 +531,9 @@
 		};
 
 		$scope.AssignTeamLogo = function(teamId, highlight = false){
-			switch (teamId){
-				case 1: // Rebel
-					return !highlight ? "rebelLogo.png": "rebelLogo_dark.png";
-					break;
-				case 2: // Empire
-					return !highlight ? "empireLogo.png" : "empireLogo_dark.png";
-					break;
-				case 3: // Jedi Order
-					return !highlight ? "jediOrder.png" : "jediOrder_dark.png";
-					break;
-				case 4: //
-					return !highlight ? "oldRepublic.png" : "oldRepublic_dark.png";
-					break;
-				case 5: //
-					return !highlight ? "sithEmpire.png" : "sithEmpire_dark.png";
-					break;
-				case 6: //
-					return !highlight ? "blackSun.png" : "blackSun_dark.png";
-					break;
-				case 7: //
-					return !highlight ? "firstOrder.png" : "firstOrder_dark.png";
-					break;
-				case 8: //
-					return !highlight ? "lordRevan.png" : "lordRevan_dark.png";
-					break;
-				case 9: //
-					return !highlight ? "mandalorian.png" : "mandalorian_dark.png";
-					break;
-				case 10: //
-					return !highlight ? "bobaFettCrest.png" : "bobaFettCrest_dark.png";
-					break;
-				default:
-					return "";
-					break;
-			}
+			var teamPath = $scope.teamLogos[teamId];
+			!highlight ? teamPath += ".png" : teamPath += "_dark.png";
+			return teamPath;
 		};
 	}]);
 })();

@@ -11,7 +11,12 @@ type GameStatusController struct {
 
 type GetSubsResp struct {
 	Success bool `json:"success"`
-    Result []game.LivePlayer `json:"result"`
+    Result []LivePlayer `json:"result"`
+}
+
+type GetLogosResp struct {
+    Success bool `json:"success"`
+    Result []string `json:"result"`
 }
 
 type GetStatusResp struct {
@@ -31,7 +36,7 @@ type FindPlayerResp struct {
 
 type GetPlayerResp struct {
 	Success bool `json:"success"`
-	LivePlayer *game.LivePlayer `json:"live_player"`
+	LivePlayer *LivePlayer `json:"live_player"`
 }
 
 type VerifyNameResp struct {
@@ -41,11 +46,11 @@ type VerifyNameResp struct {
 
 type CheckPlayerResp struct {
 	Success bool `json:"success"`
-	LivePlayer game.LivePlayer `json:"live_player"`
+	LivePlayer LivePlayer `json:"live_player"`
 }
 
 type ControllerReq struct {
-	Type string `json:"type"`
+	Type int `json:"type"`
 	Data MultiMess `json:"data"`
 }
 
@@ -55,8 +60,40 @@ type MultiMess struct {
 }
 
 var (
-	players = make([]game.LivePlayer, 0)
+	players = make([]LivePlayer, 0)
 	master = false
 	curInitInd = 0
 	initStarted = false
+    teamLogos = []string{"", "rebelLogo", "empireLogo", "jediOrder", "oldRepublic", "sithEmpire", "blackSun",
+        "galacticSenateSeal", "lordRevan", "mandalorian", "bobaFettCrest"}
 )
+
+const (
+    _ = iota //0 Blank for unasigned teams
+    T_REBEL //1
+    T_EMPIRE //2
+    T_JEDI //3
+    T_OLDREP //4
+    T_SITHEMP //5
+    T_BLACKSUN //6
+    T_GALSEN //7
+    T_LORDREV //8
+    T_MAND //9
+    T_BOBAFETT //10
+)
+
+type LivePlayer struct {
+	Player *game.Player `json:"player"`
+	Initiative float64 `json:"initiative"`
+    CurWound int `json:"cur_wound"`
+    CurStrain int `json:"cur_strain"`
+    CurBoost int `json:"cur_boost"`
+    CurSetback int `json:"cur_setback"`
+    CurUpgrade int `json:"cur_upgrade"`
+    CurUpDiff int `json:"cur_upDiff"`
+    IsTurn bool `json:"isTurn"`
+	Type string `json:"type"`
+	Team int `json:"team"`
+    DispStats bool `json:"disp_stats"`
+
+}

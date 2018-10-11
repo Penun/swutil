@@ -16,23 +16,29 @@ func init() {
 }
 
 func rawSpecImg() (out string) {
-	out = "<img class=\"detail_img\" ng-src=\"/static/img/species/{{speImg}}\" alt=\"\">"
+	out = "<img class=\"detail_img\" ng-src=\"/static/img/species/{{speImg}}\" alt=\"\" />"
+	return
+}
+
+func rawLogoImg() (out string) {
+	out = "<img class=\"teamImg\" ng-src=\"/static/img/emblems/{{logo}}.png\" alt=\"\" ng-click=\"mCont.SetTeam(ind)\" />"
 	return
 }
 
 func rawTeamImg() (out string) {
-	out = "<img class=\"initImg\" ng-src=\"/static/img/emblems/{{play.teamDisp}}\" alt=\"\">"
+	out = "<img class=\"initImg\" ng-src=\"/static/img/emblems/{{play.teamDisp}}\" alt=\"\" />"
 	return
 }
 
 func rawInitImg() (out string) {
-	out = "<img class=\"initImg\" ng-src=\"/static/img/emblems/{{play.initDisp}}\" alt=\"\">"
+	out = "<img class=\"initImg\" ng-src=\"/static/img/emblems/{{play.initDisp}}\" alt=\"\" />"
 	return
 }
 
 func main() {
 	orm.Debug = true
 	beego.AddFuncMap("rawSpecImg", rawSpecImg)
+	beego.AddFuncMap("rawLogoImg", rawLogoImg)
 	beego.AddFuncMap("rawInitImg", rawInitImg)
 	beego.AddFuncMap("rawTeamImg", rawTeamImg)
 	beego.Run()

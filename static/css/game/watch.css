@@ -12,7 +12,6 @@ span {
 .watchTable {
     grid-template-columns: 1fr 20%;
     grid-column-gap: 1vw;
-    overflow-y: auto;
     height: 100%;
     width: 100%
 }
@@ -34,7 +33,7 @@ span {
 
 .dispPan {
     grid-template-rows: 5vh 1fr;
-    height: 100%;
+    overflow-y: auto;
 }
 
 .colHead {

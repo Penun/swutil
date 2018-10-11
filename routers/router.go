@@ -26,6 +26,7 @@ func init() {
 	beego.Router("/track/watch", &game.GameStatusController{}, "get:Watch")
 	beego.Router("/track/master", &game.GameStatusController{}, "get:Master")
 	beego.Router("/track/subs", &game.GameStatusController{}, "get:Subs")
+	beego.Router("/track/logos", &game.GameStatusController{}, "get:Logos")
 	beego.Router("/track/status", &game.GameStatusController{}, "get:GameStatus")
 	beego.Router("/track/find", &game.GameStatusController{}, "post:FindPlayer")
 	beego.Router("/track/player", &game.GameStatusController{}, "post:GetPlayer")

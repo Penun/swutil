@@ -131,9 +131,11 @@ span {
     grid-column: 1 / 4;
 }
 
-.menuAll {
+.menuFull {
     grid-row: 1 / 3;
     grid-column: 1 / 3;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
 }
 
 .menuTitledBlock {
@@ -188,12 +190,11 @@ span {
     grid-template-rows: 1fr;
 }
 
-.dispList {
+.flexList {
     display: flex;
     align-content: flex-start;
     justify-content: space-around;
     flex-wrap: wrap;
-    height: 100%;
 }
 
 .dispItem {
@@ -281,6 +282,7 @@ span {
 
 .formButt {
     width: 30%;
+    min-width: 10vw;
     justify-self: flex-end;
 }
 
@@ -290,6 +292,20 @@ span {
     font-size: calc(10px + 1.5vmin);
     text-align: center;
     justify-content: flex-end;
+}
+
+.logoList {
+    grid-row: 2 / 4;
+    max-width: 25vw
+}
+
+.logoList > span {
+    padding: 3%;
+    height: 6vh;
+}
+
+.teamImg {
+    height: 6vh;
 }
 
 .initBlock {

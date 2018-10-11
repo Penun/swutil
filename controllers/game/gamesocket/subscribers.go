@@ -3,12 +3,11 @@ package gamesocket
 import (
 	"github.com/astaxie/beego"
 	"github.com/gorilla/websocket"
-	"github.com/Penun/swutil/models/game"
 )
 
 type Subscription struct {
-	Archive []game.Event      // All the events from the archive.
-	New     <-chan game.Event // New events coming in.
+	Archive []Event      // All the events from the archive.
+	New     <-chan Event // New events coming in.
 }
 
 type Subscriber struct {
@@ -23,7 +22,7 @@ var (
 	// Channel for exit users.
 	unsubscribe = make(chan string, 10)
 	// Send events here to publish them.
-	Publish = make(chan game.Event, 10)
+	Publish = make(chan Event, 10)
 	subscribers = make([]Subscriber, 0)
 )
 
@@ -35,7 +34,7 @@ func tracker() {
 			if !IfUserExist(sub.Name) {
 				subscribers = append(subscribers, sub) // Add user to the end of list.
 				// Publish a JOIN event.
-				Publish <- NewEvent(game.EVENT_JOIN, sub.Name, sub.Type, nil, "")
+				Publish <- NewEvent(EVENT_JOIN, sub.Name, sub.Type, nil, "")
 				beego.Info("New user:", sub.Name, ";WebSocket:", sub.Conn != nil)
 			} else {
 				beego.Info("Old user:", sub.Name, ";WebSocket:", sub.Conn != nil)
@@ -68,8 +67,8 @@ func init() {
 	go tracker()
 }
 
-func NewEvent(ep game.EventType, user string, ws_type string, targets []string, data string) game.Event {
-	return game.Event{ep, game.Sender{user, ws_type}, targets, data}
+func NewEvent(ep int, user string, ws_type string, targets []string, data string) Event {
+	return Event{ep, Sender{user, ws_type}, targets, data}
 }
 
 func Join(user string, ws_type string, ws *websocket.Conn) {

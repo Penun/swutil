@@ -21,7 +21,7 @@ func (this *GameStatusController) Check() {
 	resp := CheckPlayerResp{Success: false}
 	if findPlay := this.GetSession("player"); findPlay != nil {
 		resp.LivePlayer = GetPlayerName(findPlay.(string))
-		if (resp.LivePlayer != game.LivePlayer{}){
+		if (resp.LivePlayer != LivePlayer{}){
 			resp.Success = true
 		} else {
 			this.DelSession("player")
@@ -35,7 +35,7 @@ func (this *GameStatusController) Subs() {
 	resp := GetSubsResp{Success: false}
 	typ := this.GetString("type")
 	if typ == "play" {
-		var playOnl []game.LivePlayer
+		var playOnl []LivePlayer
 		for i := 0; i < len(players); i++ {
 			if players[i].Type == "PC" {
 				playOnl = append(playOnl, players[i])
@@ -43,7 +43,7 @@ func (this *GameStatusController) Subs() {
 		}
 		if master {
 			tempPlay := game.Player{Name: "DM"}
-			tempLPlay := game.LivePlayer{Player: &tempPlay}
+			tempLPlay := LivePlayer{Player: &tempPlay}
 			playOnl = append(playOnl, tempLPlay)
 		}
 		resp.Result = playOnl
@@ -53,6 +53,16 @@ func (this *GameStatusController) Subs() {
 			resp.Result = players
 			resp.Success = true
 		}
+	}
+	this.Data["json"] = resp
+	this.ServeJSON()
+}
+
+func (this *GameStatusController) Logos() {
+	resp := GetLogosResp{Success: false}
+	if len(teamLogos) > 1 {
+		resp.Success = true
+		resp.Result = teamLogos
 	}
 	this.Data["json"] = resp
 	this.ServeJSON()

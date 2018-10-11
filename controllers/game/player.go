@@ -27,7 +27,7 @@ func (this *PlayerSocketController) Join() {
 			return
 		}
 		if newPlay := game.GetPlayerName(uname); (newPlay != game.Player{}) {
-			tempPlay := game.LivePlayer{Player: &newPlay, IsTurn: false, Type: "PC", Team: game.T_REBEL, DispStats: true}
+			tempPlay := LivePlayer{Player: &newPlay, IsTurn: false, Type: "PC", Team: 0, DispStats: true}
 			tempPlay.CurWound = newPlay.Wound
 			tempPlay.CurStrain = newPlay.Strain
 			players = append(players, tempPlay)
@@ -63,22 +63,22 @@ func (this *PlayerSocketController) Join() {
 		err = json.Unmarshal(adj, &conReq)
 		if err == nil {
 			switch conReq.Type {
-			case "note":
-				gamesocket.Publish <- gamesocket.NewEvent(game.EVENT_NOTE, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
-			case "wound":
+			case gamesocket.EVENT_NOTE:
+				gamesocket.Publish <- gamesocket.NewEvent(gamesocket.EVENT_NOTE, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+			case gamesocket.EVENT_WOUND:
 				wound, _ := strconv.Atoi(conReq.Data.Message)
 				WoundPlayer(uname, wound)
-				gamesocket.Publish <- gamesocket.NewEvent(game.EVENT_WOUND, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
-			case "strain":
+				gamesocket.Publish <- gamesocket.NewEvent(gamesocket.EVENT_WOUND, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+			case gamesocket.EVENT_STRAIN:
 				strain, _ := strconv.Atoi(conReq.Data.Message)
 				StrainPlayer(uname, strain)
-				gamesocket.Publish <- gamesocket.NewEvent(game.EVENT_STRAIN, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
-			case "initiative":
+				gamesocket.Publish <- gamesocket.NewEvent(gamesocket.EVENT_STRAIN, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+			case gamesocket.EVENT_INIT:
 				init, _ := strconv.ParseFloat(conReq.Data.Message, 64)
 				InitPlayer(uname, init)
 				go SortPlayerInit()
-				gamesocket.Publish <- gamesocket.NewEvent(game.EVENT_INIT, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
-			case "initiative_t":
+				gamesocket.Publish <- gamesocket.NewEvent(gamesocket.EVENT_INIT, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+			case gamesocket.EVENT_INIT_T:
 				players[curInitInd].IsTurn = false
 				if curInitInd == len(players) - 1 {
 					curInitInd = 0
@@ -86,7 +86,7 @@ func (this *PlayerSocketController) Join() {
 					curInitInd++
 				}
 				players[curInitInd].IsTurn = true
-				gamesocket.Publish <- gamesocket.NewEvent(game.EVENT_INIT_T, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+				gamesocket.Publish <- gamesocket.NewEvent(gamesocket.EVENT_INIT_T, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
 			}
             beego.Info("Players", players)
             beego.Info("Current Init", curInitInd)

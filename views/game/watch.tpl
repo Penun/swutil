@@ -15,7 +15,7 @@
 							<span class="dispList">
 								<span ng-repeat="(ind, play) in gameChars | orderBy: ['+team', '+player.name']" class="floatItem">
 									<span class="col2">{{"{{play.player.name}}"}}</span>
-									<span class="col3">{{str2html rawTeamImg}}</span>
+									<span class="col3" ng-if="play.team != 0 && teamLogos.length > 0">{{str2html rawTeamImg}}</span>
 									<span class="floatItemStats colSp_2_4" ng-show="play.disp_stats">
 	                    				<span>W:{{"{{play.cur_wound}}"}}/{{"{{play.player.wound}}"}}</span>
 	                    				<span ng-show="play.player.strain > 0">S:{{"{{play.cur_strain}}"}}/{{"{{play.player.strain}}"}}</span>

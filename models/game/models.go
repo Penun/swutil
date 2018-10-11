@@ -5,38 +5,6 @@ import (
     "github.com/Penun/swutil/models"
 )
 
-type EventType int
-
-const (
-	EVENT_JOIN = iota //0
-	EVENT_LEAVE //1
-	EVENT_NOTE //2
-	EVENT_WOUND //3
-	EVENT_STRAIN //4
-	EVENT_INIT //5
-	EVENT_INIT_D //6
-	EVENT_INIT_S //7
-	EVENT_INIT_T //8
-	EVENT_INIT_E //9
-    EVENT_BOOST //10
-    EVENT_SETBACK //11
-    EVENT_UPGRADE //12
-    EVENT_UPDIFF //13
-)
-
-const (
-    _ = iota //0 Blank for unasigned teams
-    T_REBEL //1
-    T_EMPIRE //2
-)
-
-type Event struct {
-	Type EventType `json:"type"`
-	Sender Sender `json:"sender"`
-	Targets []string `json:"targets"`
-	Data string `json:"data"`
-}
-
 type Player struct {
 	Id int64 `orm:"pk" json:"id"`
     Name string `json:"name"`
@@ -98,27 +66,6 @@ type PlayerForce struct {
     Id int64 `orm:"pk" json:"id"`
     Player *Player `orm:"rel(fk)" json:"player"`
     Force *models.Force `orm:"rel(fk)" json:"force"`
-}
-
-type LivePlayer struct {
-	Player *Player `json:"player"`
-	Initiative float64 `json:"initiative"`
-    CurWound int `json:"cur_wound"`
-    CurStrain int `json:"cur_strain"`
-    CurBoost int `json:"cur_boost"`
-    CurSetback int `json:"cur_setback"`
-    CurUpgrade int `json:"cur_upgrade"`
-    CurUpDiff int `json:"cur_upDiff"`
-    IsTurn bool `json:"isTurn"`
-	Type string `json:"type"`
-	Team int `json:"team"`
-    DispStats bool `json:"disp_stats"`
-
-}
-
-type Sender struct {
-	Name string `json:"name"`
-	Type string `json:"type"`
 }
 
 func init() {

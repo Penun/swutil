@@ -30,7 +30,10 @@
 				<span class="playerGrid">
 					<span class="playerGridInner">
 						<span class="sw_back">
-							<span>{{"{{curChar.name}}"}}</span>
+							<span class="playHead">
+								<span>{{"{{curChar.name}}"}}</span>
+								<span ng-if="curChar.team != 0 && teamLogos.length > 0">{{str2html rawTeamImg}}</span>
+							</span>
 						</span>
 						<span class="menu mainMenuButton">
 							<span class="menuInner" ng-click="SetStep(0, false)"></span>
@@ -75,8 +78,8 @@
 								</span>
 							</form>
 						</span>
-						<span class="menu menuText menuBordT menuBordR" ng-show="iniForm.$valid && !initStarted" ng-click="mCont.Initiative(inpIn)">Set</span>
-						<span class="menu menuText menuBordT menuBordR" ng-show="curChar.initiative > 0 && !initStarted" ng-click="mCont.Initiative(0)">Reset</span>
+						<span class="menu menuText menuBordT menuBordR" ng-show="iniForm.$valid && !initStarted && curChar.team != 0" ng-click="mCont.Initiative(inpIn)">Set</span>
+						<span class="menu menuText menuBordT menuBordR" ng-show="curChar.initiative > 0 && !initStarted && curChar.team != 0" ng-click="mCont.Initiative(0)">Reset</span>
 					</span>
 				</span>
 			</div>

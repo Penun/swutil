@@ -4,6 +4,7 @@
 		$scope.gameChars = [];
 		$scope.startInit = false;
 		$scope.curInitInd = 0;
+		$scope.teamLogos = [];
 
 		angular.element(document).ready(function(){
 			$scope.sock = new WebSocket('ws://' + $window.location.host + '/track/joinw');
@@ -16,19 +17,28 @@
 				$http.get("/track/subs?type=watch").then(function(ret){
 					if (ret.data.success){
 						for (var i = 0; i < ret.data.result.length; i++){
-							ret.data.result[i].initDisp = ret.data.result[i].teamDisp = $scope.AssignTeamLogo(ret.data.result[i].team);
 							$scope.gameChars.push(ret.data.result[i]);
 						}
-						$http.get("/track/status").then(function(ret){
-							if (ret.data.success){
-								$scope.startInit = ret.data.start_init;
-								if ($scope.startInit){
-									$scope.curInitInd = ret.data.cur_init_ind;
-									$scope.SetTurn(true);
-								}
-							}
-						});
 					}
+					$http.get("/track/logos").then(function(ret){
+						if (ret.data.success){
+							$scope.teamLogos = ret.data.result;
+							if ($scope.gameChars.length > 0){
+								for (var i = 0; i < $scope.gameChars.length; i++){
+									$scope.gameChars[i].teamDisp = $scope.gameChars[i].initDisp = $scope.AssignTeamLogo($scope.gameChars[i].team);
+								}
+								$http.get("/track/status").then(function(ret){
+									if (ret.data.success){
+										$scope.startInit = ret.data.start_init;
+										if ($scope.startInit){
+											$scope.curInitInd = ret.data.cur_init_ind;
+											$scope.SetTurn(true);
+										}
+									}
+								});
+							}
+						}
+					});
 				});
 			}
 		};
@@ -184,6 +194,7 @@
 					for (var j = 0; j < $scope.gameChars.length; j++){
 						if ($scope.gameChars[j].player.name == data.players[i] && $scope.gameChars[j].cur_boost + dir >= 0){
 							$scope.gameChars[j].cur_boost += dir;
+							break;
 						}
 					}
 				}
@@ -194,6 +205,7 @@
 					for (var j = 0; j < $scope.gameChars.length; j++){
 						if ($scope.gameChars[j].player.name == data.players[i] && $scope.gameChars[j].cur_setback + dir >= 0){
 							$scope.gameChars[j].cur_setback += dir;
+							break;
 						}
 					}
 				}
@@ -204,16 +216,33 @@
 					for (var j = 0; j < $scope.gameChars.length; j++){
 						if ($scope.gameChars[j].player.name == data.players[i] && $scope.gameChars[j].cur_upgrade + dir >= 0){
 							$scope.gameChars[j].cur_upgrade += dir;
+							break;
 						}
 					}
 				}
-					break;
+				break;
 			case 13: // UpDiff
 				var dir = Number(data.data);
 				for (var i = 0; i < data.players.length; i++){
 					for (var j = 0; j < $scope.gameChars.length; j++){
 						if ($scope.gameChars[j].player.name == data.players[i] && $scope.gameChars[j].cur_upDiff + dir >= 0){
 							$scope.gameChars[j].cur_upDiff += dir;
+							break;
+						}
+					}
+				}
+				break;
+			case 14: // EVENT_TEAM
+				var team = Number(data.data);
+				for (var i = 0; i < data.players.length; i++){
+					for (var j = 0; j < $scope.gameChars.length; j++){
+						if ($scope.gameChars[j].player.name == data.players[i]){
+							$scope.gameChars[j].team = team;
+							$scope.gameChars[j].teamDisp = $scope.gameChars[j].initDisp = $scope.AssignTeamLogo(team);
+							if ($scope.gameChars[j].team == 0){
+								$scope.gameChars[j].initiative = 0;
+							}
+							break;
 						}
 					}
 				}
@@ -243,7 +272,7 @@
 		};
 
 		$scope.InitDisplayList = function(gameChar){
-			return gameChar.initiative > 0;
+			return (gameChar.initiative > 0 && gameChar.team > 0);
 		}
 
 		$scope.SortList = function(list, varName){
@@ -316,41 +345,9 @@
 		};
 
 		$scope.AssignTeamLogo = function(teamId, highlight = false){
-			switch (teamId){
-				case 1: // Rebel
-					return !highlight ? "rebelLogo.png": "rebelLogo_dark.png";
-					break;
-				case 2: // Empire
-					return !highlight ? "empireLogo.png" : "empireLogo_dark.png";
-					break;
-				case 3: // Jedi Order
-					return !highlight ? "jediOrder.png" : "jediOrder_dark.png";
-					break;
-				case 4: //
-					return !highlight ? "oldRepublic.png" : "oldRepublic_dark.png";
-					break;
-				case 5: //
-					return !highlight ? "sithEmpire.png" : "sithEmpire_dark.png";
-					break;
-				case 6: //
-					return !highlight ? "blackSun.png" : "blackSun_dark.png";
-					break;
-				case 7: //
-					return !highlight ? "firstOrder.png" : "firstOrder_dark.png";
-					break;
-				case 8: //
-					return !highlight ? "lordRevan.png" : "lordRevan_dark.png";
-					break;
-				case 9: //
-					return !highlight ? "mandalorian.png" : "mandalorian_dark.png";
-					break;
-				case 10: //
-					return !highlight ? "bobaFettCrest.png" : "bobaFettCrest_dark.png";
-					break;
-				default:
-					return "";
-					break;
-			}
+			var teamPath = $scope.teamLogos[teamId];
+			!highlight ? teamPath += ".png" : teamPath += "_dark.png";
+			return teamPath;
 		};
 	}]);
 })();

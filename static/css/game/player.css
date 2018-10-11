@@ -43,6 +43,10 @@ span {
     height: 100%;
 }
 
+.playHead {
+    grid-template-columns: 1fr 33%;
+}
+
 .adjustBlock {
     grid-template-columns: 75% 1fr;
     align-content: stretch;
@@ -168,6 +172,11 @@ span {
 
 .noteRowSpan {
     grid-row: 1 / 5;
+}
+
+.initImg {
+    height: 6vh;
+    padding: 2% 0 3% 0;
 }
 
 input[type="number"] {

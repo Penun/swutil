@@ -2,7 +2,8 @@
 	var app = angular.module('ddcharL', []);
 	app.controller('mainController', ['$window', '$scope', '$http', '$timeout', function($window, $scope, $http, $timeout){
 		$scope.char = {};
-		$scope.curChar = {};
+		$scope.curChar = {team: 0};
+		$scope.play = {teamDisp: ""};
 		$scope.note = {};
 		$scope.backStep = $scope.curStep = 1;
 		$scope.textareaReq = true;
@@ -14,6 +15,7 @@
 		$scope.playSugs = [];
 		this.lastPlayFind = "";
 		$scope.initStarted = false;
+		$scope.teamLogos = [];
 
 		angular.element(document).ready(function(){
 			$http.get("/track/check").then(function(ret){
@@ -22,6 +24,7 @@
 					$scope.curChar.curWound = ret.data.live_player.cur_wound;
 					$scope.curChar.curStrain = ret.data.live_player.cur_strain;
 					$scope.curChar.initiative = ret.data.live_player.initiative;
+					$scope.curChar.team = ret.data.live_player.team;
 					$scope.sock = new WebSocket('ws://' + window.location.host + '/track/join?uname=' + $scope.curChar.name);
 					$timeout($scope.SetupSocket, 500);
 				}
@@ -106,6 +109,7 @@
 			$scope.curChar.curWound = $scope.curChar.wound;
 			$scope.curChar.curStrain = $scope.curChar.strain;
 			$scope.curChar.initiative = 0;
+			$scope.curChar.team = 0;
 			$scope.sock = new WebSocket('ws://' + window.location.host + '/track/join?uname=' + $scope.curChar.name);
 			$timeout($scope.SetupSocket, 500);
 		}
@@ -129,6 +133,14 @@
 				$http.get("/track/status").then(function(ret){
 					if (ret.data.success){
 						$scope.initStarted = ret.data.start_init;
+					}
+				});
+				$http.get("/track/logos").then(function(ret){
+					if (ret.data.success){
+						$scope.teamLogos = ret.data.result;
+						if ($scope.curChar.team != 0){
+							$scope.play.teamDisp = $scope.AssignTeamLogo($scope.curChar.team);
+						}
 					}
 				});
 				$scope.SetStep(2, true);
@@ -183,8 +195,13 @@
 				case 9:
 					$scope.initStarted = false;
 					break;
-				case 6:
-				case 8:
+				case 14:
+					$scope.curChar.team = Number(data.data);
+					$scope.play.teamDisp = $scope.AssignTeamLogo($scope.curChar.team);
+					if ($scope.curChar.team == 0){
+						$scope.curChar.initiative = 0;
+					}
+					break;
 				default:
 					return;
 			}
@@ -210,7 +227,7 @@
 			}
 
 			var sendData = {
-				type: "note",
+				type: 2, // EVENT_NOTE
 				data: {
 					players: $scope.note.players,
 					message: $scope.note.message
@@ -241,7 +258,7 @@
 		};
 
 		this.Initiative = function(newInit){
-			if ($scope.initStarted){
+			if ($scope.initStarted || $scope.curChar.team == 0){
 				return;
 			}
 			if (newInit == null){
@@ -250,7 +267,7 @@
 			}
 			$scope.curChar.initiative = newInit;
 			var sendData = {
-				type: "initiative",
+				type: 5, // EVENT_INIT
 				data: {
 					players: [$scope.curChar.name],
 					message: String(newInit)
@@ -267,7 +284,7 @@
 			if ($scope.curChar.curWound + wnd <= $scope.curChar.wound && $scope.curChar.curWound + wnd >= -$scope.curChar.wound * 2){
 				$scope.curChar.curWound += wnd;
 				var sendData = {
-					type: "wound",
+					type: 3, // EVENT_WOUND
 					data: {
 						message: String(wnd)
 					}
@@ -283,7 +300,7 @@
 			if ($scope.curChar.curStrain + str <= $scope.curChar.strain && $scope.curChar.curStrain + str >= -$scope.curChar.strain * 2){
 				$scope.curChar.curStrain += str;
 				var sendData = {
-					type: "strain",
+					type: 4, // EVENT_STRAIN
 					data: {
 						message: String(str)
 					}
@@ -310,6 +327,10 @@
 			if (upBack){
 				$scope.backStep = step;
 			}
+		};
+
+		$scope.AssignTeamLogo = function(teamId){
+			return $scope.teamLogos[teamId] + "_dark.png";
 		};
 	}]);
 })();

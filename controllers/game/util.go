@@ -1,8 +1,6 @@
 package game
 
-import "github.com/Penun/swutil/models/game"
-
-func GetPlayerName(playName string) game.LivePlayer {
+func GetPlayerName(playName string) LivePlayer {
 	if playName != "" {
 		for i := 0; i < len(players); i++ {
 			if players[i].Player.Name == playName {
@@ -10,7 +8,7 @@ func GetPlayerName(playName string) game.LivePlayer {
 			}
 		}
 	}
-	return game.LivePlayer{}
+	return LivePlayer{}
 }
 
 func WoundPlayer(playName string, wound int) {
@@ -42,7 +40,7 @@ func StrainPlayer(playName string, strain int) {
 func InitPlayer(playName string, init float64) {
 	if playName != "" {
 		for i := 0; i < len(players); i++ {
-			if players[i].Player.Name == playName {
+			if players[i].Player.Name == playName && players[i].Team > 0 {
 				players[i].Initiative = init
 				break
 			}
@@ -50,8 +48,8 @@ func InitPlayer(playName string, init float64) {
 	}
 }
 
-func DeletePlayer(play game.LivePlayer) {
-	if play != (game.LivePlayer{}) {
+func DeletePlayer(play LivePlayer) {
+	if play != (LivePlayer{}) {
 		for i := 0; i < len(players); i++ {
 			if players[i].Player.Name == play.Player.Name {
 				RemovePlayer(i)
@@ -128,6 +126,20 @@ func UpDiffPlayer(playName string, dir int) {
 		for i := 0; i < len(players); i++ {
 			if players[i].Player.Name == playName && players[i].CurUpDiff + dir >= 0 {
 				players[i].CurUpDiff += dir
+				break
+			}
+		}
+	}
+}
+
+func SetPlayTeam(playName string, teamInd int) {
+	if playName != "" {
+		for i := 0; i < len(players); i++ {
+			if players[i].Player.Name == playName {
+				players[i].Team = teamInd
+				if teamInd == 0 {
+					players[i].Initiative = 0
+				}
 				break
 			}
 		}

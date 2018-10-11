@@ -39,10 +39,10 @@
 							</span>
 						</span>
 						<span class="charDispBod">
-							<span class="dispList hold1x1">
-								<span ng-repeat="(ind, play) in playChars | orderBy: ['+team', '+player.name']" class="dispItem itemBord" ng-class="{selectedItem: play.selected}" ng-click="mCont.SelectChar(play)">
+							<span class="hold1x1 flexList">
+								<span ng-repeat="play in gameChars | orderBy: ['+team', '+player.name']" class="dispItem itemBord" ng-class="{selectedItem: play.selected}" ng-click="mCont.SelectChar(play)">
 									<span class="dispItemName">{{"{{play.player.name}}"}}</span>
-									<span class="col3">{{str2html rawTeamImg}}</span>
+									<span class="col3" ng-if="play.team != 0 && teamLogos.length > 0">{{str2html rawTeamImg}}</span>
 									<span class="menu menuText menuBordT menuBordR dispItemClose" ng-click="mCont.DelChar(play.id)">X</span>
 									<span class="colSp_1_4 dispItemStats">
 										<span>W:{{"{{play.cur_wound}}"}}/{{"{{play.player.wound}}"}}</span>
@@ -57,21 +57,29 @@
 									</span>
 								</span>
 							</span>
-							<span ng-show="mCont.addAction" class="formWrapper hold1x1 itemBord">
+							<span ng-show="mCont.addAction && !mCont.teamAction" class="formWrapper hold1x1 itemBord">
 								<span class="menu menuText formButt" ng-click="mCont.ClearForm(5, false)">Cancel</span>
 								<form name="addCharForm" id="addCharForm" class="formInner" novalidate>
 									<span class="flexItem"><span>Show Stats:</span><span class="inputBack"><input type="checkbox" name="dispStats" id="dispStats" class="inputBod" ng-model="mCont.addForm.dispStats" /></span></span>
 									<span class="flexItem"><span>Name:</span><span class="inputBack"><input type="text" name="addName" id="addName" class="inputBod" ng-model="mCont.addForm.name" placeholder="Name" required/></span></span>
 									<span class="flexItem"><span>Wound:</span><span class="inputBack"><input type="number" name="addWound" id="addWound" class="inputBod" ng-model="mCont.addForm.wound" placeholder="0" required/></span></span>
 									<span class="flexItem"><span>Strain:</span><span class="inputBack"><input type="number" name="addStrain" id="addStrain" class="inputBod" ng-model="mCont.addForm.strain" placeholder="0" /></span></span>
-									<span class="flexItem"><span>Initiative:</span><span class="inputBack"><input type="number" name="addInit" id="addInit" class="inputBod" ng-model="mCont.addForm.initiative" step="any" placeholder="0" /></span></span>
 									<input ng-disabled="!addCharForm.$valid" ng-click="mCont.AddForm()" type="submit" />
 								</form>
 								<span ng-show="addCharForm.$valid" ng-click="mCont.AddForm()" class="menu menuText formButt">Add</span>
 							</span>
+							<span ng-show="mCont.teamAction && !mCont.addAction" class="formWrapper hold1x1 itemBord">
+								<span class="menu menuText formButt" ng-click="mCont.ClearForm(5, false)">Cancel</span>
+								<span class="flexList logoList">
+									<span class="clickHead"><img class="teamImg" src="/static/img/emblems/none.png\" alt="" ng-click="mCont.SetTeam(0)" /></span>
+									<span ng-repeat="(ind, logo) in teamLogos" class="clickHead" ng-if="ind > 0">
+										{{str2html rawLogoImg}}
+									</span>
+								</span>
+							</span>
 						</span>
 					</span>
-					<span id="characterMenu" ng-show="playChars.length > 0">
+					<span id="characterMenu" ng-show="gameChars.length > 0">
 						<span class="menuColSpan menuTitledBlock">
 							<span class="sw_back menuColSpan">
 								<span>Wound</span>
@@ -114,9 +122,12 @@
 							<span class="menu menuText" ng-click="mCont.AdjustChar(-1, 'upDiff')">-</span>
 							<span class="menu menuText" ng-click="mCont.AdjustChar(1, 'upDiff')">+</span>
 						</span>
+						<span class="menuColSpan menuTitledBlock" ng-click="mCont.SetupTeam()">
+							<span class="menuFull menu menuText" ng-show="!startInit">Team</span>
+						</span>
 					</span>
 					<span id="initiativeDisp" class="charDispBod">
-						<span ng-show="!startInit && (playChars.length > 0)" class="initBlock">
+						<span ng-show="!startInit && (gameChars.length > 0)" class="initBlock">
 							<form name="setInitForm" id="setInitForm" novalidate>
 								<span class="flexItem"><span>Initiative:</span><span class="inputBack"><input type="number" name="initVal" id="initVal" ng-model="initVal" class="inputBod" placeholder="0" required/></span></span>
 								<input ng-click="mCont.Initiative(initVal)" type="submit" />
@@ -127,7 +138,7 @@
 						<span ng-show="startInit">Initiative running....</span>
 					</span>
 					<span id="initiativeMenu" class="menuTitledBlock">
-						<span class="menu menuBordT menuText menuColSpan" ng-show="playChars.length > 0" ng-click="mCont.ToggleInit()">{{"{{startInit ? \"End\" : \"Start\"}}"}}</span>
+						<span class="menu menuBordT menuText menuColSpan" ng-show="gameChars.length > 0" ng-click="mCont.ToggleInit()">{{"{{startInit ? \"End\" : \"Start\"}}"}}</span>
 						<span class="menu menuText" ng-show="startInit" ng-click="mCont.PrevTurn()"><</span>
 						<span class="menu menuText" ng-show="startInit" ng-click="mCont.NextTurn()">></span>
 					</span>
