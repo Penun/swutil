@@ -125,6 +125,9 @@
 						<span class="menuColSpan menuTitledBlock" ng-click="mCont.SetupTeam()">
 							<span class="menuFull menu menuText" ng-show="!startInit">Team</span>
 						</span>
+						<span class="menuColSpan menuTitledBlock" ng-click="mCont.ResetChar()">
+							<span class="menuFull menu menuText" ng-show="!startInit">Reset</span>
+						</span>
 					</span>
 					<span id="initiativeDisp" class="charDispBod">
 						<span ng-show="!startInit && (gameChars.length > 0)" class="initBlock">

@@ -311,7 +311,6 @@
 					message: String(dam)
 				}
 			};
-			var found = false;
 			for (var i = 0; i < $scope.gameChars.length; i++){
 				if ($scope.gameChars[i].selected){
 					switch (adjType){
@@ -321,9 +320,6 @@
 							if ($scope.gameChars[i].cur_wound + dam <= $scope.gameChars[i].player.wound && $scope.gameChars[i].cur_wound + dam >= -$scope.gameChars[i].player.wound * 2){
 								$scope.gameChars[i].cur_wound += dam;
 								sendData.data.players.push($scope.gameChars[i].player.name);
-								if (!found){
-									found = true;
-								}
 							}
 							break;
 						case "strain":
@@ -333,9 +329,6 @@
 								if ($scope.gameChars[i].cur_strain + dam <= $scope.gameChars[i].player.strain && $scope.gameChars[i].cur_strain + dam >= -$scope.gameChars[i].player.strain * 2){
 									$scope.gameChars[i].cur_strain += dam;
 									sendData.data.players.push($scope.gameChars[i].player.name);
-									if (!found){
-										found = true;
-									}
 								}
 							}
 							break;
@@ -345,9 +338,6 @@
 							if ($scope.gameChars[i].cur_boost + dam >= 0){
 								$scope.gameChars[i].cur_boost += dam;
 								sendData.data.players.push($scope.gameChars[i].player.name);
-								if (!found){
-									found = true;
-								}
 							}
 							break;
 						case "setback":
@@ -356,9 +346,6 @@
 							if ($scope.gameChars[i].cur_setback + dam >= 0){
 								$scope.gameChars[i].cur_setback += dam;
 								sendData.data.players.push($scope.gameChars[i].player.name);
-								if (!found){
-									found = true;
-								}
 							}
 							break;
 						case "upgrade":
@@ -367,9 +354,6 @@
 							if ($scope.gameChars[i].cur_upgrade + dam >= 0){
 								$scope.gameChars[i].cur_upgrade += dam;
 								sendData.data.players.push($scope.gameChars[i].player.name);
-								if (!found){
-									found = true;
-								}
 							}
 							break;
 						case "upDiff":
@@ -378,18 +362,82 @@
 							if ($scope.gameChars[i].cur_upDiff + dam >= 0){
 								$scope.gameChars[i].cur_upDiff += dam;
 								sendData.data.players.push($scope.gameChars[i].player.name);
-								if (!found){
-									found = true;
-								}
 							}
 							break;
 					}
 				}
 			}
-			if (found){
+			if (sendData.data.players.length > 0){
 				sendData.type = adjType;
 				sendData = JSON.stringify(sendData);
 				$scope.sock.send(sendData);
+			}
+		};
+
+		this.ResetChar = function(){
+			var sendData = {
+				data: {
+					players: [],
+					message: ""
+				}
+			};
+			for (let i = 0; i < $scope.gameChars.length; i++){
+				if ($scope.gameChars[i].selected){
+					sendData.data.players.push($scope.gameChars[i].player.name);
+					let sendMess = "";
+					if ($scope.gameChars[i].cur_wound != $scope.gameChars[i].player.wound){
+						sendData.type = 3; // EVENT_WOUND
+						let dam = $scope.gameChars[i].player.wound - $scope.gameChars[i].cur_wound;
+						$scope.gameChars[i].cur_wound = $scope.gameChars[i].player.wound;
+						sendData.data.message = String(dam);
+						sendMess = JSON.stringify(sendData);
+						$scope.sock.send(sendMess);
+					}
+					if ($scope.gameChars[i].cur_strain != $scope.gameChars[i].player.strain){
+						sendData.type = 4; // EVENT_STRAIN
+						let dam = $scope.gameChars[i].player.strain - $scope.gameChars[i].cur_strain;
+						$scope.gameChars[i].cur_strain = $scope.gameChars[i].player.strain;
+						sendData.data.message = String(dam);
+						sendMess = JSON.stringify(sendData);
+						$scope.sock.send(sendMess);
+					}
+					if ($scope.gameChars[i].initiative > 0){
+						$scope.gameChars[i].initiative = 0;
+						sendData.type = 5; // EVENT_INIT
+						sendData.data.message = "0";
+						sendMess = JSON.stringify(sendData);
+						$scope.sock.send(sendMess);
+					}
+					if ($scope.gameChars[i].cur_boost > 0){
+						sendData.type = 10; // EVENT_INIT
+						sendData.data.message = String(-$scope.gameChars[i].cur_boost);
+						sendMess = JSON.stringify(sendData);
+						$scope.sock.send(sendMess);
+						$scope.gameChars[i].cur_boost = 0;
+					}
+					if ($scope.gameChars[i].cur_setback > 0){
+						sendData.type = 11; // EVENT_INIT
+						sendData.data.message = String(-$scope.gameChars[i].cur_setback);
+						sendMess = JSON.stringify(sendData);
+						$scope.sock.send(sendMess);
+						$scope.gameChars[i].cur_setback = 0;
+					}
+					if ($scope.gameChars[i].cur_upgrade > 0){
+						sendData.type = 12; // EVENT_INIT
+						sendData.data.message = String(-$scope.gameChars[i].cur_upgrade);
+						sendMess = JSON.stringify(sendData);
+						$scope.sock.send(sendMess);
+						$scope.gameChars[i].cur_upgrade = 0;
+					}
+					if ($scope.gameChars[i].cur_upDiff > 0){
+						sendData.type = 13; // EVENT_INIT
+						sendData.data.message = String(-$scope.gameChars[i].cur_upDiff);
+						sendMess = JSON.stringify(sendData);
+						$scope.sock.send(sendMess);
+						$scope.gameChars[i].cur_upDiff = 0;
+					}
+					sendData.data.players = [];
+				}
 			}
 		};
 

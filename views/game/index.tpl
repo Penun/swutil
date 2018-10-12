@@ -62,7 +62,7 @@
 							<span class="menu menuText menuBordT" ng-click="mCont.Strain(-1)">-</span>
 							<span class="menu menuText menuBordT" ng-click="mCont.Strain(1)">+</span>
 						</span>
-						<span class="dualBlock">
+						<span class="dualBlock" ng-show="curChar.team != 0">
 							<span class="sw_back">
 								<span>Initiative:</span>
 							</span>
