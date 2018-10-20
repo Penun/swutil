@@ -20,7 +20,7 @@ func (this *GameStatusController) Master() {
 func (this *GameStatusController) Check() {
 	resp := CheckPlayerResp{Success: false}
 	if findPlay := this.GetSession("player"); findPlay != nil {
-		resp.LivePlayer = GetPlayerName(findPlay.(string))
+		resp.LivePlayer = GetPlayerId(findPlay.(int))
 		if (resp.LivePlayer != LivePlayer{}){
 			resp.Success = true
 		} else {

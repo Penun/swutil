@@ -2,7 +2,6 @@
 	var app = angular.module('ddcharL', []);
 	app.controller('mainController', ['$window', '$scope', '$http', '$timeout', function($window, $scope, $http, $timeout){
 		$scope.gameChars = [];
-		$scope.charsCurId = 0;
 		$scope.allyVs = [];
 		$scope.enemVs = [];
 		this.inText = {};
@@ -29,11 +28,7 @@
 				$scope.sock.onmessage = $scope.HandleMessage;
 				$http.get("/track/subs?type=master").then(function(ret){
 					if (ret.data.success){
-						for (var i = 0; i < ret.data.result.length; i++){
-							ret.data.result[i].id = $scope.charsCurId;
-							$scope.gameChars.push(ret.data.result[i]);
-							$scope.charsCurId++;
-						}
+						$scope.gameChars = ret.data.result;
 					}
 					$http.get("/track/logos").then(function(ret){
 						if (ret.data.success){
@@ -60,8 +55,7 @@
 							}
 						}
 						if (!isFound){
-							$scope.gameChars.push({player: data.player, type: "PC", id: $scope.charsCurId});
-							$scope.charsCurId++;
+							$scope.gameChars.push({player: data.player, type: "PC"});
 							var sendData = {
 								name: data.player.name
 							};
@@ -69,22 +63,24 @@
 								if (ret.data.success){
 									for (var i = 0; i < $scope.gameChars.length; i++){
 										if ($scope.gameChars[i].player.name == ret.data.live_player.player.name){
-											$scope.gameChars[i].cur_wound = ret.data.live_player.cur_wound;
-											$scope.gameChars[i].cur_strain = ret.data.live_player.cur_strain;
-											$scope.gameChars[i].cur_boost = ret.data.live_player.cur_boost;
-											$scope.gameChars[i].cur_setback = ret.data.live_player.cur_setback;
-											$scope.gameChars[i].cur_upgrade = ret.data.live_player.cur_upgrade;
-											$scope.gameChars[i].cur_upDiff = ret.data.live_player.cur_upDiff;
-											$scope.gameChars[i].player.wound = ret.data.live_player.player.wound;
-											$scope.gameChars[i].player.strain = ret.data.live_player.player.strain;
-											$scope.gameChars[i].initiative = ret.data.live_player.initiative;
-											$scope.gameChars[i].team = ret.data.live_player.team;
+											$scope.gameChars[i] = ret.data.live_player;
 											$scope.gameChars[i].teamDisp = $scope.AssignTeamLogo(ret.data.live_player.team);
 											break;
 										}
 									}
 								}
 							});
+						}
+					} else {
+						if (data.data !== ''){
+							data.data = JSON.parse(data.data);
+							var newChar = JSON.parse(data.data.message);
+							for (var i = $scope.gameChars.length - 1; i >= 0; i--){
+								if ($scope.gameChars[i].player.name == newChar.player.name && ($scope.gameChars[i].id == null || typeof $scope.gameChars[i].id === 'undefined')){
+									$scope.gameChars[i].id = newChar.id;
+									break;
+								}
+							}
 						}
 					}
 					break;
@@ -159,7 +155,7 @@
 			var sendData = {
 				type: 2, // EVENT_NOTE
 				data: {
-					players: this.inText.players,
+					targets: this.inText.players,
 					message: this.inText.message
 				}
 			};
@@ -175,17 +171,17 @@
 			var sendData = {
 				type: 5, // EVENT_INIT
 				data: {
-					players: [],
+					targets: [],
 					message: String(newVal)
 				}
 			};
 			for (var i = 0; i < $scope.gameChars.length; i++){
 				if ($scope.gameChars[i].selected && $scope.gameChars[i]. team > 0){
 					$scope.gameChars[i].initiative = newVal;
-					sendData.data.players.push($scope.gameChars[i].player.name);
+					sendData.data.targets.push($scope.gameChars[i].id);
 				}
 			}
-			if (sendData.data.players.length > 0){
+			if (sendData.data.targets.length > 0){
 				sendData = JSON.stringify(sendData);
 				$scope.sock.send(sendData);
 				$scope.initVal = null;
@@ -200,7 +196,7 @@
 			var sendData = {
 				type: 14, // EVENT_TEAM
 				data: {
-					players: [],
+					targets: [],
 					message: String(ind)
 				}
 			};
@@ -212,10 +208,10 @@
 					if (ind == 0){
 						$scope.gameChars[i].initiative = 0;
 					}
-					sendData.data.players.push($scope.gameChars[i].player.name);
+					sendData.data.targets.push($scope.gameChars[i].id);
 				}
 			}
-			if (sendData.data.players.length > 0){
+			if (sendData.data.targets.length > 0){
 				sendData = JSON.stringify(sendData);
 				$scope.sock.send(sendData);
 			}
@@ -247,7 +243,6 @@
 				return;
 			}
 			var char = {
-				id: $scope.charsCurId,
 				player: {name: this.addForm.name},
 				type: "NPC",
 				initiative: 0,
@@ -264,7 +259,6 @@
 				char.player.strain = char.cur_strain = this.addForm.strain;
 			}
 			$scope.gameChars.push(char);
-			$scope.charsCurId++;
 			sendData = {
 				type: 0, // EVENT_JOIN
 				data: {
@@ -307,7 +301,7 @@
 		this.AdjustChar = function(dam, adjType){
 			var sendData = {
 				data: {
-					players: [],
+					targets: [],
 					message: String(dam)
 				}
 			};
@@ -319,7 +313,7 @@
 						case 3: // EVENT_WOUND
 							if ($scope.gameChars[i].cur_wound + dam <= $scope.gameChars[i].player.wound && $scope.gameChars[i].cur_wound + dam >= -$scope.gameChars[i].player.wound * 2){
 								$scope.gameChars[i].cur_wound += dam;
-								sendData.data.players.push($scope.gameChars[i].player.name);
+								sendData.data.targets.push($scope.gameChars[i].id);
 							}
 							break;
 						case "strain":
@@ -328,7 +322,7 @@
 							if (typeof $scope.gameChars[i].cur_strain !== 'undefined' && $scope.gameChars[i].cur_strain !== null && typeof $scope.gameChars[i].player.strain !== 'undefined' && $scope.gameChars[i].player.strain !== null) {
 								if ($scope.gameChars[i].cur_strain + dam <= $scope.gameChars[i].player.strain && $scope.gameChars[i].cur_strain + dam >= -$scope.gameChars[i].player.strain * 2){
 									$scope.gameChars[i].cur_strain += dam;
-									sendData.data.players.push($scope.gameChars[i].player.name);
+									sendData.data.targets.push($scope.gameChars[i].id);
 								}
 							}
 							break;
@@ -337,7 +331,7 @@
 						case 10: // EVENT_BOOST
 							if ($scope.gameChars[i].cur_boost + dam >= 0){
 								$scope.gameChars[i].cur_boost += dam;
-								sendData.data.players.push($scope.gameChars[i].player.name);
+								sendData.data.targets.push($scope.gameChars[i].id);
 							}
 							break;
 						case "setback":
@@ -345,7 +339,7 @@
 						case 11:
 							if ($scope.gameChars[i].cur_setback + dam >= 0){
 								$scope.gameChars[i].cur_setback += dam;
-								sendData.data.players.push($scope.gameChars[i].player.name);
+								sendData.data.targets.push($scope.gameChars[i].id);
 							}
 							break;
 						case "upgrade":
@@ -353,7 +347,7 @@
 						case 12:
 							if ($scope.gameChars[i].cur_upgrade + dam >= 0){
 								$scope.gameChars[i].cur_upgrade += dam;
-								sendData.data.players.push($scope.gameChars[i].player.name);
+								sendData.data.targets.push($scope.gameChars[i].id);
 							}
 							break;
 						case "upDiff":
@@ -361,13 +355,13 @@
 						case 13:
 							if ($scope.gameChars[i].cur_upDiff + dam >= 0){
 								$scope.gameChars[i].cur_upDiff += dam;
-								sendData.data.players.push($scope.gameChars[i].player.name);
+								sendData.data.targets.push($scope.gameChars[i].id);
 							}
 							break;
 					}
 				}
 			}
-			if (sendData.data.players.length > 0){
+			if (sendData.data.targets.length > 0){
 				sendData.type = adjType;
 				sendData = JSON.stringify(sendData);
 				$scope.sock.send(sendData);
@@ -377,13 +371,13 @@
 		this.ResetChar = function(){
 			var sendData = {
 				data: {
-					players: [],
+					targets: [],
 					message: ""
 				}
 			};
 			for (let i = 0; i < $scope.gameChars.length; i++){
 				if ($scope.gameChars[i].selected){
-					sendData.data.players.push($scope.gameChars[i].player.name);
+					sendData.data.targets.push($scope.gameChars[i].id);
 					let sendMess = "";
 					if ($scope.gameChars[i].cur_wound != $scope.gameChars[i].player.wound){
 						sendData.type = 3; // EVENT_WOUND
@@ -436,7 +430,7 @@
 						$scope.sock.send(sendMess);
 						$scope.gameChars[i].cur_upDiff = 0;
 					}
-					sendData.data.players = [];
+					sendData.data.targets = [];
 				}
 			}
 		};
@@ -445,11 +439,11 @@
 			for (var i = 0; i < $scope.gameChars.length; i++){
 				if ($scope.gameChars[i].id == charId){
 					var delChars = [];
-					delChars.push($scope.gameChars[i].player.name);
+					delChars.push($scope.gameChars[i].id);
 					sendData = {
 						type: 1, // EVENT_LEAVE
 						data: {
-							players: delChars
+							targets: delChars
 						}
 					};
 					sendData = JSON.stringify(sendData);

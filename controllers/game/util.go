@@ -1,9 +1,9 @@
 package game
 
-func GetPlayerName(playName string) LivePlayer {
-	if playName != "" {
+func GetPlayerId(playId int) LivePlayer {
+	if playId > 0 {
 		for i := 0; i < len(players); i++ {
-			if players[i].Player.Name == playName {
+			if players[i].Id == playId {
 				return players[i]
 			}
 		}
@@ -11,38 +11,38 @@ func GetPlayerName(playName string) LivePlayer {
 	return LivePlayer{}
 }
 
-func WoundPlayer(playName string, wound int) {
-	if playName != "" {
+func WoundPlayer(playId int, wound int) {
+	if playId > 0 {
 		for i := 0; i < len(players); i++ {
-			if players[i].Player.Name == playName {
+			if players[i].Id == playId {
 				if players[i].CurWound + wound <= players[i].Player.Wound && players[i].CurWound + wound >= -players[i].Player.Wound * 2 {
 					players[i].CurWound += wound
-					break
+					return
 				}
 			}
 		}
 	}
 }
 
-func StrainPlayer(playName string, strain int) {
-	if playName != "" {
+func StrainPlayer(playId int, strain int) {
+	if playId > 0 {
 		for i := 0; i < len(players); i++ {
-			if players[i].Player.Name == playName {
+			if players[i].Id == playId {
 				if players[i].CurStrain + strain <= players[i].Player.Strain && players[i].CurStrain + strain >= -players[i].Player.Strain * 2 {
 					players[i].CurStrain += strain
-					break
+					return
 				}
 			}
 		}
 	}
 }
 
-func InitPlayer(playName string, init float64) {
-	if playName != "" {
+func InitPlayer(playId int, init float64) {
+	if playId > 0 {
 		for i := 0; i < len(players); i++ {
-			if players[i].Player.Name == playName && players[i].Team > 0 {
+			if players[i].Id == playId && players[i].Team > 0 {
 				players[i].Initiative = init
-				break
+				return
 			}
 		}
 	}
@@ -50,21 +50,16 @@ func InitPlayer(playName string, init float64) {
 
 func DeletePlayer(play LivePlayer) {
 	if play != (LivePlayer{}) {
-		for i := 0; i < len(players); i++ {
-			if players[i].Player.Name == play.Player.Name {
-				RemovePlayer(i)
-				break
-			}
-		}
+		DeletePlayerId(play.Id)
 	}
 }
 
-func DeletePlayerName(playName string) {
-	if playName != "" {
+func DeletePlayerId(playId int) {
+	if playId > 0 {
 		for i := 0; i < len(players); i++ {
-			if players[i].Player.Name == playName {
+			if players[i].Id == playId {
 				RemovePlayer(i)
-				break
+				return
 			}
 		}
 	}
@@ -88,59 +83,70 @@ func RemovePlayer(i int) {
 	}
 }
 
-func BoostPlayer(playName string, dir int) {
-	if playName != "" {
+func BoostPlayer(playId int, dir int) {
+	if playId > 0 {
 		for i := 0; i < len(players); i++ {
-			if players[i].Player.Name == playName && players[i].CurBoost + dir >= 0 {
+			if players[i].Id == playId && players[i].CurBoost + dir >= 0 {
 				players[i].CurBoost += dir
-				break
+				return
 			}
 		}
 	}
 }
 
-func SetbackPlayer(playName string, dir int) {
-	if playName != "" {
+func SetbackPlayer(playId int, dir int) {
+	if playId > 0 {
 		for i := 0; i < len(players); i++ {
-			if players[i].Player.Name == playName && players[i].CurSetback + dir >= 0 {
+			if players[i].Id == playId && players[i].CurSetback + dir >= 0 {
 				players[i].CurSetback += dir
-				break
+				return
 			}
 		}
 	}
 }
 
-func UpgradePlayer(playName string, dir int) {
-	if playName != "" {
+func UpgradePlayer(playId int, dir int) {
+	if playId > 0 {
 		for i := 0; i < len(players); i++ {
-			if players[i].Player.Name == playName && players[i].CurUpgrade + dir >= 0 {
+			if players[i].Id == playId && players[i].CurUpgrade + dir >= 0 {
 				players[i].CurUpgrade += dir
-				break
+				return
 			}
 		}
 	}
 }
 
-func UpDiffPlayer(playName string, dir int) {
-	if playName != "" {
+func UpDiffPlayer(playId int, dir int) {
+	if playId > 0 {
 		for i := 0; i < len(players); i++ {
-			if players[i].Player.Name == playName && players[i].CurUpDiff + dir >= 0 {
+			if players[i].Id == playId && players[i].CurUpDiff + dir >= 0 {
 				players[i].CurUpDiff += dir
-				break
+				return
 			}
 		}
 	}
 }
 
-func SetPlayTeam(playName string, teamInd int) {
-	if playName != "" {
+func SetPlayTeam(playId int, teamInd int) {
+	if playId > 0 {
 		for i := 0; i < len(players); i++ {
-			if players[i].Player.Name == playName {
+			if players[i].Id == playId {
 				players[i].Team = teamInd
 				if teamInd == 0 {
 					players[i].Initiative = 0
 				}
-				break
+				return
+			}
+		}
+	}
+}
+
+func setSubId(playId int, subId int) {
+	if playId > 0 {
+		for i := 0; i < len(players); i++ {
+			if players[i].Id == playId {
+				players[i].subId = subId
+				return
 			}
 		}
 	}

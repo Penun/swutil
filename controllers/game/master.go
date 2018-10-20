@@ -20,8 +20,6 @@ func (this *MasterSocketController) Join() {
 	}
 
 	uname := "GM"
-	ws_type := "master"
-
 	this.TplName = "game/end.html"
 
 	// Upgrade from http request to WebSocket.
@@ -32,8 +30,8 @@ func (this *MasterSocketController) Join() {
 	}
 
 	// Join update channel.
-	gamesocket.Join(uname, ws_type, ws)
-	defer MasterLeave(uname)
+	sub_id := gamesocket.Join(uname, true, ws, true)
+	defer masterLeave(sub_id)
 
 	// Message receive loop.
 	for {
@@ -47,17 +45,17 @@ func (this *MasterSocketController) Join() {
 		if err == nil {
             passPublish := false
 			switch conReq.Type {
-			case gamesocket.EVENT_WOUND:
+			case EVENT_WOUND:
 				wound, _ := strconv.Atoi(conReq.Data.Message)
 				for _, play := range conReq.Data.Players {
 					WoundPlayer(play, wound)
 				}
-			case gamesocket.EVENT_STRAIN:
+			case EVENT_STRAIN:
 				strain, _ := strconv.Atoi(conReq.Data.Message)
 				for _, play := range conReq.Data.Players {
 					StrainPlayer(play, strain)
 				}
-			case gamesocket.EVENT_INIT:
+			case EVENT_INIT:
 				if !initStarted {
 					init, _ := strconv.ParseFloat(conReq.Data.Message, 64)
 					for _, play := range conReq.Data.Players {
@@ -67,12 +65,12 @@ func (this *MasterSocketController) Join() {
 				} else {
                     passPublish = true
                 }
-			case gamesocket.EVENT_INIT_D:
+			case EVENT_INIT_D:
 				for _, play := range conReq.Data.Players {
 					InitPlayer(play, 0)
 				}
 				go SortPlayerInit()
-			case gamesocket.EVENT_INIT_S:
+			case EVENT_INIT_S:
 				if len(players) > 0 {
 					initStarted = true
 					FindNextInitInd(true, false)
@@ -80,13 +78,13 @@ func (this *MasterSocketController) Join() {
 				} else {
                     passPublish = true
                 }
-			case gamesocket.EVENT_INIT_E:
+			case EVENT_INIT_E:
 				initStarted = false
 				curInitInd = 0
 				for i := 0; i < len(players); i++ {
 					players[i].IsTurn = false
 				}
-			case gamesocket.EVENT_INIT_T:
+			case EVENT_INIT_T:
 				players[curInitInd].IsTurn = false
 				if conReq.Data.Message == "+" {
 					FindNextInitInd(false, false)
@@ -94,43 +92,87 @@ func (this *MasterSocketController) Join() {
 					FindNextInitInd(false, true)
 				}
 				players[curInitInd].IsTurn = true
-			case gamesocket.EVENT_JOIN:
+			case EVENT_JOIN:
 				var newPlay LivePlayer
 				err = json.Unmarshal([]byte(conReq.Data.Message), &newPlay)
 				if err == nil {
-					players = append(players, newPlay)
-					SortPlayerInit()
-					UpdateCurIndByIsTurn()
+                    curPlayId++
+                    newPlay.Id = curPlayId
+                    type tmpPlay struct {
+                        Name string `json:"name"`
+                        Wound int `json:"wound"`
+                        Strain int `json:"strain"`
+                    }
+                    type tmpLivePlay struct {
+                        Id int `json:"id"`
+                    	Player tmpPlay `json:"player"`
+                    	Initiative float64 `json:"initiative"`
+                        CurWound int `json:"cur_wound"`
+                        CurStrain int `json:"cur_strain"`
+                        CurBoost int `json:"cur_boost"`
+                        CurSetback int `json:"cur_setback"`
+                        CurUpgrade int `json:"cur_upgrade"`
+                        CurUpDiff int `json:"cur_upDiff"`
+                        IsTurn bool `json:"isTurn"`
+                    	Type string `json:"type"`
+                    	Team int `json:"team"`
+                        DispStats bool `json:"disp_stats"`
+                    }
+                    nTmpPlay := tmpLivePlay{
+                        Id: newPlay.Id,
+                        Player: tmpPlay{Name: newPlay.Player.Name, Wound: newPlay.Player.Wound, Strain: newPlay.Player.Strain},
+                        Initiative: newPlay.Initiative,
+                        CurWound: newPlay.CurWound,
+                        CurStrain: newPlay.CurStrain,
+                        CurBoost: newPlay.CurBoost,
+                        CurSetback: newPlay.CurSetback,
+                        CurUpgrade: newPlay.CurUpgrade,
+                        CurUpDiff: newPlay.CurUpDiff,
+                        IsTurn: newPlay.IsTurn,
+                    	Type: newPlay.Type,
+                    	Team: newPlay.Team,
+                        DispStats: newPlay.DispStats}
+                    newPlayJson, err := json.Marshal(nTmpPlay)
+                    if err == nil {
+                        players = append(players, newPlay)
+                        UpdateCurIndByIsTurn()
+                        SortPlayerInit()
+                        conReq.Data.Message = string(newPlayJson)
+                    } else {
+                        passPublish = true
+                        curPlayId--
+                        beego.Error(err.Error())
+                    }
 				} else {
                     passPublish = true
 					beego.Error(err.Error())
 				}
-			case gamesocket.EVENT_LEAVE:
+			case EVENT_LEAVE:
 				for _, play := range conReq.Data.Players {
-					DeletePlayerName(play)
+					DeletePlayerId(play)
 					gamesocket.Leave(play)
 				}
-			case gamesocket.EVENT_BOOST:
+			case EVENT_BOOST:
 				boost, _ := strconv.Atoi(conReq.Data.Message)
 				for _, play := range conReq.Data.Players {
 					BoostPlayer(play, boost)
 				}
-			case gamesocket.EVENT_SETBACK:
+			case EVENT_SETBACK:
 				setback, _ := strconv.Atoi(conReq.Data.Message)
 				for _, play := range conReq.Data.Players {
 					SetbackPlayer(play, setback)
 				}
-			case gamesocket.EVENT_UPGRADE:
+			case EVENT_UPGRADE:
 				upgrade, _ := strconv.Atoi(conReq.Data.Message)
 				for _, play := range conReq.Data.Players {
 					UpgradePlayer(play, upgrade)
 				}
-			case gamesocket.EVENT_UPDIFF:
+			case EVENT_UPDIFF:
 				upDiff, _ := strconv.Atoi(conReq.Data.Message)
 				for _, play := range conReq.Data.Players {
 					UpDiffPlayer(play, upDiff)
 				}
-            case gamesocket.EVENT_TEAM:
+            case EVENT_TEAM:
                 team, _ := strconv.Atoi(conReq.Data.Message)
 				for _, play := range conReq.Data.Players {
 					SetPlayTeam(play, team)
@@ -139,17 +181,31 @@ func (this *MasterSocketController) Join() {
                 passPublish = true
 			}
             if !passPublish {
-                gamesocket.Publish <- gamesocket.NewEvent(conReq.Type, uname, ws_type, conReq.Data.Players, conReq.Data.Message)
+                multiMessStr, _ := json.Marshal(conReq.Data)
+                targs := findTargs(conReq.Type, conReq.Data.Players)
+                gamesocket.Publish <- gamesocket.NewEvent(conReq.Type, 0, true, targs, string(multiMessStr))
             }
-            beego.Info("Players", players)
-            beego.Info("Current Init", curInitInd)
+            beego.Info("Players ", players)
+            beego.Info("Current Init ", curInitInd)
 		} else {
 			beego.Error(err.Error())
 		}
 	}
 }
 
-func MasterLeave(uname string) {
+func findTargs(eType int, playIds []int) []int {
+    var foundSubs []int
+    for _, play := range playIds {
+        if player := GetPlayerId(play); (player != LivePlayer{}) {
+            if player.subId != 0 {
+                foundSubs = append(foundSubs, player.subId)
+            }
+        }
+    }
+    return foundSubs
+}
+
+func masterLeave(uId int) {
     master = false
-    gamesocket.Leave(uname)
+    gamesocket.Leave(uId)
 }

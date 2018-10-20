@@ -24,8 +24,8 @@ func (this *WatchSocketController) Join() {
 	}
 
 	// Join chat room.
-	gamesocket.Join(uname, "watch", ws)
-	defer gamesocket.Leave(uname)
+	sub_id := gamesocket.Join(uname, true, ws, false)
+	defer gamesocket.Leave(sub_id)
 
 	// Message receive loop.
 	for {
