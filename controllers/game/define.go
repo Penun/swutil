@@ -84,6 +84,10 @@ type FindPlayerReq struct {
 	Name string `json:"name"`
 }
 
+type IdPlayerReq struct {
+    Id int `json:"id"`
+}
+
 type FindPlayerResp struct {
 	Success bool `json:"success"`
 	Players []game.Player `json:"players"`

@@ -13,7 +13,6 @@ func tracker() {
 			if !IfUserExist(sub.Name) {
 				subscribers = append(subscribers, sub) // Add user to the end of list.
 				// Publish a JOIN event.
-				Publish <- NewEvent(0, sub.Id, sub.Watch, nil, "")
 				beego.Info("New user:", sub.Name, ";WebSocket:", sub.Conn != nil)
 			} else {
 				beego.Info("Old user:", sub.Name, ";WebSocket:", sub.Conn != nil)
@@ -46,25 +45,17 @@ func init() {
 	go tracker()
 }
 
-func NewEvent(ep int, user int, watch bool, targets []int, data string) Event {
-	retEve := Event{ep, Sender{Id: user}, targets, data}
-	if user == 0 {
-		retEve.Sender.Type = "master"
-	} else if watch {
-		retEve.Sender.Type = "watch"
-	} else {
-		retEve.Sender.Type = "play"
-	}
-	return retEve
+func NewEvent(ep int, user int, sub_type int, targets []int, data string) Event {
+	return Event{ep, Sender{Id: user, Type: sub_type}, targets, data}
 }
 
-func Join(user string, watch bool, ws *websocket.Conn, master bool) int {
-	if master {
-		subscribe <- Subscriber{Id: 0, Name: user, Watch: watch, Conn: ws}
-		return 0
+func Join(user string, sub_type int, ws *websocket.Conn) int {
+	if sub_type == SUB_MASTER {
+		subscribe <- Subscriber{Id: SUB_MASTER, Name: user, Type: sub_type, Conn: ws}
+		return SUB_MASTER
 	} else {
 		curSubId++
-		subscribe <- Subscriber{Id: curSubId, Name: user, Watch: watch, Conn: ws}
+		subscribe <- Subscriber{Id: curSubId, Name: user, Type: sub_type, Conn: ws}
 		return curSubId
 	}
 }

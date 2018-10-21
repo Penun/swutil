@@ -46,28 +46,22 @@
 			var data = JSON.parse(event.data);
 			switch (data.type) {
 				case 0: // JOIN
-					if (data.player.type == "play"){
+					if (data.player.type == 2){
 						var isFound = false;
 						for (var i = 0; i < $scope.gameChars.length; i++){
-							if ($scope.gameChars[i].player.name == data.player.name){
+							if ($scope.gameChars[i].id == data.player.id){
 								isFound = true;
 								break;
 							}
 						}
 						if (!isFound){
-							$scope.gameChars.push({player: data.player, type: "PC"});
 							var sendData = {
-								name: data.player.name
+								id: data.player.id
 							};
 							$http.post("/track/player", sendData).then(function(ret){
 								if (ret.data.success){
-									for (var i = 0; i < $scope.gameChars.length; i++){
-										if ($scope.gameChars[i].player.name == ret.data.live_player.player.name){
-											$scope.gameChars[i] = ret.data.live_player;
-											$scope.gameChars[i].teamDisp = $scope.AssignTeamLogo(ret.data.live_player.team);
-											break;
-										}
-									}
+									ret.data.live_player.teamDisp = $scope.AssignTeamLogo(ret.data.live_player.team);
+									$scope.gameChars.push(ret.data.live_player);
 								}
 							});
 						}
@@ -86,7 +80,7 @@
 					break;
 				case 1: // LEAVE
 					for (var i = 0; i < $scope.gameChars.length; i++){
-						if ($scope.gameChars[i].name == data.player.name){
+						if ($scope.gameChars[i].id == data.player.id){
 							$scope.gameChars.splice(i, 1);
 							break;
 						}
@@ -98,21 +92,21 @@
 					break;
 				case 3:
 					for (var i = 0; i < $scope.gameChars.length; i++){
-						if ($scope.gameChars[i].player.name == data.player.name){
+						if ($scope.gameChars[i].id == data.player.id){
 							$scope.gameChars[i].cur_wound += Number(data.data);
 						}
 					}
 					break;
 				case 4:
 					for (var i = 0; i < $scope.gameChars.length; i++){
-						if ($scope.gameChars[i].player.name == data.player.name){
+						if ($scope.gameChars[i].id == data.player.id){
 							$scope.gameChars[i].cur_strain += Number(data.data);
 						}
 					}
 					break;
 				case 5:
 				for (var i = 0; i < $scope.gameChars.length; i++){
-					if ($scope.gameChars[i].player.name == data.player.name){
+					if ($scope.gameChars[i].id == data.player.id){
 						$scope.gameChars[i].initiative = Number(data.data);
 					}
 				}

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/gorilla/websocket"
 	"net/http"
-	"github.com/astaxie/beego"
 )
 
 func Upgrade(w http.ResponseWriter, r *http.Request) (*websocket.Conn, error) {
@@ -20,11 +19,11 @@ func broadcastWebSocket(event Event) {
 	for i := 0; i < len(subscribers); i++ {
 		var data []byte
 		send := false
-		if subscribers[i].Watch && (event.Type == 0 || subscribers[i].Id != event.Sender.Id) {
-			beego.Info("Event Type", event.Type)
-			beego.Info("Sub Id", subscribers[i].Id)
-			beego.Info("Sender Id", event.Sender.Id)
-			beego.Info("")
+		if subscribers[i].Type == SUB_WATCH {
+			send = true
+			sockMes := SocketMessage{Type: event.Type, Player: event.Sender, Data: event.Data}
+			data, _ = json.Marshal(sockMes)
+		} else if subscribers[i].Type == SUB_MASTER && event.Type != EVENT_NOTE && (subscribers[i].Id != event.Sender.Id || event.Type == EVENT_JOIN){
 			send = true
 			sockMes := SocketMessage{Type: event.Type, Player: event.Sender, Data: event.Data}
 			data, _ = json.Marshal(sockMes)
@@ -34,7 +33,7 @@ func broadcastWebSocket(event Event) {
 					send = true
 					sockMes := SocketMessage{Type: event.Type, Player: event.Sender}
 					var multData MultiMess
-					if err := json.Unmarshal([]byte(event.Data), multData); err == nil {
+					if err := json.Unmarshal([]byte(event.Data), &multData); err == nil {
 						sockMes.Data = multData.Message
 					} else {
 						sockMes.Data = event.Data

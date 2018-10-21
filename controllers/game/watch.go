@@ -24,13 +24,14 @@ func (this *WatchSocketController) Join() {
 	}
 
 	// Join chat room.
-	sub_id := gamesocket.Join(uname, true, ws, false)
+	sub_id := gamesocket.Join(uname, gamesocket.SUB_WATCH, ws)
 	defer gamesocket.Leave(sub_id)
 
 	// Message receive loop.
 	for {
         _, _, err := ws.ReadMessage()
         if err != nil {
+            beego.Error(err.Error())
 			return
 		}
     }

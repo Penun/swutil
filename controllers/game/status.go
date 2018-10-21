@@ -105,12 +105,12 @@ func (this *GameStatusController) VerifyName() {
 }
 
 func (this *GameStatusController) GetPlayer() {
-    var getReq FindPlayerReq
+    var getReq IdPlayerReq
 	err := json.Unmarshal(this.Ctx.Input.RequestBody, &getReq)
 	resp := GetPlayerResp{Success: false}
 	if err == nil {
 		for _, play := range players {
-			if play.Player.Name == getReq.Name {
+			if play.Id == getReq.Id {
 				resp.LivePlayer = &play
 				resp.Success = true
 				break

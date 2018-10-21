@@ -30,8 +30,10 @@ func (this *MasterSocketController) Join() {
 	}
 
 	// Join update channel.
-	sub_id := gamesocket.Join(uname, true, ws, true)
+	sub_id := gamesocket.Join(uname, gamesocket.SUB_MASTER, ws)
 	defer masterLeave(sub_id)
+
+    gamesocket.Publish <- gamesocket.NewEvent(EVENT_JOIN, gamesocket.SUB_MASTER, gamesocket.SUB_MASTER, nil, "")
 
 	// Message receive loop.
 	for {
@@ -149,8 +151,12 @@ func (this *MasterSocketController) Join() {
 				}
 			case EVENT_LEAVE:
 				for _, play := range conReq.Data.Players {
-					DeletePlayerId(play)
-					gamesocket.Leave(play)
+                    player := GetPlayerId(play)
+                    if player.subId > 0 {
+                        gamesocket.Leave(player.subId)
+                    }
+                    DeletePlayerId(play)
+
 				}
 			case EVENT_BOOST:
 				boost, _ := strconv.Atoi(conReq.Data.Message)
@@ -183,7 +189,7 @@ func (this *MasterSocketController) Join() {
             if !passPublish {
                 multiMessStr, _ := json.Marshal(conReq.Data)
                 targs := findTargs(conReq.Type, conReq.Data.Players)
-                gamesocket.Publish <- gamesocket.NewEvent(conReq.Type, 0, true, targs, string(multiMessStr))
+                gamesocket.Publish <- gamesocket.NewEvent(conReq.Type, gamesocket.SUB_MASTER, gamesocket.SUB_MASTER, targs, string(multiMessStr))
             }
             beego.Info("Players ", players)
             beego.Info("Current Init ", curInitInd)

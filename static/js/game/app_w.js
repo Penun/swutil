@@ -45,24 +45,23 @@
 
 		$scope.HandleMessage = function(event){
 			var data = JSON.parse(event.data);
-			if (data.player.type == "master" && data.data !== ""){
+			if (data.player.type == 0 && data.data !== ""){
 				data.data = JSON.parse(data.data);
-				var players = data.data.targets;
 			}
 			switch (data.type) {
 			case 0: // JOIN
-				if (data.player.type == "play"){
+				if (data.player.type == 2){
 					data.player.initiative = 0;
 					var isFound = false;
 					for (var i = 0; i < $scope.gameChars.length; i++){
-						if ($scope.gameChars[i].player.name == data.player.name){
+						if ($scope.gameChars[i].id == data.player.id){
 							isFound = true;
 							break;
 						}
 					}
 					if (!isFound){
 						sendData = {
-							name: data.player.name
+							id: data.player.id
 						}
 						$http.post("/track/player", sendData).then(function(ret){
 							if (ret.data.success){
@@ -71,7 +70,7 @@
 							}
 						});
 					}
-				} else if (data.player.type == "master"){
+				} else if (data.player.type == 0){
 					if (data.data !== ""){
 						let tPlay = JSON.parse(data.data.message);
 						tPlay.initDisp = tPlay.teamDisp = $scope.AssignTeamLogo(tPlay.team);
@@ -85,11 +84,11 @@
 				}
 				break;
 			case 1: // LEAVE
-				if (data.player.type == "master") {
-					if (typeof players !== "undefined"){
-						for (var i = 0; i < players.length; i++){
+				if (data.player.type == 0) {
+					if (typeof data.data.targets !== 'undefined'){
+						for (var i = 0; i < data.data.targets.length; i++){
 							for (var j = 0; j < $scope.gameChars.length; j++){
-								if ($scope.gameChars[j].id == players[i]){
+								if ($scope.gameChars[j].id == data.data.targets[i]){
 									var setTurn = $scope.gameChars[j].isTurn;
 									$scope.gameChars.splice(j, 1);
 									if (setTurn){
@@ -106,7 +105,7 @@
 					}
 				} else {
 					for (var i = 0; i < $scope.gameChars.length; i++){
-						if ($scope.gameChars[i].player.name == data.player.name){
+						if ($scope.gameChars[i].id == data.player.id){
 							var setTurn = $scope.gameChars[i].isTurn;
 							$scope.gameChars.splice(i, 1);
 							if (setTurn){
@@ -120,17 +119,17 @@
 				$scope.UpdateCurByIsTurn();
 				break;
 			case 3: // WOUND
-				if (data.player.type == "play"){
+				if (data.player.type == 2){
 					for (var i = 0; i < $scope.gameChars.length; i++){
-						if ($scope.gameChars[i].player.name == data.player.name){
+						if ($scope.gameChars[i].id == data.player.id){
 							$scope.gameChars[i].cur_wound = typeof $scope.gameChars[i].cur_wound === 'undefined' ? Number(data.data) : $scope.gameChars[i].cur_wound + Number(data.data);
 							break;
 						}
 					}
-				} else if (data.player.type == "master"){
-					for (var i = 0; i < players.length; i++){
+				} else if (data.player.type == 0){
+					for (var i = 0; i < data.data.targets.length; i++){
 						for (var j = 0; j < $scope.gameChars.length; j++){
-							if ($scope.gameChars[j].id == players[i]){
+							if ($scope.gameChars[j].id == data.data.targets[i]){
 								$scope.gameChars[j].cur_wound += Number(data.data.message);
 								break;
 							}
@@ -139,17 +138,17 @@
 				}
 				break;
 			case 4: // STRAIN
-				if (data.player.type == "play"){
+				if (data.player.type == 2){
 					for (var i = 0; i < $scope.gameChars.length; i++){
-						if ($scope.gameChars[i].player.name == data.player.name){
+						if ($scope.gameChars[i].id == data.player.id){
 							$scope.gameChars[i].cur_strain = typeof $scope.gameChars[i].cur_strain === 'undefined' ? Number(data.data) : $scope.gameChars[i].cur_strain + Number(data.data)
 							break;
 						}
 					}
-				} else if (data.player.type == "master"){
-					for (var i = 0; i < players.length; i++){
+				} else if (data.player.type == 0){
+					for (var i = 0; i < data.data.targets.length; i++){
 						for (var j = 0; j < $scope.gameChars.length; j++){
-							if ($scope.gameChars[j].id == players[i]){
+							if ($scope.gameChars[j].id == data.data.targets[i]){
 								$scope.gameChars[j].cur_strain += Number(data.data.message);
 								break;
 							}
@@ -158,17 +157,17 @@
 				}
 				break;
 			case 5: // INITIATIVE
-				if (data.player.type == "play"){
+				if (data.player.type == 2){
 					for (var j = 0; j < $scope.gameChars.length; j++){
-						if ($scope.gameChars[j].id == data.players[0]){
-							$scope.gameChars[j].initiative = Number(data.data.message);
+						if ($scope.gameChars[j].id == data.player.id){
+							$scope.gameChars[j].initiative = Number(data.data);
 							break;
 						}
 					}
-				} else if (data.player.type == "master"){
-					for (var i = 0; i < players.length; i++){
+				} else if (data.player.type == 0){
+					for (var i = 0; i < data.data.targets.length; i++){
 						for (var j = 0; j < $scope.gameChars.length; j++){
-							if ($scope.gameChars[j].id == players[i]){
+							if ($scope.gameChars[j].id ==data.data.targets[i]){
 								$scope.gameChars[j].initiative = Number(data.data.message);
 								break;
 							}
@@ -203,9 +202,9 @@
 				break;
 			case 10: // Boost
 				var dir = Number(data.data.message);
-				for (var i = 0; i < players.length; i++){
+				for (var i = 0; i < data.data.targets.length; i++){
 					for (var j = 0; j < $scope.gameChars.length; j++){
-						if ($scope.gameChars[j].id == players[i] && $scope.gameChars[j].cur_boost + dir >= 0){
+						if ($scope.gameChars[j].id == data.data.targets[i] && $scope.gameChars[j].cur_boost + dir >= 0){
 							$scope.gameChars[j].cur_boost += dir;
 							break;
 						}
@@ -214,9 +213,9 @@
 				break;
 			case 11: // Setback
 				var dir = Number(data.data.message);
-				for (var i = 0; i < players.length; i++){
+				for (var i = 0; i < data.data.targets.length; i++){
 					for (var j = 0; j < $scope.gameChars.length; j++){
-						if ($scope.gameChars[j].id == players[i] && $scope.gameChars[j].cur_setback + dir >= 0){
+						if ($scope.gameChars[j].id == data.data.targets[i] && $scope.gameChars[j].cur_setback + dir >= 0){
 							$scope.gameChars[j].cur_setback += dir;
 							break;
 						}
@@ -225,9 +224,9 @@
 				break;
 			case 12: // Upgrade
 				var dir = Number(data.data.message);
-				for (var i = 0; i < players.length; i++){
+				for (var i = 0; i < data.data.targets.length; i++){
 					for (var j = 0; j < $scope.gameChars.length; j++){
-						if ($scope.gameChars[j].id == players[i] && $scope.gameChars[j].cur_upgrade + dir >= 0){
+						if ($scope.gameChars[j].id == data.data.targets[i] && $scope.gameChars[j].cur_upgrade + dir >= 0){
 							$scope.gameChars[j].cur_upgrade += dir;
 							break;
 						}
@@ -236,9 +235,9 @@
 				break;
 			case 13: // UpDiff
 				var dir = Number(data.data.message);
-				for (var i = 0; i < players.length; i++){
+				for (var i = 0; i < data.data.targets.length; i++){
 					for (var j = 0; j < $scope.gameChars.length; j++){
-						if ($scope.gameChars[j].id == players[i] && $scope.gameChars[j].cur_upDiff + dir >= 0){
+						if ($scope.gameChars[j].id == data.data.targets[i] && $scope.gameChars[j].cur_upDiff + dir >= 0){
 							$scope.gameChars[j].cur_upDiff += dir;
 							break;
 						}
@@ -247,9 +246,9 @@
 				break;
 			case 14: // EVENT_TEAM
 				var team = Number(data.data.message);
-				for (var i = 0; i < players.length; i++){
+				for (var i = 0; i < data.data.targets.length; i++){
 					for (var j = 0; j < $scope.gameChars.length; j++){
-						if ($scope.gameChars[j].id == players[i]){
+						if ($scope.gameChars[j].id == data.data.targets[i]){
 							$scope.gameChars[j].team = team;
 							$scope.gameChars[j].teamDisp = $scope.gameChars[j].initDisp = $scope.AssignTeamLogo(team);
 							if ($scope.gameChars[j].team == 0){
