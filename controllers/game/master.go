@@ -33,7 +33,7 @@ func (this *MasterSocketController) Join() {
 	sub_id := gamesocket.Join(uname, gamesocket.SUB_MASTER, ws)
 	defer masterLeave(sub_id)
 
-    gamesocket.Publish <- gamesocket.NewEvent(EVENT_JOIN, gamesocket.SUB_MASTER, gamesocket.SUB_MASTER, nil, "")
+    gamesocket.Publish <- gamesocket.NewEvent(EVENT_JOIN, gamesocket.SUB_MASTER, gamesocket.SUB_MASTER, nil, "", true)
 
 	// Message receive loop.
 	for {
@@ -46,6 +46,7 @@ func (this *MasterSocketController) Join() {
 		err = json.Unmarshal(req, &conReq)
 		if err == nil {
             passPublish := false
+            sendAll := false
 			switch conReq.Type {
 			case EVENT_WOUND:
 				wound, _ := strconv.Atoi(conReq.Data.Message)
@@ -77,6 +78,7 @@ func (this *MasterSocketController) Join() {
 					initStarted = true
 					FindNextInitInd(true, false)
 					players[curInitInd].IsTurn = true
+                    sendAll = true
 				} else {
                     passPublish = true
                 }
@@ -86,6 +88,7 @@ func (this *MasterSocketController) Join() {
 				for i := 0; i < len(players); i++ {
 					players[i].IsTurn = false
 				}
+                sendAll = true
 			case EVENT_INIT_T:
 				players[curInitInd].IsTurn = false
 				if conReq.Data.Message == "+" {
@@ -189,7 +192,7 @@ func (this *MasterSocketController) Join() {
             if !passPublish {
                 multiMessStr, _ := json.Marshal(conReq.Data)
                 targs := findTargs(conReq.Type, conReq.Data.Players)
-                gamesocket.Publish <- gamesocket.NewEvent(conReq.Type, gamesocket.SUB_MASTER, gamesocket.SUB_MASTER, targs, string(multiMessStr))
+                gamesocket.Publish <- gamesocket.NewEvent(conReq.Type, gamesocket.SUB_MASTER, gamesocket.SUB_MASTER, targs, string(multiMessStr), sendAll)
             }
             beego.Info("Players ", players)
             beego.Info("Current Init ", curInitInd)

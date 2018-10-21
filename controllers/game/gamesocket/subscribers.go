@@ -45,8 +45,8 @@ func init() {
 	go tracker()
 }
 
-func NewEvent(ep int, user int, sub_type int, targets []int, data string) Event {
-	return Event{ep, Sender{Id: user, Type: sub_type}, targets, data}
+func NewEvent(ep int, user int, sub_type int, targets []int, data string, alert bool) Event {
+	return Event{ep, Sender{Id: user, Type: sub_type}, targets, data, alert}
 }
 
 func Join(user string, sub_type int, ws *websocket.Conn) int {

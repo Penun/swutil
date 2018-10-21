@@ -13,7 +13,7 @@
 						</span>
 						<span class="colBod">
 							<span class="dispList">
-								<span ng-repeat="(ind, play) in gameChars | orderBy: ['+team', '+player.name']" class="floatItem">
+								<span ng-repeat="(ind, play) in gameChars | orderBy: ['+team', '+player.name']" class="floatItem" ng-class="{selectedItem: play.selected}">
 									<span class="floatItemInGr">
 										<span class="">{{"{{play.player.name}}"}}</span>
 										<span class="" ng-if="play.team != 0 && teamLogos.length > 0">{{str2html rawTeamImg}}</span>

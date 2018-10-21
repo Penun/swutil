@@ -59,7 +59,7 @@ func (this *PlayerSocketController) Join() {
 	defer gamesocket.Leave(sub_id)
     setSubId(playId, sub_id)
 
-    gamesocket.Publish <- gamesocket.NewEvent(EVENT_JOIN, playId, gamesocket.SUB_CLIENT, nil, "")
+    gamesocket.Publish <- gamesocket.NewEvent(EVENT_JOIN, playId, gamesocket.SUB_CLIENT, nil, "", true)
 
 	// Message receive loop.
 	for {
@@ -94,7 +94,7 @@ func (this *PlayerSocketController) Join() {
                 passPublish = true
 			}
             if !passPublish {
-                gamesocket.Publish <- gamesocket.NewEvent(conReq.Type, playId, gamesocket.SUB_CLIENT, conReq.Data.Players, conReq.Data.Message)
+                gamesocket.Publish <- gamesocket.NewEvent(conReq.Type, playId, gamesocket.SUB_CLIENT, conReq.Data.Players, conReq.Data.Message, false)
             }
             beego.Info("Players: ", players)
             beego.Info("Current Init: ", curInitInd)

@@ -42,6 +42,7 @@ type Event struct {
 	Sender Sender `json:"sender"`
 	Targets []int `json:"targets"` // Target Subscriber Ids
 	Data string `json:"data"`
+	sendAll bool
 }
 
 type Sender struct {
