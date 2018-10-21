@@ -17,6 +17,7 @@
 				$http.get("/track/subs?type=watch").then(function(ret){
 					if (ret.data.success){
 						for (var i = 0; i < ret.data.result.length; i++){
+							ret.data.result.selected = false;
 							$scope.gameChars.push(ret.data.result[i]);
 						}
 					}
@@ -66,6 +67,7 @@
 						$http.post("/track/player", sendData).then(function(ret){
 							if (ret.data.success){
 								ret.data.live_player.initDisp = ret.data.live_player.teamDisp = $scope.AssignTeamLogo(ret.data.live_player.team);
+								ret.data.live_player.selected = false;
 								$scope.gameChars.push(ret.data.live_player);
 							}
 						});
@@ -77,6 +79,7 @@
 						if (typeof tPlay.initiative === 'undefined'){
 							tPlay.initiative = 0;
 						}
+						tPlay.selected = false;
 						$scope.gameChars.push(tPlay);
 						$scope.SortList($scope.gameChars, "initiative");
 						$scope.UpdateCurByIsTurn();
@@ -183,12 +186,14 @@
 				$scope.startInit = true;
 				$scope.FindNextInitInd(true, false);
 				$scope.SetTurn(true);
+				$scope.HighlightTeam($scope.gameChars[$scope.curInitInd].team);
 				break;
 			case 8: // Turn initiative
 				if ($scope.startInit){
 					$scope.SetTurn(false);
 					data.data.message === "+" ? $scope.FindNextInitInd(false, false) : $scope.FindNextInitInd(false, true);
 					$scope.SetTurn(true);
+					$scope.HighlightTeam($scope.gameChars[$scope.curInitInd].team);
 				}
 				break;
 			case 9: // End initiative
@@ -199,6 +204,7 @@
 					$scope.curInitInd++;
 				}
 				$scope.curInitInd = 0;
+				$scope.HighlightTeam(0);
 				break;
 			case 10: // Boost
 				var dir = Number(data.data.message);
@@ -360,6 +366,21 @@
 			var teamPath = $scope.teamLogos[teamId];
 			!highlight ? teamPath += ".png" : teamPath += "_dark.png";
 			return teamPath;
+		};
+
+		$scope.HighlightTeam = function(teamId){
+			for (let i = 0; i < $scope.gameChars.length; i++){
+				if (teamId != 0 && $scope.gameChars[i].team == teamId && $scope.gameChars[i].initiative > 0){
+					if ($scope.gameChars[i].selected){
+						return;
+					}
+					$scope.gameChars[i].selected = true;
+					$scope.gameChars[i].teamDisp = $scope.AssignTeamLogo(teamId, true);
+				} else if ($scope.gameChars[i].selected) {
+					$scope.gameChars[i].selected = false;
+					$scope.gameChars[i].teamDisp = $scope.AssignTeamLogo($scope.gameChars[i].team);
+				}
+			}
 		};
 	}]);
 })();

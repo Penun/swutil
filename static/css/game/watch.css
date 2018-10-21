@@ -127,3 +127,15 @@ span {
     justify-content: center;
     flex-wrap: wrap;
 }
+
+.selectedItem {
+    background-image: url("/static/img/light_underline_high.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    color: #293c56;
+    text-shadow:
+        -1px -1px 0 #DFDFFF,
+        1px -1px 0 #DFDFFF,
+        -1px 1px 0 #DFDFFF,
+        1px 1px 0 #DFDFFF;
+}
