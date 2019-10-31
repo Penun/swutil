@@ -18,7 +18,7 @@ func GetSkills() []Skill{
 func GetSkillsByCareer(careId int64) []CareerSkill {
     o := orm.NewOrm()
     var cSKill []CareerSkill
-    o.QueryTable("career_skill").Filter("career_id", careId).All(&cSKill)
+    o.QueryTable("career_skill").Filter("career_id", careId).RelatedSel("skill").All(&cSKill)
     if len(cSKill) > 0 {
         return cSKill
     } else {
@@ -29,7 +29,7 @@ func GetSkillsByCareer(careId int64) []CareerSkill {
 func GetSkillsBySpecial(speId int64) []SpecSkill {
     o := orm.NewOrm()
     var sSkill []SpecSkill
-    o.QueryTable("spec_skill").Filter("specialization_id", speId).All(&sSkill)
+    o.QueryTable("spec_skill").Filter("specialization_id", speId).RelatedSel("skill").All(&sSkill)
     if len(sSkill) > 0 {
         return sSkill
     } else {

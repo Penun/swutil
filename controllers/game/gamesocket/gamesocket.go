@@ -7,6 +7,8 @@ import (
 )
 
 func Upgrade(w http.ResponseWriter, r *http.Request) (*websocket.Conn, error) {
+	// webUpg := websocket.Upgrader{ReadBufferSize: 1024, WriteBufferSize: 1024}
+	// ws, err := webUpg.Upgrade(w, r, nil)
 	ws, err := websocket.Upgrade(w, r, nil, 1024, 1024)
 	if err != nil {
 		return nil, err

@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="fade_in" ng-show="curSpecial != null">
-                <h2>{{"{{curSpecial.name}}"}}</h3>
+                <h2>{{"{{curSpecial.name}}"}}</h2>
                 <p>Skill Proficiencies: {{"{{curSpecial.skill_slots}}"}}</p>
                 <div class="skillDiv">
                     <span ng-repeat="(ind, skill) in curSpecial.skills" class="skill">

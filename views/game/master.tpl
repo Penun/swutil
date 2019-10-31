@@ -11,10 +11,10 @@
 				</span>
 			</div>
             <div ng-show="mCont.ShowStep(1)" class="sixty_he">
-				<ul>
-					<li class="clickable" ng-click="mCont.InTextSet('Note')">Note</li>
-					<li class="clickable" ng-click="SetStep(3, true)">Initiative</li>
-				</ul>
+				<span class="masterGrid charDispBod">
+					<span class="clickable" ng-click="mCont.InTextSet('Note')">Note</span>
+					<span class="clickable" ng-click="SetStep(3, true)">Control Panel</span>
+				</span>
             </div>
 			<div ng-show="mCont.ShowStep(2)" class="sixty_he">
 				<button class="menu_p" ng-click="mCont.ClearForm(2, true)">Menu</button>
