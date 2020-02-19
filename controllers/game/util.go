@@ -15,7 +15,7 @@ func WoundPlayer(playId int, wound int) {
 	if playId > 0 {
 		for i := 0; i < len(players); i++ {
 			if players[i].Id == playId {
-				if players[i].CurWound + wound <= players[i].Player.Wound && players[i].CurWound + wound >= -players[i].Player.Wound * 2 {
+				if players[i].CurWound + wound <= players[i].Character.Wound && players[i].CurWound + wound >= -players[i].Character.Wound * 2 {
 					players[i].CurWound += wound
 					return
 				}
@@ -28,7 +28,7 @@ func StrainPlayer(playId int, strain int) {
 	if playId > 0 {
 		for i := 0; i < len(players); i++ {
 			if players[i].Id == playId {
-				if players[i].CurStrain + strain <= players[i].Player.Strain && players[i].CurStrain + strain >= -players[i].Player.Strain * 2 {
+				if players[i].CurStrain + strain <= players[i].Character.Strain && players[i].CurStrain + strain >= -players[i].Character.Strain * 2 {
 					players[i].CurStrain += strain
 					return
 				}

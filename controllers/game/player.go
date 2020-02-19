@@ -20,7 +20,7 @@ func (this *PlayerSocketController) Join() {
 	if findPlay := this.GetSession("player"); findPlay != nil {
 		playId = findPlay.(int)
         tempPlay := GetPlayerId(playId)
-        uname = tempPlay.Player.Name
+        uname = tempPlay.Character.Name
 	} else {
 		uname = this.GetString("uname")
 		if len(uname) == 0 {
@@ -31,9 +31,9 @@ func (this *PlayerSocketController) Join() {
 			this.Redirect("/", 302)
 			return
 		}
-		if newPlay := game.GetPlayerName(uname); (newPlay != game.Player{}) {
+		if newPlay := game.GetCharacterName(uname); (newPlay != game.Character{}) {
             curPlayId++
-			tempPlay := LivePlayer{Player: &newPlay, IsTurn: false, Type: "PC", Team: 0, DispStats: true, CurWound: newPlay.Wound, CurStrain: newPlay.Strain}
+			tempPlay := LivePlayer{Character: &newPlay, IsTurn: false, Type: "PC", Team: 0, DispStats: true, CurWound: newPlay.Wound, CurStrain: newPlay.Strain}
             tempPlay.Id = curPlayId
             playId = curPlayId
 			players = append(players, tempPlay)

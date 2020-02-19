@@ -6,5 +6,6 @@
 
 <title>SWUTIL Edit</title>
 {{template "includes/styles.html"}}
+{{template "includes/edit/styles.html"}}
 {{template "includes/edit/js.html"}}
 </head>

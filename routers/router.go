@@ -60,4 +60,6 @@ func init() {
 	//beego.Router("/specializations/add", &controllers.SpecializationsController{}, "post:Add")
 	beego.Router("/talents", &controllers.TalentsController{})
 	beego.Router("/talents/add", &controllers.TalentsController{}, "post:Add")
+	beego.Router("/tags", &controllers.MainController{}, "get:Tags")
+	beego.Router("/market", &controllers.MarketController{})
 }

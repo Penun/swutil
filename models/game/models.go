@@ -5,10 +5,13 @@ import (
     "github.com/Penun/swutil/models"
 )
 
-type Player struct {
+type Character struct {
 	Id int64 `orm:"pk" json:"id"`
     Name string `json:"name"`
     Species *models.Species `orm:"rel(fk)" json:"species"`
+    Career *models.Career `orm:"rel(fk)" json:"career"`
+    TotalXp int `json:"total_xp"`
+    SpentXp int `json:"spent_xp"`
 	Wound int `json:"wound"`
     Strain int `json:"strain"`
     Brawn int `json:"brawn"`
@@ -55,19 +58,19 @@ type Player struct {
     Notes string `json:"notes"`
 }
 
-type PlayerTalent struct {
+type CharacterTalent struct {
     Id int64 `orm:"pk" json:"id"`
-    Player *Player `orm:"rel(fk)" json:"player"`
+    Character *Character `orm:"rel(fk)" json:"character"`
     Talent *models.Talent `orm:"rel(fk)" json:"talent"`
     Rank int `json:"rank"`
 }
 
-type PlayerForce struct {
+type CharacterForce struct {
     Id int64 `orm:"pk" json:"id"`
-    Player *Player `orm:"rel(fk)" json:"player"`
+    Character *Character `orm:"rel(fk)" json:"character"`
     Force *models.Force `orm:"rel(fk)" json:"force"`
 }
 
 func init() {
-	orm.RegisterModel(new(Player), new(PlayerTalent), new(PlayerForce))
+	orm.RegisterModel(new(Character), new(CharacterTalent), new(CharacterForce))
 }

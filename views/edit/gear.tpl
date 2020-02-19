@@ -1,4 +1,4 @@
-<div ng-show="mCont.ShowTab(6)" class="sixty_he">
+<div ng-show="mCont.ShowTab(6)" class="sixty_he editGrid">
     <div class="left_page_col left_page">
         <div class="fade_in" style="width: 95%">
             <h2>Gear</h2>
@@ -33,7 +33,7 @@
                 <option value="Construction and Salvage Tools">Construction and Salvage Tools</option>
                 <option value="Remotes">Remotes</option>
             </select></p>
-            <p><label><b>Price:</b></label><input type="number" name="gearPrice" ng-model="moldGear.price" min="0" step="10" required/></p>
+            <p><label><b>Price:</b></label><input type="number" name="gearPrice" ng-model="moldGear.price" min="0" step="5" required/></p>
             <p><label><b>Restricted:</b></label><input type="checkbox" name="gearRestricted" ng-model="moldGear.restricted" /></p>
             <p><label><b>Encumbrance:</b></label><input type="number" name="gearEcum" ng-model="moldGear.encumbrance" min="0" max="99" required/></p>
             <p><label><b>Rarity:</b></label><input type="number" name="gearRarity" ng-model="moldGear.rarity" min="0" max="99" required/></p>

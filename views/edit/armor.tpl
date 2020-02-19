@@ -1,4 +1,4 @@
-<div ng-show="mCont.ShowTab(5)" class="sixty_he">
+<div ng-show="mCont.ShowTab(5)" class="sixty_he editGrid">
     <div class="left_page_col left_page">
         <div class="fade_in" style="width: 95%">
             <h2>Armor</h2>

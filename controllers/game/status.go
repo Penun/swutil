@@ -42,8 +42,8 @@ func (this *GameStatusController) Subs() {
 			}
 		}
 		if master {
-			tempPlay := game.Player{Name: "DM"}
-			tempLPlay := LivePlayer{Player: &tempPlay}
+			tempPlay := game.Character{Name: "DM"}
+			tempLPlay := LivePlayer{Character: &tempPlay}
 			playOnl = append(playOnl, tempLPlay)
 		}
 		resp.Result = playOnl
@@ -75,13 +75,13 @@ func (this *GameStatusController) GameStatus() {
 }
 
 func (this *GameStatusController) FindPlayer() {
-    var findReq FindPlayerReq
+    var findReq FindCharacterReq
 	err := json.Unmarshal(this.Ctx.Input.RequestBody, &findReq)
-	resp := FindPlayerResp{Success: false}
+	resp := FindCharacterResp{Success: false}
 	if err == nil {
-		playSugs := game.GetPlayerLike(findReq.Name)
+		playSugs := game.GetCharacterLike(findReq.Name)
         if len(playSugs) > 0 {
-            resp.Players = playSugs
+            resp.Characters = playSugs
             resp.Success = true
         }
 	}
@@ -90,13 +90,13 @@ func (this *GameStatusController) FindPlayer() {
 }
 
 func (this *GameStatusController) VerifyName() {
-	var findReq FindPlayerReq
+	var findReq FindCharacterReq
 	err := json.Unmarshal(this.Ctx.Input.RequestBody, &findReq)
 	resp := VerifyNameResp{Success: false}
 	if err == nil {
-		player := game.GetPlayerName(findReq.Name)
-        if (player != game.Player{}) {
-            resp.Player = player
+		player := game.GetCharacterName(findReq.Name)
+        if (player != game.Character{}) {
+            resp.Character = player
             resp.Success = true
         }
 	}
@@ -105,7 +105,7 @@ func (this *GameStatusController) VerifyName() {
 }
 
 func (this *GameStatusController) GetPlayer() {
-    var getReq IdPlayerReq
+    var getReq IdCharacterReq
 	err := json.Unmarshal(this.Ctx.Input.RequestBody, &getReq)
 	resp := GetPlayerResp{Success: false}
 	if err == nil {

@@ -15,6 +15,16 @@ func GetSpecies() []Species{
     }
 }
 
+func GetSpeciesId(specId int64) Species {
+    o := orm.NewOrm()
+    var spec Species
+    if err := o.QueryTable("species").Filter("id", specId).One(&spec); err == nil {
+        return spec
+    } else {
+        return Species{}
+    }
+}
+
 func GetSpecAtt(specId int64) []SpeAttribute {
     o := orm.NewOrm()
     var specAtt []SpeAttribute

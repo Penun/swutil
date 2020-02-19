@@ -20,3 +20,7 @@ func (c *MainController) Get() {
 func (this *MainController) Books() {
 	this.TplName = "books.tpl"
 }
+
+func (this *MainController) Tags() {
+	this.TplName = "edit/tags.tpl"
+}

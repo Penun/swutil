@@ -10,29 +10,29 @@ type PlayersController struct {
 	beego.Controller
 }
 
-type GetPlaysResp struct {
+type GetCharsResp struct {
     Occ BaseResp `json:"occ"`
-    Players []game.Player `json:"players"`
+    Characters []game.Character `json:"players"`
 }
 
-type InsPlayReq struct {
-	Player game.Player `json:"player"`
-	PlayTalents []game.PlayerTalent `json:"play_talents"`
-	PlayForce []game.PlayerForce `json:"play_force"`
+type InsCharReq struct {
+	Character game.Character `json:"player"`
+	CharTalents []game.CharacterTalent `json:"play_talents"`
+	CharForce []game.CharacterForce `json:"play_force"`
 }
 
-type InsPlayResp struct{
+type InsCharResp struct{
 	Occ BaseResp `json:"occ"`
-    Player game.Player `json:"player"`
+    Character game.Character `json:"player"`
 }
 
 func (this *PlayersController) Get() {
-    resp := GetPlaysResp{Occ: BaseResp{Success: false, Error: ""}}
-	var plays []game.Player
-    plays = game.GetPlayers()
+    resp := GetCharsResp{Occ: BaseResp{Success: false, Error: ""}}
+	var plays []game.Character
+    plays = game.GetCharacters()
 	if len(plays) > 0{
 		resp.Occ.Success = true
-		resp.Players = plays
+		resp.Characters = plays
 	} else {
 		resp.Occ.Error = "None found."
 	}
@@ -41,21 +41,21 @@ func (this *PlayersController) Get() {
 }
 
 func (this *PlayersController) Add() {
-	var insReq InsPlayReq
+	var insReq InsCharReq
 	err := json.Unmarshal(this.Ctx.Input.RequestBody, &insReq)
-	resp := InsPlayResp{Occ: BaseResp{Success: false, Error: ""}}
+	resp := InsCharResp{Occ: BaseResp{Success: false, Error: ""}}
 	if err == nil {
-		p_id := game.AddPlayer(insReq.Player)
+		p_id := game.AddCharacter(insReq.Character)
         if p_id > 0 {
-			insReq.Player.Id = p_id
-            resp.Player = insReq.Player
-			for i := 0; i < len(insReq.PlayTalents); i++ {
-				insReq.PlayTalents[i].Player = &insReq.Player
-				_ = game.AddPlayTalent(insReq.PlayTalents[i])
+			insReq.Character.Id = p_id
+            resp.Character = insReq.Character
+			for i := 0; i < len(insReq.CharTalents); i++ {
+				insReq.CharTalents[i].Character = &insReq.Character
+				_ = game.AddCharTalent(insReq.CharTalents[i])
 			}
-			for i := 0; i < len(insReq.PlayForce); i++ {
-				insReq.PlayForce[i].Player = &insReq.Player
-				_ = game.AddPlayForce(insReq.PlayForce[i])
+			for i := 0; i < len(insReq.CharForce); i++ {
+				insReq.CharForce[i].Character = &insReq.Character
+				_ = game.AddCharForce(insReq.CharForce[i])
 			}
             resp.Occ.Success = true
         } else {

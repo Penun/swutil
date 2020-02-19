@@ -1,4 +1,4 @@
-<div ng-show="mCont.ShowTab(4)" class="sixty_he">
+<div ng-show="mCont.ShowTab(4)" class="sixty_he editGrid">
     <div class="left_page_col left_page">
         <div class="fade_in" style="width: 95%">
             <h2>Weapons</h2>
@@ -15,7 +15,7 @@
     </div>
     <div class="right_page right_page_form">
         <form id="weaponAddForm" name="weaponAddForm" novalidate>
-            <p><label><b>Weapon Name:</b></label><input type="text" name="wepName" id="wepName" ng-model="moldWeapon.name" ng-change="mCont.CheckWeapon()" required/></p>
+            <p><label><b>Weapon Name:</b></label><input type="text" name="wepName" id="wepName" ng-model="moldWeapon.name" ng-change="mCont.CheckWeapon()" maxlength="255" required/></p>
             <p><label><b>Type:</b></label><select name="wepType" ng-model="moldWeapon.type" class="sing_select" required>
                 <option value="Ranged">Ranged</option>
                 <option value="Melee">Melee</option>
@@ -42,9 +42,11 @@
                 <option value="19">Melee</option>
                 <option value="25">Ranged (Heavy)</option>
                 <option value="26">Ranged (Light)</option>
+                <option value="17">Mechanics</option>
             </select></p>
             <p><label><b>Damage:</b></label><input type="number" name="wepDamage" ng-model="moldWeapon.damage" min="0" max="99" required/></p>
             <p><label><b>Damage Additive:</b></label><input type="checkbox" name="wepDamAdd" ng-model="moldWeapon.damage_add" /></p>
+            <p><label><b>Damage Subtractive:</b></label><input type="checkbox" name="wepDamSub" ng-model="moldWeapon.damage_sub" /></p>
             <p><label><b>Critical:</b></label><input type="number" name="wepCritical" ng-model="moldWeapon.critical" min="0" max="9" /></p>
             <p><label><b>Range:</b></label><select name="wepRange" ng-model="moldWeapon.range" class="sing_select" required>
                 <option value="Engaged">Engaged</option>

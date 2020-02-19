@@ -80,17 +80,17 @@ type GetStatusResp struct {
 	CurInitInd int `json:"cur_init_ind"`
 }
 
-type FindPlayerReq struct {
+type FindCharacterReq struct {
 	Name string `json:"name"`
 }
 
-type IdPlayerReq struct {
+type IdCharacterReq struct {
     Id int `json:"id"`
 }
 
-type FindPlayerResp struct {
+type FindCharacterResp struct {
 	Success bool `json:"success"`
-	Players []game.Player `json:"players"`
+	Characters []game.Character `json:"characters"`
 }
 
 type GetPlayerResp struct {
@@ -100,7 +100,7 @@ type GetPlayerResp struct {
 
 type VerifyNameResp struct {
 	Success bool `json:"success"`
-	Player game.Player `json:"player"`
+	Character game.Character `json:"character"`
 }
 
 type CheckPlayerResp struct {
@@ -121,7 +121,7 @@ type MultiMess struct {
 type LivePlayer struct {
     subId int `json:"sub_id"`
     Id int `json:"id"`
-	Player *game.Player `json:"player"`
+	Character *game.Character `json:"character"`
 	Initiative float64 `json:"initiative"`
     CurWound int `json:"cur_wound"`
     CurStrain int `json:"cur_strain"`

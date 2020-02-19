@@ -4,51 +4,51 @@ import (
     "github.com/astaxie/beego/orm"
 )
 
-func GetPlayer(p_id int64) Player {
+func GetCharacter(p_id int64) Character {
     o := orm.NewOrm()
-    player := Player{Id: p_id}
+    player := Character{Id: p_id}
     err := o.Read(&player)
     if err == nil {
         return player
     } else {
-        return Player{}
+        return Character{}
     }
 }
 
-func GetPlayerName(name string) Player {
+func GetCharacterName(name string) Character {
     o := orm.NewOrm()
-    var player Player
-    err := o.QueryTable("player").Filter("name", name).One(&player)
+    var player Character
+    err := o.QueryTable("character").Filter("name", name).One(&player)
     if err == nil {
         return player
     } else {
-        return Player{}
+        return Character{}
     }
 }
 
-func GetPlayerLike(name string) []Player {
+func GetCharacterLike(name string) []Character {
     o := orm.NewOrm()
-    var players []Player
-    _, err := o.Raw("SELECT * FROM `player` WHERE `name` LIKE CONCAT(?, '%')", name).QueryRows(&players)
+    var players []Character
+    _, err := o.Raw("SELECT * FROM `character` WHERE `name` LIKE CONCAT(?, '%')", name).QueryRows(&players)
     if len(players) > 0 && err == nil {
         return players
     } else {
-        return []Player{}
+        return []Character{}
     }
 }
 
-func GetPlayers() []Player{
+func GetCharacters() []Character{
     o := orm.NewOrm()
-    var plays []Player
-    o.QueryTable("player").OrderBy("name").All(&plays)
+    var plays []Character
+    o.QueryTable("character").OrderBy("name").All(&plays)
     if len(plays) > 0 {
         return plays
     } else {
-        return []Player{}
+        return []Character{}
     }
 }
 
-func AddPlayer(pla Player) int64 {
+func AddCharacter(pla Character) int64 {
 	o := orm.NewOrm()
 	id, err := o.Insert(&pla)
 	if err == nil {
@@ -58,7 +58,7 @@ func AddPlayer(pla Player) int64 {
 	}
 }
 
-func AddPlayTalent(plaTal PlayerTalent) int64 {
+func AddCharTalent(plaTal CharacterTalent) int64 {
     o := orm.NewOrm()
 	id, err := o.Insert(&plaTal)
 	if err == nil {
@@ -68,7 +68,7 @@ func AddPlayTalent(plaTal PlayerTalent) int64 {
 	}
 }
 
-func AddPlayForce(plaFor PlayerForce) int64 {
+func AddCharForce(plaFor CharacterForce) int64 {
     o := orm.NewOrm()
 	id, err := o.Insert(&plaFor)
 	if err == nil {
@@ -78,15 +78,15 @@ func AddPlayForce(plaFor PlayerForce) int64 {
 	}
 }
 
-func GetAddPlayer(name string) (int64, Player) {
+func GetAddCharacter(name string) (int64, Character) {
     o := orm.NewOrm()
-    player := Player{Name: name}
+    player := Character{Name: name}
     if created, id, err := o.ReadOrCreate(&player, "name"); err == nil {
         if created {
-             return id, Player{}
+             return id, Character{}
         } else {
             return id, player
         }
     }
-    return 0, Player{}
+    return 0, Character{}
 }

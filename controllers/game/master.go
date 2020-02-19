@@ -110,7 +110,7 @@ func (this *MasterSocketController) Join() {
                     }
                     type tmpLivePlay struct {
                         Id int `json:"id"`
-                    	Player tmpPlay `json:"player"`
+                    	Character tmpPlay `json:"player"`
                     	Initiative float64 `json:"initiative"`
                         CurWound int `json:"cur_wound"`
                         CurStrain int `json:"cur_strain"`
@@ -125,7 +125,7 @@ func (this *MasterSocketController) Join() {
                     }
                     nTmpPlay := tmpLivePlay{
                         Id: newPlay.Id,
-                        Player: tmpPlay{Name: newPlay.Player.Name, Wound: newPlay.Player.Wound, Strain: newPlay.Player.Strain},
+                        Character: tmpPlay{Name: newPlay.Character.Name, Wound: newPlay.Character.Wound, Strain: newPlay.Character.Strain},
                         Initiative: newPlay.Initiative,
                         CurWound: newPlay.CurWound,
                         CurStrain: newPlay.CurStrain,

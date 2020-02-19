@@ -90,6 +90,7 @@ type Weapon struct {
     Skill *Skill `orm:"rel(fk)" json:"skill"`
     Damage int `json:"damage"`
     DamageAdd bool `json:"damage_add"`
+    DamageSub bool `json:"damage_sub"`
     Critical int `json:"critical"`
     Range string `json:"range"`
     Encumbrance int `json:"encumbrance"`
@@ -100,6 +101,13 @@ type Weapon struct {
     Special string `json:"special"`
     Description string `json:"description"`
     Book string `json:"book"`
+}
+
+type WeaponModel struct {
+    Id int64 `orm:"pk" json:"id"`
+    Weapon *Weapon `orm:"rel(fk)" json:"weapon"`
+    Model string `json:"model"`
+    Description string `json:"description"`
 }
 
 type Armor struct {
@@ -116,6 +124,13 @@ type Armor struct {
     Book string `json:"book"`
 }
 
+type ArmorModel struct {
+    Id int64 `orm:"pk" json:"id"`
+    Armor *Armor `orm:"rel(fk)" json:"armor"`
+    Model string `json:"model"`
+    Description string `json:"description"`
+}
+
 type Gear struct {
     Id int64 `orm:"pk" json:"id"`
     Item string `json:"item"`
@@ -126,6 +141,13 @@ type Gear struct {
     Rarity int `json:"rarity"`
     Description string `json:"description"`
     Book string `json:"book"`
+}
+
+type GearModel struct {
+    Id int64 `orm:"pk" json:"id"`
+    Gear *Gear `orm:"rel(fk)" json:"gear"`
+    Model string `json:"model"`
+    Description string `json:"description"`
 }
 
 type Attachment struct {
@@ -139,6 +161,25 @@ type Attachment struct {
     Rarity int `json:"rarity"`
     Description string `json:"description"`
     Book string `json:"book"`
+    BaseMod string `json:"base_mod"`
+}
+
+type AttachmentModel struct {
+    Id int64 `orm:"pk" json:"id"`
+    Attachment *Attachment `orm:"rel(fk)" json:"attachment"`
+    Model string `json:"model"`
+}
+
+type ModificationOption struct {
+    Id int64 `orm:"pk" json:"id"`
+    Option string `json:"option"`
+    Description string `json:"description"`
+}
+
+type AttachmentModificationOption struct {
+    Id int64 `orm:"pk" json:"id"`
+    Attachment *Attachment `orm:"rel(fk)" json:"attachment"`
+    ModificationOption *ModificationOption `orm:"rel(fk)" json:"modification_option"`
 }
 
 type Droid struct {
@@ -246,6 +287,7 @@ type Force struct {
 func init() {
     orm.RegisterModel(new(Career), new(CareerSkill), new(CareerSpec), new(Skill), new(SpeAttribute),
         new(SpecSkill), new(SpecTalent), new(Specialization), new(Species), new(Talent), new(Weapon),
-        new(Armor), new(Gear), new(Attachment), new(Droid), new(DroidSkill), new(DroidTalent), new(Vehicle),
-        new(Starship), new(Force))
+        new(WeaponModel), new(Armor), new(ArmorModel), new(Gear), new(GearModel), new(Attachment),
+        new(AttachmentModel), new(ModificationOption), new(AttachmentModificationOption), new(Droid),
+        new(DroidSkill), new(DroidTalent), new(Vehicle), new(Starship), new(Force))
 }

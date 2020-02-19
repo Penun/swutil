@@ -1,7 +1,7 @@
 (function(){
 	var app = angular.module('swutil_edit', []);
 	app.controller('mainController', ['$window', '$scope', '$http', function($window, $scope, $http){
-		this.curTab = 1;
+		this.curTab = 4;
 		$scope.curSpec = {};
 		$scope.moldSpecies = {};
 		$scope.moldTalent = {type: "Passive"};
@@ -17,6 +17,16 @@
 		this.skillsCho = [];
 		this.talCho = null;
 		this.rotateDeg = 5;
+
+		angular.element(document).ready(function(){
+			$http.get("/weapons").then(function(ret){
+				if (ret.data.occ.success){
+					$scope.weapons = ret.data.weapons;
+				} else {
+					$scope.weapons = [];
+				}
+			});
+		});
 
 		this.AddAbility = function(){
 			var abilTxt = document.getElementById("abilAdd");

@@ -1,0 +1,9 @@
+.editGrid {
+    display: grid;
+    grid-template-columns: 33% 1fr;
+}
+
+.left_page {
+    grid-column: 1;
+    overflow-y: auto;
+}
